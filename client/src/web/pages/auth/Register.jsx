@@ -70,7 +70,7 @@ export default function Register() {
         <AuthNavbar />
 
         <div className="flex-1 flex items-center justify-center px-8">
-          <div className="w-full max-w-[400px]">
+          <div className="w-full max-w-400px">
 
             <h1 className="text-[1.6rem] font-black text-[#0A1628] mb-1">Create your account</h1>
             <p className="text-[#64748B] text-[14px] mb-5">Join Pakistan's expo management platform.</p>
@@ -84,7 +84,7 @@ export default function Register() {
                     key={id} type="button"
                     onClick={() => { setForm((p) => ({ ...p, role: id })); setError(""); }}
                     className={`flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all ${
-                      form.role === id ? "border-[#6B9FFF] bg-[#6B9FFF]/[0.05]" : "border-[#E2E8F4] bg-[#F8FAFC] hover:border-[#CBD5E8]"
+                      form.role === id ? "border-[#6B9FFF] bg-[#6B9FFF]/0.05" : "border-[#E2E8F4] bg-[#F8FAFC] hover:border-[#CBD5E8]"
                     }`}
                   >
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center ${form.role === id ? "bg-[#6B9FFF]" : "bg-[#E8F0FE]"}`}>

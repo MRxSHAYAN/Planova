@@ -33,10 +33,10 @@ export default function Login() {
 
           <div>
             <span className="text-[#6B9FFF] text-[11px] font-semibold tracking-[0.18em] uppercase">Expo Management Platform</span>
-            <h2 className="text-white text-[1.6rem] font-black leading-tight mt-2 max-w-[300px]">
+            <h2 className="text-white text-[1.6rem] font-black leading-tight mt-2 max-w-300px">
               Pakistan's expos, one platform.
             </h2>
-            <p className="text-white/50 text-[13px] mt-2 max-w-[280px] leading-relaxed">
+            <p className="text-white/50 text-[13px] mt-2 max-w-280px leading-relaxed">
               Organizers, exhibitors, and attendees — all managed in one place.
             </p>
             <div className="flex gap-7 mt-7 pt-5 border-t border-white/10">
@@ -58,7 +58,7 @@ export default function Login() {
 
         {/* Form */}
         <div className="flex-1 flex items-center justify-center px-8">
-          <div className="w-full max-w-[360px]">
+          <div className="w-full max-w-360px">
 
             <h1 className="text-[1.65rem] font-black text-[#0A1628] leading-tight">Welcome back</h1>
             <p className="text-[#64748B] text-[14px] mt-1 mb-7">Log in to your Planova account.</p>
