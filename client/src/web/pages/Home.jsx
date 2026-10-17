@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Search, Calendar, MapPin, Users, ArrowRight, Eye, BookmarkPlus } from "lucide-react";
 import Layout from "../components/Layout";
-import heroImg from "../assets/hero.jpg";
+import heroImg from "./../assets/Hero.jpg";
 
 const HERO_IMAGE = heroImg;
 
