@@ -10,7 +10,7 @@ import {
    UserCircle2,
   LogOut,
 } from "lucide-react";
-import iconImg from "../../assets/Icon.png ";
+import iconImg from "../../assets/Icon.png";
 import { CURRENT_USER, NOTIFICATIONS } from "../data/mockData";
 
 const NAV_GROUPS = [
