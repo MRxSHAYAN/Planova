@@ -37,14 +37,14 @@ const STATS = [
 
 function ValueCard({ title, desc, icon }) {
   return (
-    <div className="bg-white rounded-xl border border-[#CBD5E8] p-6">
-      <div className="w-10 h-10 rounded-lg bg-[#E8F0FE] flex items-center justify-center mb-4">
-        <svg className="w-5 h-5 text-[#6B9FFF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+    <div className="bg-surface rounded-xl border border-border p-6">
+      <div className="w-10 h-10 rounded-lg bg-ice flex items-center justify-center mb-4">
+        <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
           {icon}
         </svg>
       </div>
-      <h3 className="text-[#0A1628] font-black text-[16px] mb-2">{title}</h3>
-      <p className="text-[#64748B] text-[13px] leading-relaxed">{desc}</p>
+      <h3 className="text-dark font-black text-[16px] mb-2">{title}</h3>
+      <p className="text-body text-[13px] leading-relaxed">{desc}</p>
     </div>
   );
 }
@@ -52,11 +52,11 @@ function ValueCard({ title, desc, icon }) {
 export default function About() {
   return (
     <Layout>
-      <div className="bg-[#0A1628] pt-[90px] pb-16 px-5 sm:px-8">
+      <div className="bg-navy pt-[90px] pb-16 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-4">
-            <span className="w-5 h-px bg-[#6B9FFF]" />
-            <span className="text-[#6B9FFF] text-[10.5px] font-semibold tracking-[0.2em] uppercase">Our story</span>
+            <span className="w-5 h-px bg-accent" />
+            <span className="text-accent text-[10.5px] font-semibold tracking-[0.2em] uppercase">Our story</span>
           </div>
           <h1 className="text-[2rem] sm:text-[2.6rem] font-black text-white leading-[1.1] mb-4 max-w-xl">
             Pakistan's expo industry needed better infrastructure.
@@ -67,7 +67,7 @@ export default function About() {
         </div>
       </div>
 
-      <div className="bg-[#112240] px-5 sm:px-8 py-10 border-b border-white/[0.05]">
+      <div className="bg-navy-mid px-5 sm:px-8 py-10 border-b border-white/[0.05]">
         <div className="max-w-7xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-8">
           {STATS.map(([value, label]) => (
             <div key={label} className="text-center">
@@ -78,18 +78,18 @@ export default function About() {
         </div>
       </div>
 
-      <section className="bg-white px-5 sm:px-8 py-16">
+      <section className="bg-surface px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <h2 className="text-[1.6rem] font-black text-[#0A1628] mb-4">What we're building</h2>
-            <p className="text-[#64748B] text-[14px] leading-relaxed mb-4">
+            <h2 className="text-[1.6rem] font-black text-dark mb-4">What we're building</h2>
+            <p className="text-body text-[14px] leading-relaxed mb-4">
               Planova is an end-to-end expo management platform. Organizers publish events, review exhibitor applications, and assign booths on an interactive floor plan. Exhibitors build profiles and manage their participation. Attendees browse, register, and navigate expos from one app.
             </p>
-            <p className="text-[#64748B] text-[14px] leading-relaxed mb-6">
+            <p className="text-body text-[14px] leading-relaxed mb-6">
               We started with trade shows in Karachi, Lahore, and Islamabad — and we're expanding to every major city in Pakistan.
             </p>
             <Link to="/explore-expos"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#6B9FFF] text-[#0A1628] font-bold text-[13px] hover:bg-[#4A82F5] hover:text-white transition-colors">
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors">
               Browse upcoming expos
               <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -97,7 +97,7 @@ export default function About() {
             </Link>
           </div>
 
-          <div className="rounded-xl overflow-hidden border border-[#CBD5E8] shadow-md aspect-[4/3]">
+          <div className="rounded-xl overflow-hidden border border-border shadow-md aspect-[4/3]">
             <img
               src="https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=75"
               alt="Expo floor"
@@ -107,10 +107,10 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-[#F4F7FF] px-5 sm:px-8 py-16">
+      <section className="bg-page px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-[1.6rem] font-black text-[#0A1628] mb-2">What we stand for</h2>
-          <p className="text-[#64748B] text-[13.5px] mb-10">Three principles behind every decision we make.</p>
+          <h2 className="text-[1.6rem] font-black text-dark mb-2">What we stand for</h2>
+          <p className="text-body text-[13.5px] mb-10">Three principles behind every decision we make.</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <ValueCard
@@ -142,29 +142,29 @@ export default function About() {
         </div>
       </section>
 
-      <section className="bg-white px-5 sm:px-8 py-16">
+      <section className="bg-surface px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-[1.6rem] font-black text-[#0A1628] mb-2">The team</h2>
-          <p className="text-[#64748B] text-[13.5px] mb-10">Small team, big ambition.</p>
+          <h2 className="text-[1.6rem] font-black text-dark mb-2">The team</h2>
+          <p className="text-body text-[13.5px] mb-10">Small team, big ambition.</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {TEAM.map((member) => (
-              <div key={member.name} className="bg-[#F4F7FF] rounded-xl border border-[#CBD5E8] p-6 flex flex-col gap-3">
-                <div className="w-12 h-12 rounded-full bg-[#0A1628] flex items-center justify-center">
-                  <span className="text-[#6B9FFF] font-black text-[14px]">{member.initials}</span>
+              <div key={member.name} className="bg-page rounded-xl border border-border p-6 flex flex-col gap-3">
+                <div className="w-12 h-12 rounded-full bg-navy flex items-center justify-center">
+                  <span className="text-accent font-black text-[14px]">{member.initials}</span>
                 </div>
                 <div>
-                  <h3 className="text-[#0A1628] font-black text-[15px]">{member.name}</h3>
-                  <p className="text-[#6B9FFF] text-[12px] font-semibold">{member.role}</p>
+                  <h3 className="text-dark font-black text-[15px]">{member.name}</h3>
+                  <p className="text-accent text-[12px] font-semibold">{member.role}</p>
                 </div>
-                <p className="text-[#64748B] text-[12.5px] leading-relaxed">{member.bio}</p>
+                <p className="text-body text-[12.5px] leading-relaxed">{member.bio}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#0A1628] px-5 sm:px-8 py-16">
+      <section className="bg-navy px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
           <div>
             <h2 className="text-[1.5rem] font-black text-white mb-2">Ready to use Planova?</h2>
@@ -172,7 +172,7 @@ export default function About() {
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link to="/register"
-              className="px-6 py-3 rounded-lg bg-[#6B9FFF] text-[#0A1628] font-bold text-[13px] hover:bg-[#4A82F5] hover:text-white transition-colors min-h-[44px] flex items-center">
+              className="px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center">
               Get Started
             </Link>
             <Link to="/explore-expos"

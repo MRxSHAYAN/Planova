@@ -1,7 +1,67 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-*, *::before, *::after {
+/* ─── Planova Design Tokens ────────────────────────────────────────────────
+   Change values here (or in theme.js which is the source of truth) and
+   the entire site updates automatically.
+   ─────────────────────────────────────────────────────────────────────── */
+
+
+
+:root {
+  /* Backgrounds */
+  --color-navy:       #09152E;
+  --color-navy-mid:   #102A55;
+  --color-page:       #F5F8FF;
+  --color-ice:        #E5EEFF;
+  --color-surface:    #FFFFFF;
+
+  /* Energetic blue accents */
+  --color-accent:       #3478F6;
+  --color-accent-hover: #1D5FE0;
+  --color-accent-light: #DCE8FF;
+
+  /* Typography */
+  --color-dark:   #09152E;
+  --color-body:   #3E506D;
+  --color-muted:  #7A8AA5;
+
+  /* Borders */
+  --color-border:      #C9D8F0;
+  --color-border-card: #E1E9F7;
+
+  /* Status */
+  --color-status-open:    #16804A;
+  --color-status-open-bg: #DDF7E7;
+}
+
+
+/* Tailwind v4 theme extension */
+@theme {
+  --color-navy: var(--color-navy);
+  --color-navy-mid: var(--color-navy-mid);
+  --color-page: var(--color-page);
+  --color-ice: var(--color-ice);
+  --color-surface: var(--color-surface);
+
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-light: var(--color-accent-light);
+
+  --color-dark: var(--color-dark);
+  --color-body: var(--color-body);
+  --color-muted: var(--color-muted);
+
+  --color-border: var(--color-border);
+  --color-border-card: var(--color-border-card);
+
+  --color-status-open: var(--color-status-open);
+  --color-status-open-bg: var(--color-status-open-bg);
+}
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -13,4 +73,6 @@ body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-page);
+  color: var(--color-dark);
 }

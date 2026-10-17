@@ -24,17 +24,20 @@ export default function Navbar() {
     <header
       className="fixed inset-x-0 top-0 z-50 transition-all duration-300"
       style={{
-        background:     scrolled ? "rgba(10,22,40,0.97)" : "rgba(10,22,40,0.85)",
+        background:     scrolled ? "color-mix(in srgb, var(--color-navy) 97%, transparent)" : "color-mix(in srgb, var(--color-navy) 85%, transparent)",
         backdropFilter: "blur(12px)",
-        borderBottom:   scrolled ? "1px solid rgba(107,159,255,0.12)" : "1px solid transparent",
+        borderBottom:   scrolled ? "1px solid color-mix(in srgb, var(--color-accent) 12%, transparent)" : "1px solid transparent",
         boxShadow:      scrolled ? "0 1px 20px rgba(0,0,0,0.4)" : "none",
       }}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="flex items-center justify-between h-[62px]">
 
-          <Link to="/" className="select-none flex items-center">
+          <Link to="/" className="select-none flex items-center gap-2">
             <img src={iconImg} alt="Planova" className="w-10 h-10 object-contain brightness-0 invert" />
+            <span className="font-black text-[18px] leading-none text-white">
+              Planova
+            </span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-0.5">
@@ -56,7 +59,7 @@ export default function Navbar() {
               Log in
             </Link>
             <Link to="/register"
-              className="text-[13px] font-bold px-5 py-2 rounded-lg bg-[#6B9FFF] text-[#0A1628] hover:bg-[#4A82F5] hover:text-white transition-colors">
+              className="text-[13px] font-bold px-5 py-2 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors">
               Get Started
             </Link>
           </div>
@@ -96,7 +99,7 @@ export default function Navbar() {
                 Log in
               </Link>
               <Link to="/register" onClick={() => setOpen(false)}
-                className="flex-1 text-center text-[13px] font-bold py-3 rounded-lg bg-[#6B9FFF] text-[#0A1628] hover:bg-[#4A82F5] hover:text-white transition-colors min-h-[44px] flex items-center justify-center">
+                className="flex-1 text-center text-[13px] font-bold py-3 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center justify-center">
                 Get Started
               </Link>
             </div>

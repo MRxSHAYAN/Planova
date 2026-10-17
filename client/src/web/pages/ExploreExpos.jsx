@@ -75,27 +75,27 @@ const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", 
 const STATUSES   = ["All", "Open", "Coming Soon"];
 
 const categoryBadge = {
-  Technology:  "bg-[#D6E4FF] text-[#1A4A9E]",
-  Healthcare:  "bg-[#D4EDE2] text-[#1A6E45]",
+  Technology:  "bg-accent-light text-navy",
+  Healthcare:  "bg-status-open-bg text-status-open",
   Energy:      "bg-[#FEF3C7] text-[#92620A]",
-  Agriculture: "bg-[#D4EDE2] text-[#1A6E45]",
+  Agriculture: "bg-status-open-bg text-status-open",
   Fashion:     "bg-[#FCE7F3] text-[#9D174D]",
   Food:        "bg-[#FEF3C7] text-[#92620A]",
 };
 
 function ExpoCard({ expo }) {
   return (
-    <article className="group bg-white rounded-xl border border-[#CBD5E8] overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="relative h-[155px] overflow-hidden bg-[#E8F0FE]">
+    <article className="group bg-surface rounded-xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+      <div className="relative h-[155px] overflow-hidden bg-ice">
         <img src={expo.image} alt={expo.title}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1628]/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-navy/35 to-transparent" />
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[expo.category]}`}>
             {expo.category}
           </span>
           {expo.status === "Open" && (
-            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#D4EDE2] text-[#1A6E45]">Open</span>
+            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-status-open-bg text-status-open">Open</span>
           )}
           {expo.status === "Coming Soon" && (
             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/15 text-white border border-white/20">Soon</span>
@@ -103,27 +103,27 @@ function ExpoCard({ expo }) {
         </div>
       </div>
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="text-[#0A1628] font-bold text-[14px] leading-snug mb-3">{expo.title}</h3>
+        <h3 className="text-dark font-bold text-[14px] leading-snug mb-3">{expo.title}</h3>
         <div className="space-y-1.5 mb-4">
-          <div className="flex items-center gap-1.5 text-[12.5px] text-[#64748B]">
-            <svg className="w-3.5 h-3.5 shrink-0 text-[#6B9FFF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="flex items-center gap-1.5 text-[12.5px] text-body">
+            <svg className="w-3.5 h-3.5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
             </svg>
             {expo.date}
           </div>
-          <div className="flex items-center gap-1.5 text-[12.5px] text-[#64748B]">
-            <svg className="w-3.5 h-3.5 shrink-0 text-[#6B9FFF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="flex items-center gap-1.5 text-[12.5px] text-body">
+            <svg className="w-3.5 h-3.5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z"/><circle cx="12" cy="9" r="2.5"/>
             </svg>
             {expo.location}
           </div>
         </div>
-        <div className="mt-auto pt-3 border-t border-[#E2E8F4] flex items-center justify-between">
-          <div className="flex gap-3 text-[11.5px] text-[#64748B]">
-            <span><strong className="text-[#0A1628] font-semibold">{expo.exhibitors}</strong> exhibitors</span>
-            <span><strong className="text-[#0A1628] font-semibold">{expo.attendees.toLocaleString()}</strong> attending</span>
+        <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
+          <div className="flex gap-3 text-[11.5px] text-body">
+            <span><strong className="text-dark font-semibold">{expo.exhibitors}</strong> exhibitors</span>
+            <span><strong className="text-dark font-semibold">{expo.attendees.toLocaleString()}</strong> attending</span>
           </div>
-          <Link to={`/expo/${expo.id}`} className="text-[12px] font-bold text-[#6B9FFF] hover:text-[#4A82F5] transition-colors">
+          <Link to={`/expo/${expo.id}`} className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors">
             View →
           </Link>
         </div>
@@ -148,11 +148,11 @@ export default function ExploreExpos() {
   return (
     <Layout>
       {/* Page header */}
-      <div className="bg-[#0A1628] pt-[90px] pb-12 px-5 sm:px-8">
+      <div className="bg-navy pt-[90px] pb-12 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-3">
-            <span className="w-5 h-px bg-[#6B9FFF]" />
-            <span className="text-[#6B9FFF] text-[10.5px] font-semibold tracking-[0.2em] uppercase">Planova</span>
+            <span className="w-5 h-px bg-accent" />
+            <span className="text-accent text-[10.5px] font-semibold tracking-[0.2em] uppercase">Planova</span>
           </div>
           <h1 className="text-[2rem] sm:text-[2.4rem] font-black text-white mb-2">Explore Expos</h1>
           <p className="text-white/45 text-[14px] max-w-md">
@@ -177,7 +177,7 @@ export default function ExploreExpos() {
         </div>
       </div>
 
-      <div className="bg-[#F4F7FF] min-h-screen py-8 px-5 sm:px-8">
+      <div className="bg-page min-h-screen py-8 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
 
           {/* Filters */}
@@ -187,8 +187,8 @@ export default function ExploreExpos() {
                 <button key={c} onClick={() => setCategory(c)}
                   className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold border transition-colors ${
                     category === c
-                      ? "bg-[#0A1628] text-white border-[#0A1628]"
-                      : "bg-white text-[#64748B] border-[#CBD5E8] hover:border-[#6B9FFF] hover:text-[#6B9FFF]"
+                      ? "bg-navy text-white border-navy"
+                      : "bg-surface text-body border-border hover:border-accent hover:text-accent"
                   }`}>
                   {c}
                 </button>
@@ -199,8 +199,8 @@ export default function ExploreExpos() {
                 <button key={s} onClick={() => setStatus(s)}
                   className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold border transition-colors ${
                     status === s
-                      ? "bg-[#6B9FFF] text-[#0A1628] border-[#6B9FFF]"
-                      : "bg-white text-[#64748B] border-[#CBD5E8] hover:border-[#6B9FFF] hover:text-[#6B9FFF]"
+                      ? "bg-accent text-navy border-accent"
+                      : "bg-surface text-body border-border hover:border-accent hover:text-accent"
                   }`}>
                   {s}
                 </button>
@@ -208,7 +208,7 @@ export default function ExploreExpos() {
             </div>
           </div>
 
-          <p className="text-[12.5px] text-[#64748B] mb-6">
+          <p className="text-[12.5px] text-body mb-6">
             {filtered.length} expo{filtered.length !== 1 ? "s" : ""} found
           </p>
 
@@ -218,9 +218,9 @@ export default function ExploreExpos() {
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-[#64748B] text-[14px]">No expos match your filters.</p>
+              <p className="text-body text-[14px]">No expos match your filters.</p>
               <button onClick={() => { setCategory("All"); setStatus("All"); setSearch(""); }}
-                className="mt-4 text-[13px] font-semibold text-[#6B9FFF] hover:underline">
+                className="mt-4 text-[13px] font-semibold text-accent hover:underline">
                 Clear filters
               </button>
             </div>

@@ -1,33 +1,45 @@
+
 /**
- * Planova — Theme: Deep Blue + Silver/Ice
- *
- * Dark navy base, icy blue light sections, blue accent.
- * Professional conference/expo industry feel.
+ * Planova — Charcoal, Ivory & Burnt Orange
+ * Direction: Contemporary exhibition / editorial
  */
 
 const theme = {
   color: {
-    navy:        "#0A1628",   // darkest — navbar, hero, dark panels, footer
-    navyMid:     "#112240",   // mid navy — organizer card, CTA section
-    navySoft:    "#1C3354",   // softer navy — step circles, icon fills
+    // Dark surfaces
+    navy: "#242522",
+    navyMid: "#30312C",
+    navySoft: "#45463F",
 
-    pageBg:      "#F4F7FF",   // ice-tinted near-white page bg
-    iceBlue:     "#E8F0FE",   // light blue sections (alternating bg, badges)
-    surface:     "#FFFFFF",   // card surface
+    // Backgrounds
+    pageBg: "#F5F2EA",
+    iceBlue: "#EBE5D9",
+    surface: "#FFFEFA",
 
-    accent:      "#6B9FFF",   // primary blue accent — buttons, links, active
-    accentHover: "#4A82F5",   // hover on accent elements
-    accentLight: "#D6E4FF",   // badge tints, icon fills on light bg
+    // Brand accent
+    accent: "#C65D36",
+    accentHover: "#A94929",
+    accentLight: "#F2DED3",
 
-    textDark:    "#0A1628",   // headings on light bg
-    textBody:    "#334155",   // body copy
-    textMuted:   "#64748B",   // captions, meta
+    // Typography
+    textDark: "#242522",
+    textBody: "#494A43",
+    textMuted: "#77776E",
+    textOnDark: "#F5F2EA",
 
-    border:      "#CBD5E8",   // default border
-    borderCard:  "#E2E8F4",   // card border
+    // Borders
+    border: "#D6D0C5",
+    borderCard: "#E4DED3",
 
-    statusOpen:   "#1A6E45",
-    statusOpenBg: "#D4EDE2",
+    // Status
+    statusOpen: "#386641",
+    statusOpenBg: "#E0EBDD",
+
+    statusPending: "#946200",
+    statusPendingBg: "#F5E8C8",
+
+    statusClosed: "#A43D32",
+    statusClosedBg: "#F4DEDA",
   },
 };
 

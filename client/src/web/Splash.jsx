@@ -15,7 +15,7 @@ export default function Splash({ onDone }) {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0B0F1A]"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-navy"
       style={{
         opacity: step === 5 ? 0 : 1,
         transition: step === 5 ? "opacity 0.5s ease" : "none",
@@ -35,7 +35,7 @@ export default function Splash({ onDone }) {
           Plan
         </span>
         <span
-          className="font-black text-[3rem] sm:text-[3.8rem] tracking-tight text-[#6B9FFF] leading-none"
+          className="font-black text-[3rem] sm:text-[3.8rem] tracking-tight text-accent leading-none"
           style={{
             opacity: step >= 2 ? 1 : 0,
             transform: step >= 2 ? "translateY(0)" : "translateY(16px)",
@@ -49,7 +49,7 @@ export default function Splash({ onDone }) {
       {/* Underline */}
       <div className="mt-3 w-[200px] sm:w-[260px] h-[1.5px] bg-white/10 overflow-hidden">
         <div
-          className="h-full bg-[#6B9FFF]"
+          className="h-full bg-accent"
           style={{
             width: step >= 3 ? "100%" : "0%",
             transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -72,7 +72,7 @@ export default function Splash({ onDone }) {
       {/* Bottom progress bar */}
       <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-white/[0.04]">
         <div
-          className="h-full bg-[#6B9FFF]/50"
+          className="h-full bg-accent/50"
           style={{
             width: step >= 1 ? "100%" : "0%",
             transition: "width 1.9s cubic-bezier(0.4, 0, 0.6, 1)",

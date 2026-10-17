@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import iconImg from "../../assets/Icon.png";
 
 export default function AuthNavbar() {
   return (
-    <div className="flex items-center z-index: 50 justify-between px-10 h-[62px] border-b border-[#F1F5F9] bg-white shrink-0">
+    <div className="flex items-center z-50 justify-between px-10 h-[62px] border-b border-border-card bg-surface shrink-0">
       <div></div>
 
       <Link
         to="/"
-        className="flex items-center gap-1.5 text-[13px] text-[#94A3B8] hover:text-[#0A1628] transition-colors group"
+        className="flex items-center gap-1.5 text-[13px] text-muted hover:text-dark transition-colors group"
       >
         <svg
           className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform"

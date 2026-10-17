@@ -33,7 +33,7 @@ const COLS = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0A1628] text-white/35">
+    <footer className="bg-navy text-white/35">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-14 pb-8">
 
         <div className="flex items-center gap-4 mb-12">
@@ -41,7 +41,7 @@ export default function Footer() {
             <img src={iconImg} alt="Planova" className="w-11 h-11 object-contain brightness-0 invert" />
             <div className="flex items-baseline gap-0">
               <span className="font-black text-[22px] text-white leading-none">Plan</span>
-              <span className="font-black text-[22px] text-[#6B9FFF] leading-none">ova</span>
+              <span className="font-black text-[22px] text-accent leading-none">ova</span>
             </div>
           </div>
           <div className="flex-1 h-px bg-white/6" />

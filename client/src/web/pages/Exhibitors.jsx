@@ -88,20 +88,20 @@ const EXHIBITORS = [
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 
 const categoryBadge = {
-  Technology:  "bg-[#D6E4FF] text-[#1A4A9E]",
-  Healthcare:  "bg-[#D4EDE2] text-[#1A6E45]",
+  Technology:  "bg-accent-light text-navy",
+  Healthcare:  "bg-status-open-bg text-status-open",
   Energy:      "bg-[#FEF3C7] text-[#92620A]",
-  Agriculture: "bg-[#D4EDE2] text-[#1A6E45]",
+  Agriculture: "bg-status-open-bg text-status-open",
   Fashion:     "bg-[#FCE7F3] text-[#9D174D]",
   Food:        "bg-[#FEF3C7] text-[#92620A]",
 };
 
 function ExhibitorCard({ ex }) {
   return (
-    <article className="bg-white rounded-xl border border-[#CBD5E8] p-5 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
+    <article className="bg-surface rounded-xl border border-border p-5 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
       <div className="flex items-start justify-between gap-3">
-        <div className="w-11 h-11 rounded-lg bg-[#E8F0FE] flex items-center justify-center shrink-0">
-          <svg className="w-5 h-5 text-[#6B9FFF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <div className="w-11 h-11 rounded-lg bg-ice flex items-center justify-center shrink-0">
+          <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
             <rect x="2" y="7" width="6" height="10" rx="1"/>
             <rect x="9" y="3" width="6" height="14" rx="1"/>
             <rect x="16" y="9" width="6" height="8" rx="1"/>
@@ -113,19 +113,19 @@ function ExhibitorCard({ ex }) {
       </div>
 
       <div>
-        <h3 className="text-[#0A1628] font-black text-[15px] mb-1">{ex.company}</h3>
-        <p className="text-[#64748B] text-[12.5px] leading-relaxed">{ex.description}</p>
+        <h3 className="text-dark font-black text-[15px] mb-1">{ex.company}</h3>
+        <p className="text-body text-[12.5px] leading-relaxed">{ex.description}</p>
       </div>
 
-      <div className="flex flex-wrap gap-3 text-[12px] text-[#64748B]">
+      <div className="flex flex-wrap gap-3 text-[12px] text-body">
         <span className="flex items-center gap-1">
-          <svg className="w-3.5 h-3.5 text-[#6B9FFF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
           </svg>
           Booth {ex.booth}
         </span>
         <span className="flex items-center gap-1">
-          <svg className="w-3.5 h-3.5 text-[#6B9FFF]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
             <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
           </svg>
@@ -133,20 +133,20 @@ function ExhibitorCard({ ex }) {
         </span>
       </div>
 
-      <div className="pt-2 border-t border-[#E2E8F4]">
-        <p className="text-[11.5px] text-[#64748B]">
+      <div className="pt-2 border-t border-border-card">
+        <p className="text-[11.5px] text-body">
           Exhibiting at:{" "}
-          <span className="text-[#0A1628] font-semibold">{ex.expos[0]}</span>
+          <span className="text-dark font-semibold">{ex.expos[0]}</span>
         </p>
       </div>
 
       <div className="mt-auto flex gap-2">
         <Link to={`/exhibitor/${ex.id}`}
-          className="flex-1 text-center text-[12.5px] font-bold py-2.5 rounded-lg bg-[#6B9FFF] text-[#0A1628] hover:bg-[#4A82F5] hover:text-white transition-colors">
+          className="flex-1 text-center text-[12.5px] font-bold py-2.5 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors">
           View Profile
         </Link>
         <a href={ex.website}
-          className="px-4 py-2.5 rounded-lg border border-[#CBD5E8] text-[12.5px] text-[#64748B] hover:border-[#6B9FFF] hover:text-[#6B9FFF] transition-colors">
+          className="px-4 py-2.5 rounded-lg border border-border text-[12.5px] text-body hover:border-accent hover:text-accent transition-colors">
           Website
         </a>
       </div>
@@ -167,11 +167,11 @@ export default function Exhibitors() {
 
   return (
     <Layout>
-      <div className="bg-[#0A1628] pt-[90px] pb-12 px-5 sm:px-8">
+      <div className="bg-navy pt-[90px] pb-12 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-3">
-            <span className="w-5 h-px bg-[#6B9FFF]" />
-            <span className="text-[#6B9FFF] text-[10.5px] font-semibold tracking-[0.2em] uppercase">Planova</span>
+            <span className="w-5 h-px bg-accent" />
+            <span className="text-accent text-[10.5px] font-semibold tracking-[0.2em] uppercase">Planova</span>
           </div>
           <h1 className="text-[2rem] sm:text-[2.4rem] font-black text-white mb-2">Exhibitor Directory</h1>
           <p className="text-white/45 text-[14px] max-w-md">
@@ -195,7 +195,7 @@ export default function Exhibitors() {
         </div>
       </div>
 
-      <div className="bg-[#F4F7FF] min-h-screen py-8 px-5 sm:px-8">
+      <div className="bg-page min-h-screen py-8 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
 
           <div className="flex flex-wrap gap-2 mb-6">
@@ -203,15 +203,15 @@ export default function Exhibitors() {
               <button key={c} onClick={() => setCategory(c)}
                 className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold border transition-colors ${
                   category === c
-                    ? "bg-[#0A1628] text-white border-[#0A1628]"
-                    : "bg-white text-[#64748B] border-[#CBD5E8] hover:border-[#6B9FFF] hover:text-[#6B9FFF]"
+                    ? "bg-navy text-white border-navy"
+                    : "bg-surface text-body border-border hover:border-accent hover:text-accent"
                 }`}>
                 {c}
               </button>
             ))}
           </div>
 
-          <p className="text-[12.5px] text-[#64748B] mb-6">
+          <p className="text-[12.5px] text-body mb-6">
             {filtered.length} exhibitor{filtered.length !== 1 ? "s" : ""} found
           </p>
 
@@ -221,21 +221,21 @@ export default function Exhibitors() {
             </div>
           ) : (
             <div className="text-center py-20">
-              <p className="text-[#64748B] text-[14px]">No exhibitors match your search.</p>
+              <p className="text-body text-[14px]">No exhibitors match your search.</p>
               <button onClick={() => { setCategory("All"); setSearch(""); }}
-                className="mt-4 text-[13px] font-semibold text-[#6B9FFF] hover:underline">
+                className="mt-4 text-[13px] font-semibold text-accent hover:underline">
                 Clear filters
               </button>
             </div>
           )}
 
-          <div className="mt-14 bg-[#0A1628] rounded-xl p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+          <div className="mt-14 bg-navy rounded-xl p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div>
               <h3 className="text-white font-black text-[1.1rem] mb-1">Want to exhibit?</h3>
               <p className="text-white/40 text-[13px]">Apply to showcase your company at the next expo.</p>
             </div>
             <Link to="/register?role=exhibitor"
-              className="shrink-0 px-6 py-3 rounded-lg bg-[#6B9FFF] text-[#0A1628] font-bold text-[13px] hover:bg-[#4A82F5] hover:text-white transition-colors">
+              className="shrink-0 px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors">
               Apply as Exhibitor →
             </Link>
           </div>
