@@ -1,0 +1,833 @@
+================================================================================
+  PLANOVA — BACKEND ARCHITECTURE PLAN
+  MERN Stack · MongoDB + Express + React + Node.js
+  Written: October 2026
+================================================================================
+
+  This document explains how the backend will be structured, what every user
+  role can do, which API endpoints are needed, what the MongoDB models look like,
+  and how all the pieces connect together.
+
+  Read top to bottom the first time. Use the section headers to jump around later.
+
+================================================================================
+  TABLE OF CONTENTS
+================================================================================
+
+  1.  What Planova Actually Is (the big picture)
+  2.  The Three User Roles
+  3.  What Each Role Can Do (permissions matrix)
+  4.  Backend Project Structure (folder layout)
+  5.  Technology Stack & Packages
+  6.  MongoDB Models (every collection explained)
+  7.  API Endpoints (every route, grouped by resource)
+  8.  Authentication Flow (how login/register works)
+  9.  How the Frontend Connects to the Backend
+  10. Environment Variables You Will Need
+  11. What To Build First (recommended order)
+  12. Things That Are NOT in scope yet
+
+================================================================================
+  1. WHAT PLANOVA ACTUALLY IS
+================================================================================
+
+  Planova is an event platform for Pakistan's expo/conference/seminar industry.
+  It has a public-facing website AND role-based dashboards.
+
+  The public website (already built in React):
+  - Home page, Explore Expos, Exhibitors directory, Schedule page, About page
+  - Login and Register pages (UI done, no backend yet)
+
+  The dashboards (to be connected to backend):
+  - Attendee Dashboard  →  /dashboard/*  (8 pages, UI done)
+  - Exhibitor Dashboard →  future
+  - Organizer Dashboard →  future
+
+  Right now EVERYTHING in the frontend uses hardcoded mock data inside
+  mockData.js and inline arrays in the page files. The backend will replace
+  all of that with real data from MongoDB.
+
+================================================================================
+  2. THE THREE USER ROLES
+================================================================================
+
+  ORGANIZER
+  ----------
+  The person or company that creates and manages an expo/conference.
+  They set the event title, dates, venue, categories, sessions, and booth map.
+  They approve or reject exhibitor applications.
+  They can see analytics (attendance, registration numbers).
+  Think of them as the admin of a single event.
+
+  EXHIBITOR
+  ----------
+  A company or individual that participates in an expo by renting a booth.
+  They apply to an event, get approved by the organizer, then choose a booth.
+  They have a company profile that attendees can see.
+  They can list what products/services they are showcasing.
+
+  ATTENDEE
+  ----------
+  A person who comes to watch, learn, and network at an expo.
+  They register for events (free or paid depending on event settings).
+  They can bookmark sessions, save exhibitors, and build a personal schedule.
+  The attendee dashboard (already built in UI) is for this role.
+  This is where we are right now in the project.
+
+================================================================================
+  3. WHAT EACH ROLE CAN DO (permissions matrix)
+================================================================================
+
+  Action                          Organizer   Exhibitor   Attendee
+  ─────────────────────────────────────────────────────────────────
+  Create an event                    YES          NO          NO
+  Edit event details                 YES (own)    NO          NO
+  Delete an event                    YES (own)    NO          NO
+  Publish/unpublish an event         YES (own)    NO          NO
+  Add sessions to event              YES (own)    NO          NO
+  Edit/delete sessions               YES (own)    NO          NO
+  View all exhibitor applications    YES (own)    NO          NO
+  Approve/reject applications        YES (own)    NO          NO
+  Assign booths to exhibitors        YES (own)    NO          NO
+  View attendee list for event       YES (own)    NO          NO
+  ─────────────────────────────────────────────────────────────────
+  Apply to an event as exhibitor     NO           YES         NO
+  Create/edit company profile        NO           YES         NO
+  Choose a booth after approval      NO           YES         NO
+  View own application status        NO           YES         NO
+  ─────────────────────────────────────────────────────────────────
+  Register for an event              NO           NO          YES
+  Cancel own registration            NO           NO          YES
+  Bookmark/unbookmark sessions       NO           NO          YES
+  Save/unsave exhibitors             NO           NO          YES
+  View personal schedule             NO           NO          YES
+  Edit own profile                   NO           NO          YES
+  View notifications                 NO           NO          YES
+  ─────────────────────────────────────────────────────────────────
+  Register account (any role)        YES          YES         YES
+  Login / logout                     YES          YES         YES
+  Change password                    YES          YES         YES
+  View public event listings         YES          YES         YES
+  View public exhibitor directory    YES          YES         YES
+
+================================================================================
+  4. BACKEND PROJECT STRUCTURE
+================================================================================
+
+  Create a /server folder at the project root (same level as /client).
+  
+  E-Project plainova/
+  ├── client/                    ← React frontend (already exists)
+  └── server/                    ← Express backend (to be created)
+      ├── config/
+      │   └── db.js              ← MongoDB connection (mongoose.connect)
+      ├── controllers/
+      │   ├── authController.js
+      │   ├── eventController.js
+      │   ├── sessionController.js
+      │   ├── exhibitorController.js
+      │   ├── registrationController.js
+      │   ├── notificationController.js
+      │   └── userController.js
+      ├── middleware/
+      │   ├── authMiddleware.js   ← verifies JWT token
+      │   └── roleMiddleware.js   ← checks user role (organizer/exhibitor/attendee)
+      ├── models/
+      │   ├── User.js
+      │   ├── Event.js
+      │   ├── Session.js
+      │   ├── Exhibitor.js
+      │   ├── Registration.js
+      │   ├── Bookmark.js
+      │   └── Notification.js
+      ├── routes/
+      │   ├── authRoutes.js
+      │   ├── eventRoutes.js
+      │   ├── sessionRoutes.js
+      │   ├── exhibitorRoutes.js
+      │   ├── registrationRoutes.js
+      │   ├── notificationRoutes.js
+      │   └── userRoutes.js
+      ├── utils/
+      │   └── generateToken.js    ← creates JWT
+      ├── .env                    ← environment variables (never commit this)
+      ├── .gitignore
+      ├── package.json
+      └── server.js               ← entry point, sets up Express app
+
+================================================================================
+  5. TECHNOLOGY STACK & PACKAGES
+================================================================================
+
+  Runtime:       Node.js (v18+)
+  Framework:     Express.js
+  Database:      MongoDB (Atlas free tier is fine for dev)
+  ODM:           Mongoose (models + schema validation)
+  Auth:          JSON Web Tokens (JWT) — jsonwebtoken package
+  Passwords:     bcryptjs (hashing, never store plain text)
+  CORS:          cors package (so React at :5173 can talk to Express at :5000)
+  Env vars:      dotenv
+  Dev server:    nodemon (auto-restarts on file save)
+
+  Install command (run inside /server folder):
+  npm init -y
+  npm install express mongoose jsonwebtoken bcryptjs cors dotenv
+  npm install --save-dev nodemon
+
+  Add to server/package.json scripts:
+  "dev": "nodemon server.js",
+  "start": "node server.js"
+
+================================================================================
+  6. MONGODB MODELS
+================================================================================
+
+  Each model = one MongoDB collection = one Mongoose schema.
+  Every _id is automatically created by MongoDB as an ObjectId.
+  "ref" means it stores the _id of a document from another collection (a join).
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 1: User
+  Collection: users
+  ──────────────────────────────────────────────────────────────────────────────
+
+  This is the single user model for all three roles. One collection, three roles.
+
+  {
+    _id:         ObjectId  (auto)
+    name:        String    required
+    email:       String    required, unique, lowercase
+    password:    String    required (bcrypt hashed, min 8 chars)
+    role:        String    enum: ["attendee", "exhibitor", "organizer"]
+                           default: "attendee"
+    phone:       String    optional
+    city:        String    optional
+    company:     String    optional (used by exhibitors and organizers)
+    jobTitle:    String    optional
+    avatar:      String    optional (URL to uploaded image, or null)
+    
+    notificationPrefs: {
+      registrationConfirmations: Boolean  default: true
+      scheduleUpdates:           Boolean  default: true
+      announcements:             Boolean  default: true
+      reminders:                 Boolean  default: true
+      emailDigest:               Boolean  default: false
+    }
+
+    isActive:    Boolean   default: true  (for soft-delete / banning)
+    createdAt:   Date      auto (timestamps: true)
+    updatedAt:   Date      auto (timestamps: true)
+  }
+
+  Notes:
+  - The password field is NEVER returned in API responses. Use .select("-password").
+  - Email must be unique — MongoDB index on it.
+  - When role is "exhibitor", the company field matters for their public profile.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 2: Event
+  Collection: events
+  ──────────────────────────────────────────────────────────────────────────────
+
+  An Event is what Planova calls an "expo", "conference", "seminar", or
+  "workshop". The public website calls them "expos". The dashboard calls them
+  "events". They are the same thing.
+
+  {
+    _id:          ObjectId  (auto)
+    organizer:    ObjectId  ref: "User"  required  (who created it)
+    
+    title:        String    required
+    shortTitle:   String    optional (e.g. "KTE 2026")
+    description:  String    required
+    category:     String    required  enum: ["Technology","Healthcare","Energy",
+                                            "Fashion","Agriculture","Other"]
+    tags:         [String]  e.g. ["AI", "Fintech", "SaaS"]
+
+    dateStart:    Date      required
+    dateEnd:      Date      required
+    
+    venue:        String    required  (e.g. "Hall A–C, Expo Centre Karachi")
+    address:      String    required
+    city:         String    required  enum: ["Karachi","Lahore","Islamabad",
+                                            "Faisalabad","Other"]
+    
+    image:        String    URL to banner/hero image
+    
+    status:       String    enum: ["draft","published","ongoing","completed","cancelled"]
+                            default: "draft"
+    featured:     Boolean   default: false  (organizer or admin can flag this)
+    
+    maxAttendees: Number    optional (0 = unlimited)
+    maxExhibitors:Number    optional
+
+    registrationFee: Number default: 0  (0 = free)
+
+    createdAt:    Date      auto
+    updatedAt:    Date      auto
+  }
+
+  Computed fields (NOT stored, calculated on the fly by backend):
+  - attendeeCount  = count of Registration documents for this event
+  - exhibitorCount = count of approved Exhibitor documents for this event
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 3: Session
+  Collection: sessions
+  ──────────────────────────────────────────────────────────────────────────────
+
+  A Session belongs to an Event. It is a specific talk, panel, keynote, or
+  workshop happening at a specific time in a specific room.
+
+  {
+    _id:          ObjectId  (auto)
+    event:        ObjectId  ref: "Event"  required
+    
+    title:        String    required
+    description:  String    optional
+    speaker:      String    required
+    speakerRole:  String    optional  (e.g. "CTO, TechBridge Pakistan")
+    speakerBio:   String    optional
+    
+    category:     String    enum: ["Keynote","Panel","Workshop","Talk"]
+    
+    date:         Date      required  (the specific day of this session)
+    timeStart:    String    required  e.g. "09:00"  (24h format)
+    timeEnd:      String    required  e.g. "10:00"
+    
+    room:         String    required  e.g. "Main Auditorium"
+    capacity:     Number    optional  (max people in this room)
+    
+    createdAt:    Date      auto
+    updatedAt:    Date      auto
+  }
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 4: Exhibitor
+  Collection: exhibitors
+  ──────────────────────────────────────────────────────────────────────────────
+
+  This is an exhibitor's application/profile for a SPECIFIC event.
+  One company can apply to multiple events, so there is one Exhibitor document
+  per (user + event) pair.
+
+  {
+    _id:          ObjectId  (auto)
+    user:         ObjectId  ref: "User"   required  (the exhibitor's account)
+    event:        ObjectId  ref: "Event"  required  (which event they applied to)
+    
+    companyName:  String    required
+    companyDescription: String required
+    category:     String    required  (Software, Fintech, etc.)
+    website:      String    optional
+    logoUrl:      String    optional
+    
+    booth:        String    optional  e.g. "A-12"  (assigned after approval)
+    hall:         String    optional  e.g. "Hall A"
+    
+    status:       String    enum: ["pending","approved","rejected","withdrawn"]
+                            default: "pending"
+    
+    appliedAt:    Date      default: Date.now
+    reviewedAt:   Date      optional  (when organizer made a decision)
+    reviewNote:   String    optional  (organizer's note on rejection)
+    
+    createdAt:    Date      auto
+    updatedAt:    Date      auto
+  }
+
+  Unique constraint: { user, event } pair must be unique (can't apply twice).
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 5: Registration
+  Collection: registrations
+  ──────────────────────────────────────────────────────────────────────────────
+
+  When an attendee registers for an event, one Registration document is created.
+
+  {
+    _id:          ObjectId  (auto)
+    user:         ObjectId  ref: "User"   required
+    event:        ObjectId  ref: "Event"  required
+    
+    status:       String    enum: ["confirmed","pending","cancelled"]
+                            default: "pending"
+                            (pending = registered but not yet confirmed by organizer
+                             if event requires manual approval, otherwise auto-confirmed)
+    
+    registeredAt: Date      default: Date.now
+    cancelledAt:  Date      optional
+    
+    createdAt:    Date      auto
+    updatedAt:    Date      auto
+  }
+
+  Unique constraint: { user, event } pair must be unique (can't register twice).
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 6: Bookmark
+  Collection: bookmarks
+  ──────────────────────────────────────────────────────────────────────────────
+
+  Attendees can bookmark sessions and exhibitors. This single collection handles
+  both by using a "type" field.
+
+  {
+    _id:          ObjectId  (auto)
+    user:         ObjectId  ref: "User"  required
+    
+    itemType:     String    enum: ["session", "exhibitor", "event"]  required
+    itemId:       ObjectId  required  (ref to Session, Exhibitor, or Event)
+    
+    createdAt:    Date      auto
+  }
+
+  Unique constraint: { user, itemType, itemId } — can't save the same thing twice.
+
+  Why one collection instead of three?
+  Because the Saved Items page loads all three types at once. One query is faster
+  than three separate queries to three collections.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  MODEL 7: Notification
+  Collection: notifications
+  ──────────────────────────────────────────────────────────────────────────────
+
+  Notifications are created by the backend automatically (or by organizers)
+  and delivered to a specific user.
+
+  {
+    _id:          ObjectId  (auto)
+    user:         ObjectId  ref: "User"   required  (who receives it)
+    
+    type:         String    enum: ["confirmation","update","reminder","announcement"]
+    title:        String    required
+    message:      String    required
+    
+    relatedEvent: ObjectId  ref: "Event"  optional  (for deep-linking)
+    
+    read:         Boolean   default: false
+    readAt:       Date      optional
+    
+    createdAt:    Date      auto
+  }
+
+  Notifications are created in the backend when:
+  - A registration is confirmed → type: "confirmation"
+  - A session time changes      → type: "update"
+  - Organizer sends a broadcast → type: "announcement"
+  - 3 days before an event      → type: "reminder" (scheduled job, future)
+
+================================================================================
+  7. API ENDPOINTS
+================================================================================
+
+  Base URL: http://localhost:5000/api
+
+  Authentication uses Bearer tokens in the Authorization header:
+  Authorization: Bearer <jwt_token>
+
+  Legend:
+  [PUBLIC]  = no token needed, anyone can call it
+  [AUTH]    = any logged-in user (any role)
+  [ATT]     = attendee only
+  [EXH]     = exhibitor only
+  [ORG]     = organizer only
+
+  ──────────────────────────────────────────────────────────────────────────────
+  AUTH ROUTES   /api/auth
+  ──────────────────────────────────────────────────────────────────────────────
+
+  POST   /api/auth/register     [PUBLIC]
+    Body: { name, email, password, role }
+    Returns: { user: {...}, token: "jwt..." }
+    Creates a new user. Hashes password. Returns JWT.
+
+  POST   /api/auth/login        [PUBLIC]
+    Body: { email, password }
+    Returns: { user: {...}, token: "jwt..." }
+    Validates credentials. Returns JWT.
+
+  GET    /api/auth/me           [AUTH]
+    Returns: { user: {...} }
+    Returns the currently logged-in user's profile (from JWT).
+
+  ──────────────────────────────────────────────────────────────────────────────
+  USER ROUTES   /api/users
+  ──────────────────────────────────────────────────────────────────────────────
+
+  GET    /api/users/profile              [AUTH]
+    Returns the logged-in user's full profile.
+
+  PUT    /api/users/profile              [AUTH]
+    Body: { name, phone, city, company, jobTitle, avatar }
+    Updates own profile. Cannot change role or email via this route.
+
+  PUT    /api/users/password             [AUTH]
+    Body: { currentPassword, newPassword }
+    Changes password. Verifies current password first.
+
+  PUT    /api/users/notification-prefs   [AUTH]
+    Body: { registrationConfirmations, scheduleUpdates, announcements,
+            reminders, emailDigest }
+    Updates notification preferences.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  EVENT ROUTES   /api/events
+  ──────────────────────────────────────────────────────────────────────────────
+
+  GET    /api/events                     [PUBLIC]
+    Query params: ?category=Technology&city=Karachi&status=published&page=1&limit=12
+    Returns paginated list of published events.
+    This powers the public Explore Expos page AND the attendee Explore Events page.
+
+  GET    /api/events/:id                 [PUBLIC]
+    Returns full details of one event (including sessions and exhibitors).
+
+  POST   /api/events                     [ORG]
+    Body: { title, description, category, dateStart, dateEnd, venue, address, city, image }
+    Creates a new event. Status defaults to "draft".
+
+  PUT    /api/events/:id                 [ORG]
+    Updates an event. Only the organizer who owns it can update it.
+
+  DELETE /api/events/:id                 [ORG]
+    Soft-deletes (sets status to "cancelled"). Does not remove from DB.
+
+  PUT    /api/events/:id/publish         [ORG]
+    Changes status from "draft" to "published".
+
+  GET    /api/events/my-events           [ORG]
+    Returns all events created by the logged-in organizer.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  SESSION ROUTES   /api/sessions
+  ──────────────────────────────────────────────────────────────────────────────
+
+  GET    /api/sessions?eventId=xxx       [PUBLIC]
+    Returns all sessions for a given event.
+    This powers the public Schedule page AND the attendee My Schedule page.
+
+  GET    /api/sessions/:id               [PUBLIC]
+    Returns one session's full details.
+
+  POST   /api/sessions                   [ORG]
+    Body: { eventId, title, speaker, speakerRole, category, date, timeStart,
+            timeEnd, room, capacity, description }
+    Creates a session. Only the event's organizer can add sessions to it.
+
+  PUT    /api/sessions/:id               [ORG]
+    Updates a session. Triggers "update" notifications to all attendees of the event.
+
+  DELETE /api/sessions/:id               [ORG]
+    Deletes a session.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  REGISTRATION ROUTES   /api/registrations
+  ──────────────────────────────────────────────────────────────────────────────
+
+  POST   /api/registrations              [ATT]
+    Body: { eventId }
+    Registers the logged-in attendee for an event.
+    Creates Registration + Notification ("confirmation" or "pending") automatically.
+    Returns error if already registered.
+
+  GET    /api/registrations/my           [ATT]
+    Returns all events the logged-in attendee is registered for.
+    This powers the attendee My Events page.
+
+  DELETE /api/registrations/:id          [ATT]
+    Cancels a registration. Sets status to "cancelled".
+
+  GET    /api/registrations?eventId=xxx  [ORG]
+    Returns all attendees registered for an event.
+    Organizer only, must own the event.
+
+  PUT    /api/registrations/:id/confirm  [ORG]
+    Confirms a pending registration. Creates "confirmation" notification.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  EXHIBITOR ROUTES   /api/exhibitors
+  ──────────────────────────────────────────────────────────────────────────────
+
+  GET    /api/exhibitors?eventId=xxx     [PUBLIC]
+    Returns approved exhibitors for an event.
+    Powers the public Exhibitors page AND the attendee Exhibitors page.
+
+  POST   /api/exhibitors                 [EXH]
+    Body: { eventId, companyName, companyDescription, category, website, logoUrl }
+    Submits an application to exhibit at an event.
+
+  GET    /api/exhibitors/my-applications [EXH]
+    Returns the exhibitor's own applications and their statuses.
+
+  PUT    /api/exhibitors/:id/booth       [EXH]
+    Body: { booth, hall }
+    Exhibitor selects a booth (only after approval).
+
+  GET    /api/exhibitors?eventId=xxx     [ORG]
+    (same endpoint, but organizer sees ALL applications including pending/rejected)
+    The controller checks role and returns different data.
+
+  PUT    /api/exhibitors/:id/status      [ORG]
+    Body: { status: "approved" | "rejected", reviewNote }
+    Organizer approves or rejects an application.
+
+  PUT    /api/exhibitors/:id/assign-booth [ORG]
+    Body: { booth, hall }
+    Organizer assigns a booth to an approved exhibitor.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  BOOKMARK ROUTES   /api/bookmarks
+  ──────────────────────────────────────────────────────────────────────────────
+
+  GET    /api/bookmarks                  [ATT]
+    Returns all saved items for the logged-in attendee.
+    Query param: ?type=session|exhibitor|event  (optional, returns all if omitted)
+    Powers the Saved Items page.
+
+  POST   /api/bookmarks                  [ATT]
+    Body: { itemType, itemId }
+    Saves an item. Returns 400 if already saved (or you can toggle — up to you).
+
+  DELETE /api/bookmarks/:id              [ATT]
+    Removes a bookmark. The frontend sends the bookmark _id to delete it.
+
+  ──────────────────────────────────────────────────────────────────────────────
+  NOTIFICATION ROUTES   /api/notifications
+  ──────────────────────────────────────────────────────────────────────────────
+
+  GET    /api/notifications              [AUTH]
+    Returns notifications for the logged-in user, newest first.
+    Query: ?read=false  (only unread)
+
+  PUT    /api/notifications/:id/read     [AUTH]
+    Marks one notification as read.
+
+  PUT    /api/notifications/read-all     [AUTH]
+    Marks all of the user's notifications as read.
+
+  DELETE /api/notifications/:id          [AUTH]
+    Deletes a notification.
+
+================================================================================
+  8. AUTHENTICATION FLOW
+================================================================================
+
+  REGISTRATION  (/api/auth/register)
+  ─────────────────────────────────────
+  1. User fills in name, email, password, role on the React form.
+  2. React sends POST to /api/auth/register.
+  3. Backend checks if email already exists → return 400 if yes.
+  4. Backend hashes the password using bcryptjs (salt rounds: 10).
+  5. Backend saves the new User document to MongoDB.
+  6. Backend generates a JWT:
+       jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "7d" })
+  7. Backend returns { user (no password field), token }.
+  8. React stores the token in localStorage (or a cookie — localStorage is simpler to start).
+  9. React redirects to the appropriate dashboard based on role.
+
+  LOGIN  (/api/auth/login)
+  ─────────────────────────
+  1. User types email + password.
+  2. React sends POST to /api/auth/login.
+  3. Backend finds user by email. If not found → 401.
+  4. Backend compares password with bcrypt.compare(). If wrong → 401.
+  5. Same as steps 6–9 above.
+
+  PROTECTING ROUTES (authMiddleware.js)
+  ──────────────────────────────────────
+  Every protected endpoint runs this middleware first:
+
+  1. Read the Authorization header: "Bearer <token>"
+  2. Extract the token.
+  3. Verify it with jwt.verify(token, process.env.JWT_SECRET).
+  4. If valid, attach req.user = { userId, role } to the request.
+  5. If invalid or expired → return 401 Unauthorized.
+
+  ROLE CHECKING (roleMiddleware.js)
+  ──────────────────────────────────
+  After authMiddleware runs, roleMiddleware checks:
+
+  1. Read req.user.role.
+  2. If role does not match required role → return 403 Forbidden.
+  3. If it matches → next().
+
+  Usage in routes:
+  router.post("/events", protect, requireRole("organizer"), createEvent)
+  router.post("/registrations", protect, requireRole("attendee"), registerForEvent)
+
+================================================================================
+  9. HOW THE FRONTEND CONNECTS TO THE BACKEND
+================================================================================
+
+  STEP 1 — Set up Vite proxy
+  ────────────────────────────
+  In client/vite.config.js, add a proxy so that /api calls from React go to
+  Express without CORS issues during development:
+
+  server: {
+    proxy: {
+      "/api": "http://localhost:5000"
+    }
+  }
+
+  STEP 2 — Create an API utility file
+  ─────────────────────────────────────
+  Create client/src/lib/api.js (or client/src/attendee/api/):
+
+  const BASE = "/api";
+
+  async function request(path, options = {}) {
+    const token = localStorage.getItem("planova_token");
+    const res = await fetch(BASE + path, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: "Bearer " + token } : {}),
+      },
+      ...options,
+    });
+    if (!res.ok) throw await res.json();
+    return res.json();
+  }
+
+  export const api = {
+    get:    (path)         => request(path),
+    post:   (path, body)   => request(path, { method: "POST",   body: JSON.stringify(body) }),
+    put:    (path, body)   => request(path, { method: "PUT",    body: JSON.stringify(body) }),
+    delete: (path)         => request(path, { method: "DELETE" }),
+  };
+
+  STEP 3 — Replace mock data in each page
+  ─────────────────────────────────────────
+  Example for ExploreEvents.jsx:
+
+  BEFORE (mock):
+    const [events, setEvents] = useState(EVENTS);
+
+  AFTER (real):
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      api.get("/events?status=published")
+        .then((data) => setEvents(data.events))
+        .catch(console.error)
+        .finally(() => setLoading(false));
+    }, []);
+
+  STEP 4 — Handle auth state globally
+  ─────────────────────────────────────
+  Create a React context (AuthContext) that:
+  - Reads token from localStorage on load.
+  - Exposes { user, token, login, logout } to all components.
+  - login() saves token to localStorage and updates user state.
+  - logout() removes token from localStorage and redirects to /login.
+  - Wraps the entire app in App.jsx.
+
+  The attendee dashboard pages check this context. If no token → redirect to /login.
+
+================================================================================
+  10. ENVIRONMENT VARIABLES
+================================================================================
+
+  Create server/.env (add to .gitignore, never commit this file):
+
+  PORT=5000
+  MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxx.mongodb.net/planova
+  JWT_SECRET=some_long_random_secret_string_at_least_32_characters
+  NODE_ENV=development
+  CLIENT_URL=http://localhost:5173
+
+  For MongoDB, use MongoDB Atlas:
+  - Go to mongodb.com/cloud/atlas
+  - Create a free cluster (M0 tier)
+  - Create a database user with username/password
+  - Whitelist your IP address (or 0.0.0.0/0 for dev)
+  - Copy the connection string and paste in MONGO_URI
+
+================================================================================
+  11. WHAT TO BUILD FIRST (recommended order)
+================================================================================
+
+  Phase 1 — Foundation (do this first, nothing else works without it)
+  ─────────────────────────────────────────────────────────────────────
+  1. Create /server folder and install packages
+  2. Set up server.js (Express app, CORS, JSON body parser)
+  3. Set up config/db.js (Mongoose connection)
+  4. Create the User model
+  5. Build /api/auth/register and /api/auth/login
+  6. Build authMiddleware.js
+  7. Test with Postman or curl that you can register, login, get a token
+
+  Phase 2 — Events (the core data)
+  ──────────────────────────────────
+  8.  Create the Event model
+  9.  Build GET /api/events (list, with filters)
+  10. Build GET /api/events/:id
+  11. Build POST /api/events (organizer only)
+  12. Connect the public Explore Expos page to the real API
+
+  Phase 3 — Attendee features (connect the attendee dashboard)
+  ──────────────────────────────────────────────────────────────
+  13. Create Registration model + routes
+  14. Connect Overview page (my registered events)
+  15. Connect My Events page
+  16. Create Session model + GET routes
+  17. Connect My Schedule page
+  18. Create Exhibitor model + GET public route
+  19. Connect Exhibitors page
+  20. Create Bookmark model + routes
+  21. Connect Saved Items page
+  22. Create Notification model + routes
+  23. Connect Notifications page
+  24. Connect My Profile page (GET and PUT user)
+  25. Connect Register/Login forms to the actual auth API
+
+  Phase 4 — Organizer and Exhibitor features (future)
+  ──────────────────────────────────────────────────────
+  26. Organizer dashboard (create events, manage sessions, approve exhibitors)
+  27. Exhibitor application flow (apply, get approved, choose booth)
+  28. Notification triggers (auto-create when sessions change, registrations confirm)
+
+================================================================================
+  12. THINGS NOT IN SCOPE YET
+================================================================================
+
+  These are valid future features but should not be started until Phase 1–3 works:
+
+  - Email notifications (Nodemailer / SendGrid) — right now notifications are
+    in-app only (stored in the notifications collection)
+
+  - File uploads for images (avatar, event banner, exhibitor logo) — use
+    Cloudinary or AWS S3 for this. Don't store images in MongoDB.
+
+  - Payment integration — if events have registration fees, Stripe is the
+    standard choice
+
+  - Floor map / booth selection UI — the interactive booth picker for exhibitors
+
+  - Admin panel — a super-admin who can manage all organizers and events
+
+  - Real-time features — Socket.io for live notifications would be a nice add
+    but is not needed for the MVP
+
+  - Rate limiting — add express-rate-limit before going to production
+
+  - Refresh tokens — the current JWT-in-localStorage approach is fine for a
+    student project; for production consider httpOnly cookies + refresh tokens
+
+================================================================================
+  END OF DOCUMENT
+================================================================================
+
+  Save this file. Come back to it each session.
+  Start with Phase 1 next time — server setup and auth is the foundation.
+  Everything else is built on top of it.
+
+  Stack recap:  MongoDB + Express + React + Node.js
+  Auth:         JWT (jsonwebtoken + bcryptjs)
+  Models:       User, Event, Session, Exhibitor, Registration, Bookmark, Notification
+  Dashboard:    /dashboard/* (attendee hub — UI already done, needs API wired in)
+
+================================================================================
