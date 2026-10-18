@@ -8,7 +8,8 @@ import Schedule            from "./web/pages/Schedule";
 import About               from "./web/pages/About";
 import Login               from "./web/pages/auth/Login";
 import Register            from "./web/pages/auth/Register";
-import AttendeeDashboard   from "./attendee/AttendeeDashboard";
+import AttendeeDashboard   from "./attendee dashboard/AttendeeDashboard";
+import ExhibitorDashboard  from "./exhibitor dashboard/ExhibitorDashboard";
 
 function NotFound() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="/login"         element={<Login />} />
         <Route path="/register"      element={<Register />} />
         <Route path="/dashboard/*"   element={<AttendeeDashboard />} />
+        <Route path="/exhibitor/*"   element={<ExhibitorDashboard />} />
         <Route path="*"              element={<NotFound />} />
       </Routes>
     </>

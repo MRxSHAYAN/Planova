@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Pencil, Check, X, Lock, Bell } from "lucide-react";
 import { CURRENT_USER } from "../data/mockData";
 
-/* ── generic field row ───────────────────────────────────────── */
 function Field({ label, name, value, type = "text", editing, onChange }) {
   return (
     <div className="py-3.5" style={{ borderBottom: "1px solid #F5F7FB" }}>
@@ -27,7 +26,6 @@ function Field({ label, name, value, type = "text", editing, onChange }) {
   );
 }
 
-/* ── toggle row ──────────────────────────────────────────────── */
 function Toggle({ label, description, checked, onChange }) {
   return (
     <label className="flex items-start justify-between gap-4 py-3.5 cursor-pointer" style={{ borderBottom: "1px solid #F5F7FB" }}>
@@ -57,7 +55,6 @@ function Toggle({ label, description, checked, onChange }) {
   );
 }
 
-/* ── section shell ───────────────────────────────────────────── */
 function Section({ title, children, action }) {
   return (
     <div className="rounded-xl overflow-hidden" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
@@ -70,7 +67,6 @@ function Section({ title, children, action }) {
   );
 }
 
-/* ── page ────────────────────────────────────────────────────── */
 export default function MyProfile() {
   const [editPersonal, setEditPersonal] = useState(false);
   const [editContact,  setEditContact]  = useState(false);
@@ -251,12 +247,8 @@ export default function MyProfile() {
           checked={prefs.emailDigest}
           onChange={() => setPrefs((p) => ({ ...p, emailDigest: !p.emailDigest }))}
         />
-        <div className="h-3" /> {/* bottom breathing room */}
+        <div className="h-3" />
       </Section>
-
-      <p className="text-center text-[11.5px] pb-4" style={{ color: "#B0BCC8" }}>
-        Demo data — connect to backend to persist changes.
-      </p>
     </div>
   );
 }

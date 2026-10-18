@@ -9,7 +9,7 @@ const EXPOS = [
   {
     id: 1,
     title: "Karachi Technology Expo 2026",
-    date: "Nov 15–17, 2026",
+    date: "Nov 15â€“17, 2026",
     location: "Expo Centre, Karachi",
     category: "Technology",
     exhibitors: 142,
@@ -20,7 +20,7 @@ const EXPOS = [
   {
     id: 2,
     title: "Pakistan Health & Pharma Summit",
-    date: "Dec 3–5, 2026",
+    date: "Dec 3â€“5, 2026",
     location: "Convention Centre, Lahore",
     category: "Healthcare",
     exhibitors: 87,
@@ -31,7 +31,7 @@ const EXPOS = [
   {
     id: 3,
     title: "Green Energy & Sustainability Expo",
-    date: "Jan 20–22, 2027",
+    date: "Jan 20â€“22, 2027",
     location: "Jinnah Convention, Islamabad",
     category: "Energy",
     exhibitors: 65,
@@ -43,7 +43,7 @@ const EXPOS = [
 
 const FILTERS = ["All", "Technology", "Healthcare", "Energy"];
 
-/* ── Hero ─────────────────────────────────────────────────────────────── */
+/* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Hero() {
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
@@ -76,7 +76,7 @@ function Hero() {
           </h1>
 
           <p className="text-white/60 text-[14px] leading-relaxed mb-7 max-w-[420px]">
-            Organizers, exhibitors, and attendees — managed end to end.
+            Organizers, exhibitors, and attendees â€” managed end to end.
             Booths, schedules, applications, and live analytics.
           </p>
 
@@ -99,7 +99,7 @@ function Hero() {
               </svg>
               <input
                 type="text"
-                placeholder="Search by city or industry…"
+                placeholder="Search by city or industryâ€¦"
                 className="flex-1 bg-transparent text-[13px] text-white placeholder-white/35 outline-none"
               />
               <button className="text-[12px] font-bold text-accent hover:text-white transition-colors shrink-0">
@@ -122,7 +122,7 @@ function Hero() {
   );
 }
 
-/* ── Expo card ─────────────────────────────────────────────────────────── */
+/* â”€â”€ Expo card â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function ExpoCard({ expo }) {
   const badge = {
     Technology: "bg-accent-light text-navy",
@@ -177,7 +177,7 @@ function ExpoCard({ expo }) {
               </svg>
             </button>
             <Link to={`/expo/${expo.id}`} className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors">
-              View →
+              View â†’
             </Link>
           </div>
         </div>
@@ -186,7 +186,7 @@ function ExpoCard({ expo }) {
   );
 }
 
-/* ── Featured Expos ────────────────────────────────────────────────────── */
+/* â”€â”€ Featured Expos â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function FeaturedExpos() {
   const [active, setActive] = useState("All");
 
@@ -246,7 +246,7 @@ function FeaturedExpos() {
         <div className="mt-6 md:hidden">
           <Link to="/explore-expos"
             className="w-full inline-flex justify-center text-[13px] font-semibold text-accent border border-border bg-surface px-4 py-2.5 rounded-lg">
-            See all expos →
+            See all expos â†’
           </Link>
         </div>
       </div>
@@ -254,10 +254,10 @@ function FeaturedExpos() {
   );
 }
 
-/* ── How It Works ──────────────────────────────────────────────────────── */
+/* â”€â”€ How It Works â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function HowItWorks() {
   const steps = [
-    { n: "1", title: "Create or discover an expo", desc: "Organizers publish events with full details — venue, booth layout, and agenda. Exhibitors and attendees can browse and register." },
+    { n: "1", title: "Create or discover an expo", desc: "Organizers publish events with full details â€” venue, booth layout, and agenda. Exhibitors and attendees can browse and register." },
     { n: "2", title: "Apply and get approved", desc: "Companies apply to exhibit, submit documents, and receive approval notifications. Every status update happens inside the platform." },
     { n: "3", title: "Pick a booth, plan your visit", desc: "Approved exhibitors choose a booth on the interactive floor plan. Attendees register for sessions and bookmark what matters." },
     { n: "4", title: "Show up and connect", desc: "Everyone arrives with their schedule, booth map, and contacts ready. Organizers track attendance and analytics from one dashboard." },
@@ -294,7 +294,7 @@ function HowItWorks() {
             <div className="absolute inset-0 bg-gradient-to-t from-navy/45 to-transparent" />
             <div className="absolute bottom-4 left-4 bg-surface rounded-lg px-4 py-2.5 border border-border shadow-sm">
               <div className="text-[10.5px] text-body mb-0.5">Interactive floor plan</div>
-              <div className="text-[13.5px] font-black text-dark">Booth B-12 — Available</div>
+              <div className="text-[13.5px] font-black text-dark">Booth B-12 â€” Available</div>
             </div>
           </div>
         </div>
@@ -303,7 +303,7 @@ function HowItWorks() {
   );
 }
 
-/* ── Who Uses Planova ──────────────────────────────────────────────────── */
+/* â”€â”€ Who Uses Planova â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function ForWho() {
   return (
     <section className="bg-ice" style={{ padding: "4.5rem 0" }}>
@@ -317,7 +317,7 @@ function ForWho() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
 
-          {/* Organizer — dark primary card */}
+          {/* Organizer â€” dark primary card */}
           <div className="bg-navy rounded-xl p-6 flex flex-col">
             <div className="w-10 h-10 rounded-lg bg-accent/15 flex items-center justify-center mb-4">
               <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -330,7 +330,7 @@ function ForWho() {
             </p>
             <Link to="/register?role=organizer"
               className="mt-6 inline-flex items-center justify-center text-[12.5px] font-bold py-3 px-5 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-[44px]">
-              Start organizing →
+              Start organizing â†’
             </Link>
           </div>
 
@@ -340,14 +340,14 @@ function ForWho() {
               {
                 title: "Exhibitors",
                 desc: "Build a company profile, apply to expos, choose your booth, and list what you're showcasing. All statuses tracked in one place.",
-                cta: "Apply as exhibitor →",
+                cta: "Apply as exhibitor â†’",
                 href: "/register?role=exhibitor",
                 icon: <><rect x="2" y="7" width="6" height="10" rx="1"/><rect x="9" y="3" width="6" height="14" rx="1"/><rect x="16" y="9" width="6" height="8" rx="1"/></>,
               },
               {
                 title: "Attendees",
                 desc: "Register for expos, browse exhibitors, bookmark sessions, and navigate the venue with the live floor map on the day.",
-                cta: "Register to attend →",
+                cta: "Register to attend â†’",
                 href: "/register?role=attendee",
                 icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></>,
               },
@@ -373,7 +373,7 @@ function ForWho() {
   );
 }
 
-/* ── Newsletter block ──────────────────────────────────────────────────── */
+/* â”€â”€ Newsletter block â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Newsletter() {
   const [email, setEmail] = useState("");
   const [sent, setSent]   = useState(false);
@@ -393,7 +393,7 @@ function Newsletter() {
           </div>
           {sent ? (
             <div className="shrink-0 text-[13px] font-semibold text-status-open bg-status-open-bg px-5 py-3 rounded-lg">
-              ✓ You're subscribed!
+              âœ“ You're subscribed!
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="flex gap-2 w-full sm:w-auto shrink-0">
@@ -417,7 +417,7 @@ function Newsletter() {
   );
 }
 
-/* ── CTA ───────────────────────────────────────────────────────────────── */
+/* â”€â”€ CTA â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function CTA() {
   return (
     <section className="bg-navy-mid" style={{ padding: "4.5rem 0" }}>
@@ -430,7 +430,7 @@ function CTA() {
             </div>
             <h2 className="text-[1.65rem] font-black text-white leading-snug mb-2">Join the next expo.</h2>
             <p className="text-white/40 text-[14px] leading-relaxed">
-              Organizer, exhibitor, or attendee — set up in minutes.
+              Organizer, exhibitor, or attendee â€” set up in minutes.
             </p>
           </div>
           <div className="flex flex-wrap gap-2.5 shrink-0">
@@ -449,7 +449,7 @@ function CTA() {
   );
 }
 
-/* ── Sticky mobile bottom bar ──────────────────────────────────────────── */
+/* â”€â”€ Sticky mobile bottom bar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function MobileBar() {
   return (
     <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-navy/97 backdrop-blur-md border-t border-white/10 px-4 py-3 flex gap-2.5 safe-area-bottom">
@@ -465,7 +465,7 @@ function MobileBar() {
   );
 }
 
-/* ── Page ──────────────────────────────────────────────────────────────── */
+/* â”€â”€ Page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export default function Home() {
   return (
     <>

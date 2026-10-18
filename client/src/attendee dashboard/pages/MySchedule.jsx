@@ -16,7 +16,6 @@ const CAT_BAR_COLORS = {
   Talk:     "#12875A",
 };
 
-/* ── Session detail modal ────────────────────────────────────── */
 function SessionModal({ session, onClose }) {
   const c = CATEGORY_COLORS[session.category] || { bg: "#EEF1F8", text: "#3E506D" };
 
@@ -85,7 +84,6 @@ function SessionModal({ session, onClose }) {
   );
 }
 
-/* ── page ────────────────────────────────────────────────────── */
 export default function MySchedule() {
   const [dateIdx,   setDateIdx]  = useState(0);
   const [saved,     setSaved]    = useState(Object.fromEntries(SESSIONS.map((s) => [s.id, s.saved])));

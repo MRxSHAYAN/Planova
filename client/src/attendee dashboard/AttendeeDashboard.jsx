@@ -9,10 +9,6 @@ import SavedItems      from "./pages/SavedItems";
 import Notifications   from "./pages/Notifications";
 import MyProfile       from "./pages/MyProfile";
 
-/**
- * AttendeeDashboard — root component mounted at /dashboard/*
- * All navigation is internal; no global routes are modified here.
- */
 export default function AttendeeDashboard() {
   return (
     <DashboardLayout>

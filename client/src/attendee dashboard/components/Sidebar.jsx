@@ -51,7 +51,7 @@ export default function Sidebar({ onClose }) {
   return (
     <aside className="flex flex-col h-full w-full overflow-y-auto" style={{ background: "#0A1628" }}>
 
-      {/* ── Logo ─────────────────────────────────────────────── */}
+      {/* Logo */}
       <div className="px-5 pt-5 pb-4 shrink-0">
         <div className="flex items-center gap-2.5">
           <img src={iconImg} alt="Planova" className="w-7 h-7 object-contain brightness-0 invert opacity-90" />
@@ -62,7 +62,6 @@ export default function Sidebar({ onClose }) {
         </p>
       </div>
 
-      {/* ── Nav ──────────────────────────────────────────────── */}
       <nav className="flex-1 px-3 pb-3 space-y-5" aria-label="Dashboard navigation">
         {NAV_GROUPS.map(({ group, items }) => (
           <div key={group || "_top"}>
@@ -127,7 +126,6 @@ export default function Sidebar({ onClose }) {
         ))}
       </nav>
 
-      {/* ── User card ─────────────────────────────────────────── */}
       <div className="px-3 py-3 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <button
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left"

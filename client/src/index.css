@@ -1,42 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-/* ─── Planova Design Tokens ────────────────────────────────────────────────
-   Change values here (or in theme.js which is the source of truth) and
-   the entire site updates automatically.
-   ─────────────────────────────────────────────────────────────────────── */
-
-
-
 :root {
-  /* Backgrounds */
   --color-navy:       #09152E;
   --color-navy-mid:   #102A55;
   --color-page:       #F5F8FF;
   --color-ice:        #E5EEFF;
   --color-surface:    #FFFFFF;
 
-  /* Energetic blue accents */
   --color-accent:       #3478F6;
   --color-accent-hover: #1D5FE0;
   --color-accent-light: #DCE8FF;
 
-  /* Typography */
   --color-dark:   #09152E;
   --color-body:   #3E506D;
   --color-muted:  #7A8AA5;
 
-  /* Borders */
   --color-border:      #C9D8F0;
   --color-border-card: #E1E9F7;
 
-  /* Status */
   --color-status-open:    #16804A;
   --color-status-open-bg: #DDF7E7;
 }
 
-
-/* Tailwind v4 theme extension */
 @theme {
   --color-navy: var(--color-navy);
   --color-navy-mid: var(--color-navy-mid);
@@ -76,3 +62,59 @@ body {
   background-color: var(--color-page);
   color: var(--color-dark);
 }
+ 
+/* Dashboard button utilities — replaces inline onMouseEnter/onMouseLeave */
+.btn-primary {
+  background: #3478F6;
+  color: #fff;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: #1D5FE0; }
+
+.btn-ghost {
+  background: #fff;
+  color: #3E506D;
+  border: 1px solid #E8EEF8;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: #3478F6; color: #3478F6; }
+
+.btn-muted {
+  background: #F0F3FA;
+  color: #3E506D;
+  border: 1px solid #E8EEF8;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-muted:hover { border-color: #3478F6; color: #3478F6; }
+
+.pill-active {
+  background: #09152E;
+  color: #fff;
+  border-color: #09152E;
+}
+
+.dash-card {
+  background: #fff;
+  border: 1px solid #E8EEF8;
+  border-radius: 0.75rem;
+}
+
+.dash-row {
+  border-bottom: 1px solid #F5F7FB;
+  transition: background 0.1s;
+}
+.dash-row:last-child { border-bottom: none; }
+.dash-row:hover { background: #FAFBFF; }
+
+.remove-btn {
+  color: #CBD5E1;
+  border-radius: 9999px;
+  transition: background 0.15s, color 0.15s;
+}
+.remove-btn:hover { background: #FEE2E2; color: #DC2626; }

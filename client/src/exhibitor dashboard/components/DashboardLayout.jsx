@@ -1,0 +1,70 @@
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import Sidebar    from "./Sidebar";
+import TopHeader  from "./TopHeader";
+
+const PAGE_TITLES = {
+  "/exhibitor":               "Overview",
+  "/exhibitor/explore":       "Explore Expos",
+  "/exhibitor/applications":  "My Applications",
+  "/exhibitor/booths":        "My Booths",
+  "/exhibitor/profile":       "Company Profile",
+  "/exhibitor/products":      "Products & Services",
+  "/exhibitor/messages":      "Messages",
+  "/exhibitor/notifications": "Notifications",
+  "/exhibitor/settings":      "Settings",
+};
+
+export default function DashboardLayout({ children }) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const { pathname } = useLocation();
+
+  useEffect(() => { setMobileOpen(false); }, [pathname]);
+
+  useEffect(() => {
+    const fn = (e) => { if (e.key === "Escape") setMobileOpen(false); };
+    document.addEventListener("keydown", fn);
+    return () => document.removeEventListener("keydown", fn);
+  }, []);
+
+  const title = PAGE_TITLES[pathname] || "Exhibitor";
+
+  return (
+    <div className="flex h-screen overflow-hidden" style={{ background: "#F0F3FA" }}>
+
+      {/* Desktop sidebar */}
+      <div className="hidden lg:block w-[220px] xl:w-[236px] shrink-0 h-full">
+        <Sidebar />
+      </div>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 flex" role="dialog" aria-modal="true">
+          <button
+            className="absolute inset-0"
+            style={{ background: "rgba(9,21,46,0.55)", backdropFilter: "blur(4px)" }}
+            onClick={() => setMobileOpen(false)}
+            aria-label="Close menu"
+          />
+          <div className="relative z-10 w-[228px] h-full shadow-2xl">
+            <Sidebar onClose={() => setMobileOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* Main */}
+      <div className="flex flex-col flex-1 min-w-0 h-full overflow-hidden">
+        <TopHeader
+          title={title}
+          onMenuToggle={() => setMobileOpen(!mobileOpen)}
+          mobileMenuOpen={mobileOpen}
+        />
+        <main className="flex-1 overflow-y-auto" id="main-content" tabIndex={-1}>
+          <div className="max-w-[1080px] mx-auto px-4 sm:px-6 py-6">
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}

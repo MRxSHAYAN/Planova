@@ -1,11 +1,5 @@
-/**
- * Planova Attendee Dashboard — Mock / Demo Data
- * ─────────────────────────────────────────────
- * All values here are placeholder demo data.
- * Replace with real API calls / context values before production.
- */
+// Demo data — replace with API calls before production
 
-// ── Current User ──────────────────────────────────────────────────────────
 export const CURRENT_USER = {
   id: "u_001",
   name: "Ayesha Siddiqui",
@@ -14,7 +8,7 @@ export const CURRENT_USER = {
   city: "Karachi",
   role: "Product Manager",
   company: "TechVentures PK",
-  avatar: null, // null = show initials
+  avatar: null,
   initials: "AS",
   joinedDate: "March 2025",
   notificationPrefs: {
@@ -26,7 +20,6 @@ export const CURRENT_USER = {
   },
 };
 
-// ── Events ────────────────────────────────────────────────────────────────
 export const EVENTS = [
   {
     id: "evt_001",
@@ -165,7 +158,6 @@ export const EVENTS = [
   },
 ];
 
-// ── Sessions (Schedule) ───────────────────────────────────────────────────
 export const SESSIONS = [
   {
     id: "ses_001",
@@ -287,7 +279,6 @@ export const SESSIONS = [
   },
 ];
 
-// ── Exhibitors ────────────────────────────────────────────────────────────
 export const EXHIBITORS = [
   {
     id: "exh_001",
@@ -411,7 +402,6 @@ export const EXHIBITORS = [
   },
 ];
 
-// ── Notifications ─────────────────────────────────────────────────────────
 export const NOTIFICATIONS = [
   {
     id: "ntf_001",
@@ -485,7 +475,6 @@ export const NOTIFICATIONS = [
   },
 ];
 
-// ── Category colors ───────────────────────────────────────────────────────
 export const CATEGORY_COLORS = {
   Technology:   { bg: "#DCE8FF", text: "#09152E" },
   Healthcare:   { bg: "#DDF7E7", text: "#16804A" },
