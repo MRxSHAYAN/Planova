@@ -28,6 +28,7 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Root-level docs & planning files
-*.md
-*.txt
+# Root-level planning & context files (keep README.md tracked)
+BACKEND_PLAN.txt
+EventSphere_Gemini_Context.md
+code.txt
