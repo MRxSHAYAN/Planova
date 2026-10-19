@@ -10,36 +10,38 @@ import {
    UserCircle2,
   LogOut,
 } from "lucide-react";
-import iconImg from "../../assets/Icon.png";
+import iconImg from "../../../assets/Icon.png";
 import { CURRENT_USER, NOTIFICATIONS } from "../data/mockData";
+
+const BASE = "/users/dashboard/attendee";
 
 const NAV_GROUPS = [
   {
     group: null,
     items: [
-      { label: "Overview",       path: "/dashboard",               icon: LayoutDashboard },
+      { label: "Overview",       path: `${BASE}`,                    icon: LayoutDashboard },
     ],
   },
   {
     group: "Discover",
     items: [
-      { label: "Explore Events", path: "/dashboard/explore",       icon: Compass },
-      { label: "Exhibitors",     path: "/dashboard/exhibitors",    icon: Building2 },
+      { label: "Explore Events", path: `${BASE}/explore`,            icon: Compass },
+      { label: "Exhibitors",     path: `${BASE}/exhibitors`,         icon: Building2 },
     ],
   },
   {
     group: "My Hub",
     items: [
-      { label: "My Events",      path: "/dashboard/my-events",     icon: CalendarCheck },
-      { label: "My Schedule",    path: "/dashboard/schedule",      icon: CalendarDays },
-      { label: "Saved Items",    path: "/dashboard/saved",         icon: Bookmark },
+      { label: "My Events",      path: `${BASE}/my-events`,          icon: CalendarCheck },
+      { label: "My Schedule",    path: `${BASE}/schedule`,           icon: CalendarDays },
+      { label: "Saved Items",    path: `${BASE}/saved`,              icon: Bookmark },
     ],
   },
   {
     group: "Account",
     items: [
-      { label: "Notifications",  path: "/dashboard/notifications", icon: Bell, badge: true },
-      { label: "My Profile",     path: "/dashboard/profile",       icon: UserCircle2 },
+      { label: "Notifications",  path: `${BASE}/notifications`,      icon: Bell, badge: true },
+      { label: "My Profile",     path: `${BASE}/profile`,            icon: UserCircle2 },
     ],
   },
 ];
@@ -75,7 +77,7 @@ export default function Sidebar({ onClose }) {
                 <li key={path}>
                   <NavLink
                     to={path}
-                    end={path === "/dashboard"}
+                    end={path === BASE}
                     onClick={onClose}
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-3 py-[9px] rounded-lg text-[13px] font-medium transition-all duration-150 ${
@@ -132,7 +134,7 @@ export default function Sidebar({ onClose }) {
           style={{ color: "rgba(255,255,255,0.55)" }}
           onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
           onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-          onClick={() => { navigate("/dashboard/profile"); onClose?.(); }}
+          onClick={() => { navigate(`${BASE}/profile`); onClose?.(); }}
         >
           {/* Initials avatar */}
           <span

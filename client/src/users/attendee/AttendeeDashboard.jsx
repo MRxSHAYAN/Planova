@@ -21,8 +21,7 @@ export default function AttendeeDashboard() {
         <Route path="saved"       element={<SavedItems />} />
         <Route path="notifications" element={<Notifications />} />
         <Route path="profile"     element={<MyProfile />} />
-        {/* Catch-all inside dashboard → redirect to overview */}
-        <Route path="*"           element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/users/dashboard/attendee" replace />} />
       </Routes>
     </DashboardLayout>
   );

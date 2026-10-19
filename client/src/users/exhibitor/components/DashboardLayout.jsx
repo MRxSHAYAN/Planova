@@ -3,16 +3,18 @@ import { useLocation } from "react-router-dom";
 import Sidebar    from "./Sidebar";
 import TopHeader  from "./TopHeader";
 
+const BASE = "/users/dashboard/exhibitor";
+
 const PAGE_TITLES = {
-  "/exhibitor":               "Overview",
-  "/exhibitor/explore":       "Explore Expos",
-  "/exhibitor/applications":  "My Applications",
-  "/exhibitor/booths":        "My Booths",
-  "/exhibitor/profile":       "Company Profile",
-  "/exhibitor/products":      "Products & Services",
-  "/exhibitor/messages":      "Messages",
-  "/exhibitor/notifications": "Notifications",
-  "/exhibitor/settings":      "Settings",
+  [BASE]:                      "Overview",
+  [`${BASE}/explore`]:         "Explore Expos",
+  [`${BASE}/applications`]:    "My Applications",
+  [`${BASE}/booths`]:          "My Booths",
+  [`${BASE}/profile`]:         "Company Profile",
+  [`${BASE}/products`]:        "Products & Services",
+  [`${BASE}/messages`]:        "Messages",
+  [`${BASE}/notifications`]:   "Notifications",
+  [`${BASE}/settings`]:        "Settings",
 };
 
 export default function DashboardLayout({ children }) {

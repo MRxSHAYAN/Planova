@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { ArrowRight, MapPin, CalendarDays, Clock, Bookmark, Bell, CheckCircle2 } from "lucide-react";
 import { CURRENT_USER, EVENTS, SESSIONS, NOTIFICATIONS, CATEGORY_COLORS } from "../data/mockData";
 
+const BASE = "/users/dashboard/attendee";
+
 const NEXT_EVENT      = EVENTS.find((e) => e.upcoming && e.registrationStatus === "Confirmed");
 const NEXT_SESSIONS   = SESSIONS.filter((s) => s.eventId === "evt_001").slice(0, 3);
 const RECOMMENDATIONS = EVENTS.filter((e) => !e.registrationStatus).slice(0, 3);
@@ -49,14 +51,14 @@ export default function Overview() {
           </p>
         </div>
         <div className="flex gap-2 shrink-0">
-          <button onClick={() => navigate("/dashboard/explore")}
+          <button onClick={() => navigate(`${BASE}/explore`)}
             className="px-4 py-2 rounded-lg text-[12.5px] font-semibold transition-colors"
             style={{ background: "#fff", border: "1px solid #E8EEF8", color: "#3E506D" }}
             onMouseEnter={(e) => (e.currentTarget.style.borderColor = "#3478F6")}
             onMouseLeave={(e) => (e.currentTarget.style.borderColor = "#E8EEF8")}>
             Explore
           </button>
-          <button onClick={() => navigate("/dashboard/my-events")}
+          <button onClick={() => navigate(`${BASE}/my-events`)}
             className="px-4 py-2 rounded-lg text-[12.5px] font-bold text-white transition-colors"
             style={{ background: "#3478F6" }}
             onMouseEnter={(e) => (e.currentTarget.style.background = "#1D5FE0")}
@@ -66,14 +68,14 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* Quick stats — inline row, no giant numbers */}
+      {/* Quick stats */}
       <div className="rounded-xl px-5 py-4 flex flex-wrap gap-x-8 gap-y-3"
         style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
         {[
-          { icon: CalendarDays, label: "Registered",      value: registeredCount, color: "#3478F6" },
-          { icon: Clock,        label: "Sessions lined up", value: sessionCount,   color: "#09152E" },
-          { icon: Bookmark,     label: "Saved items",      value: savedCount,     color: "#09152E" },
-          { icon: Bell,         label: "Unread",           value: unreadCount,    color: unreadCount > 0 ? "#D97706" : "#09152E" },
+          { icon: CalendarDays, label: "Registered",        value: registeredCount, color: "#3478F6" },
+          { icon: Clock,        label: "Sessions lined up", value: sessionCount,    color: "#09152E" },
+          { icon: Bookmark,     label: "Saved items",       value: savedCount,      color: "#09152E" },
+          { icon: Bell,         label: "Unread",            value: unreadCount,     color: unreadCount > 0 ? "#D97706" : "#09152E" },
         ].map(({ icon: Icon, label, value, color }) => (
           <div key={label} className="flex items-center gap-2.5">
             <Icon size={15} style={{ color, flexShrink: 0 }} />
@@ -124,7 +126,7 @@ export default function Overview() {
                     <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: "#94A3B8" }}>
                       Your sessions
                     </span>
-                    <button onClick={() => navigate("/dashboard/schedule")}
+                    <button onClick={() => navigate(`${BASE}/schedule`)}
                       className="flex items-center gap-1 text-[11px] font-semibold" style={{ color: "#3478F6" }}>
                       Full schedule <ArrowRight size={11} />
                     </button>
@@ -148,7 +150,7 @@ export default function Overview() {
             <div className="rounded-xl px-6 py-10 text-center"
               style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
               <p className="text-[14px] font-semibold mb-3" style={{ color: "#09152E" }}>No registered events yet</p>
-              <button onClick={() => navigate("/dashboard/explore")}
+              <button onClick={() => navigate(`${BASE}/explore`)}
                 className="text-[13px] font-bold" style={{ color: "#3478F6" }}>
                 Browse events →
               </button>
@@ -160,7 +162,7 @@ export default function Overview() {
             <div className="px-5 py-3.5 flex items-center justify-between"
               style={{ borderBottom: "1px solid #F0F3FA" }}>
               <p className="text-[13px] font-black" style={{ color: "#09152E" }}>More to explore</p>
-              <button onClick={() => navigate("/dashboard/explore")}
+              <button onClick={() => navigate(`${BASE}/explore`)}
                 className="flex items-center gap-1 text-[11.5px] font-semibold" style={{ color: "#3478F6" }}>
                 See all <ArrowRight size={11} />
               </button>
@@ -171,7 +173,7 @@ export default function Overview() {
                 style={{ borderBottom: i < RECOMMENDATIONS.length - 1 ? "1px solid #F0F3FA" : "none" }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#FAFBFF")}
                 onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-                onClick={() => navigate("/dashboard/explore")}>
+                onClick={() => navigate(`${BASE}/explore`)}>
                 <img src={ev.image} alt={ev.title}
                   className="w-11 h-11 rounded-lg object-cover shrink-0" style={{ background: "#E5EEFF" }} />
                 <div className="flex-1 min-w-0">
@@ -190,7 +192,7 @@ export default function Overview() {
             <div className="px-5 py-3.5 flex items-center justify-between"
               style={{ borderBottom: "1px solid #F0F3FA" }}>
               <p className="text-[13px] font-black" style={{ color: "#09152E" }}>Notifications</p>
-              <button onClick={() => navigate("/dashboard/notifications")}
+              <button onClick={() => navigate(`${BASE}/notifications`)}
                 className="flex items-center gap-1 text-[11.5px] font-semibold" style={{ color: "#3478F6" }}>
                 All <ArrowRight size={11} />
               </button>
@@ -212,7 +214,7 @@ export default function Overview() {
                   </div>
                 ))}
                 <div className="px-5 py-3">
-                  <button onClick={() => navigate("/dashboard/notifications")}
+                  <button onClick={() => navigate(`${BASE}/notifications`)}
                     className="w-full py-2 rounded-lg text-[12px] font-semibold transition-colors"
                     style={{ background: "#F0F3FA", color: "#3E506D" }}
                     onMouseEnter={(e) => (e.currentTarget.style.background = "#E5EEFF")}

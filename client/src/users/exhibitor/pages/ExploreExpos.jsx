@@ -65,7 +65,7 @@ function ExpoCard({ expo }) {
           <div className="flex gap-2">
             {expo.applicationOpen ? (
               <button
-                onClick={() => navigate("/exhibitor/applications")}
+                onClick={() => navigate("/users/dashboard/exhibitor/applications")}
                 className="text-[12px] font-bold px-3 py-1.5 rounded-lg text-white transition-colors"
                 style={{ background: "#3478F6" }}
                 onMouseEnter={(e) => (e.currentTarget.style.background = "#1D5FE0")}

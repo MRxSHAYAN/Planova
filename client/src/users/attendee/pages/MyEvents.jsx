@@ -98,7 +98,7 @@ function EventRow({ event }) {
                   <CalendarDays size={12} /> Add to Calendar
                 </button>
                 <button
-                  onClick={() => navigate("/dashboard/exhibitors")}
+                  onClick={() => navigate("/users/dashboard/attendee/exhibitors")}
                   className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[12px] font-semibold transition-colors"
                   style={{ background: "#F0F3FA", color: "#3E506D", border: "1px solid #E8EEF8" }}
                   onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#3478F6"; e.currentTarget.style.color = "#3478F6"; }}

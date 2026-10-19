@@ -152,7 +152,7 @@ export default function MyApplications() {
           title="No applications"
           message="You have no applications in this category yet."
           action={
-            <button onClick={() => navigate("/exhibitor/explore")}
+            <button onClick={() => navigate("/users/dashboard/exhibitor/explore")}
               className="text-[13px] font-bold" style={{ color: "#3478F6" }}>
               Explore expos →
             </button>

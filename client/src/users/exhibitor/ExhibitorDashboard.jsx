@@ -23,7 +23,7 @@ export default function ExhibitorDashboard() {
         <Route path="messages"        element={<Messages />} />
         <Route path="notifications"   element={<Notifications />} />
         <Route path="settings"        element={<Settings />} />
-        <Route path="*"               element={<Navigate to="/exhibitor" replace />} />
+        <Route path="*" element={<Navigate to="/users/dashboard/exhibitor" replace />} />
       </Routes>
     </DashboardLayout>
   );

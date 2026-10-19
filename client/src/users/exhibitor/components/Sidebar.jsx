@@ -11,37 +11,39 @@ import {
   Settings,
   LogOut,
 } from "lucide-react";
-import iconImg from "../../assets/Icon.png";
+import iconImg from "../../../assets/Icon.png";
 import { CURRENT_COMPANY, NOTIFICATIONS } from "../data/mockData";
+
+const BASE = "/users/dashboard/exhibitor";
 
 const NAV_GROUPS = [
   {
     group: null,
     items: [
-      { label: "Overview",          path: "/exhibitor",                    icon: LayoutDashboard },
+      { label: "Overview",          path: `${BASE}`,                    icon: LayoutDashboard },
     ],
   },
   {
     group: "Expos",
     items: [
-      { label: "Explore Expos",     path: "/exhibitor/explore",            icon: Compass },
-      { label: "My Applications",   path: "/exhibitor/applications",       icon: FileText },
-      { label: "My Booths",         path: "/exhibitor/booths",             icon: MapPin },
+      { label: "Explore Expos",     path: `${BASE}/explore`,            icon: Compass },
+      { label: "My Applications",   path: `${BASE}/applications`,       icon: FileText },
+      { label: "My Booths",         path: `${BASE}/booths`,             icon: MapPin },
     ],
   },
   {
     group: "Company",
     items: [
-      { label: "Company Profile",   path: "/exhibitor/profile",            icon: Building2 },
-      { label: "Products & Services", path: "/exhibitor/products",         icon: Package },
+      { label: "Company Profile",   path: `${BASE}/profile`,            icon: Building2 },
+      { label: "Products & Services", path: `${BASE}/products`,         icon: Package },
     ],
   },
   {
     group: "Account",
     items: [
-      { label: "Messages",          path: "/exhibitor/messages",           icon: MessageSquare, badge: "messages" },
-      { label: "Notifications",     path: "/exhibitor/notifications",      icon: Bell,          badge: "notifications" },
-      { label: "Settings",          path: "/exhibitor/settings",           icon: Settings },
+      { label: "Messages",          path: `${BASE}/messages`,           icon: MessageSquare, badge: "messages" },
+      { label: "Notifications",     path: `${BASE}/notifications`,      icon: Bell,          badge: "notifications" },
+      { label: "Settings",          path: `${BASE}/settings`,           icon: Settings },
     ],
   },
 ];
@@ -85,7 +87,7 @@ export default function Sidebar({ onClose }) {
                 <li key={path}>
                   <NavLink
                     to={path}
-                    end={path === "/exhibitor"}
+                    end={path === BASE}
                     onClick={onClose}
                     className={({ isActive }) =>
                       `flex items-center gap-3 px-3 py-[9px] rounded-lg text-[13px] font-medium transition-all duration-150 ${
@@ -131,7 +133,7 @@ export default function Sidebar({ onClose }) {
           style={{ color: "rgba(255,255,255,0.55)" }}
           onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.06)")}
           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-          onClick={() => { navigate("/exhibitor/profile"); onClose?.(); }}
+          onClick={() => { navigate(`${BASE}/profile`); onClose?.(); }}
         >
           <span
             className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black shrink-0"

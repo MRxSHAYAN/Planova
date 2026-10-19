@@ -3,15 +3,17 @@ import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import TopHeader from "./TopHeader";
 
+const BASE = "/users/dashboard/attendee";
+
 const PAGE_TITLES = {
-  "/dashboard":               "Overview",
-  "/dashboard/explore":       "Explore Events",
-  "/dashboard/my-events":     "My Events",
-  "/dashboard/schedule":      "My Schedule",
-  "/dashboard/exhibitors":    "Exhibitors",
-  "/dashboard/saved":         "Saved Items",
-  "/dashboard/notifications": "Notifications",
-  "/dashboard/profile":       "My Profile",
+  [BASE]:                      "Overview",
+  [`${BASE}/explore`]:         "Explore Events",
+  [`${BASE}/my-events`]:       "My Events",
+  [`${BASE}/schedule`]:        "My Schedule",
+  [`${BASE}/exhibitors`]:      "Exhibitors",
+  [`${BASE}/saved`]:           "Saved Items",
+  [`${BASE}/notifications`]:   "Notifications",
+  [`${BASE}/profile`]:         "My Profile",
 };
 
 export default function DashboardLayout({ children }) {

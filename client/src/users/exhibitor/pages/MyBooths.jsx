@@ -117,7 +117,7 @@ export default function MyBooths() {
           title="No booths assigned yet"
           message="Once an organizer approves your application and assigns a booth, all details will appear here."
           action={
-            <button onClick={() => navigate("/exhibitor/explore")}
+            <button onClick={() => navigate("/users/dashboard/exhibitor/explore")}
               className="text-[13px] font-bold" style={{ color: "#3478F6" }}>
               Explore expos →
             </button>
