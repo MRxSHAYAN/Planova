@@ -9,6 +9,27 @@ const ROLES = [
   { id: "exhibitor", label: "Exhibitor", Icon: BarChart2,  desc: "Apply to expos, pick a booth, and manage your profile." },
 ];
 
+// Icon shown when password is hidden (eye open = show password)
+function EyeIcon() {
+  return (
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  );
+}
+
+// Icon shown when password is visible (eye with slash = hide password)
+function EyeOffIcon() {
+  return (
+    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+      <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+      <line x1="1" y1="1" x2="23" y2="23"/>
+    </svg>
+  );
+}
+
 export default function Register() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -79,22 +100,39 @@ export default function Register() {
             <div className="mb-5">
               <p className="text-[11.5px] font-bold text-dark uppercase tracking-wider mb-2">I am joining as…</p>
               <div className="grid grid-cols-2 gap-2">
-                {ROLES.map(({ id, label, Icon }) => (
-                  <button
-                    key={id} type="button"
-                    onClick={() => { setForm((p) => ({ ...p, role: id })); setError(""); }}
-                    className={`flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all ${
-                      form.role === id ? "border-accent bg-accent/5" : "border-border-card bg-page hover:border-border"
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${form.role === id ? "bg-accent" : "bg-ice"}`}>
-                      <Icon size={15} className={form.role === id ? "text-white" : "text-accent"} />
-                    </div>
-                    <span className={`text-[11.5px] font-bold ${form.role === id ? "text-accent" : "text-dark"}`}>
-                      {label}
-                    </span>
-                  </button>
-                ))}
+                {ROLES.map(({ id, label, Icon }) => {
+                  // Build the button class based on whether this role is selected
+                  const isSelected = form.role === id;
+
+                  const buttonClass = isSelected
+                    ? "flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all border-accent bg-accent/5"
+                    : "flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all border-border-card bg-page hover:border-border";
+
+                  const iconContainerClass = isSelected
+                    ? "w-8 h-8 rounded-full flex items-center justify-center bg-accent"
+                    : "w-8 h-8 rounded-full flex items-center justify-center bg-ice";
+
+                  const iconClass = isSelected ? "text-white" : "text-accent";
+
+                  const labelClass = isSelected
+                    ? "text-[11.5px] font-bold text-accent"
+                    : "text-[11.5px] font-bold text-dark";
+
+                  return (
+                    <button
+                      key={id} type="button"
+                      onClick={() => { setForm((p) => ({ ...p, role: id })); setError(""); }}
+                      className={buttonClass}
+                    >
+                      <div className={iconContainerClass}>
+                        <Icon size={15} className={iconClass} />
+                      </div>
+                      <span className={labelClass}>
+                        {label}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
               {activeRole && <p className="mt-1.5 text-[11.5px] text-muted">{activeRole.desc}</p>}
             </div>
@@ -123,10 +161,7 @@ export default function Register() {
                     className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all" />
                   <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-body transition-colors">
-                    {showPass
-                      ? <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                      : <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    }
+                    {showPass ? <EyeOffIcon /> : <EyeIcon />}
                   </button>
                 </div>
               </div>

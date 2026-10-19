@@ -45,6 +45,11 @@ const FILTERS = ["All", "Technology", "Healthcare", "Energy"];
 
 /* â”€â”€ Hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 function Hero() {
+  // Hero gradient overlay variables — three layered gradients create the dark vignette effect
+  const topGradient = "linear-gradient(to bottom, color-mix(in srgb, var(--color-navy) 75%, transparent) 0%, color-mix(in srgb, var(--color-navy) 25%, transparent) 40%, color-mix(in srgb, var(--color-navy) 15%, transparent) 60%, transparent 75%)";
+  const bottomGradient = "linear-gradient(to top, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 93%, transparent) 14%, color-mix(in srgb, var(--color-navy) 40%, transparent) 35%, transparent 58%)";
+  const sideGradient = "linear-gradient(105deg, color-mix(in srgb, var(--color-navy) 80%, transparent) 0%, color-mix(in srgb, var(--color-navy) 25%, transparent) 38%, transparent 56%)";
+
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
       <img
@@ -52,12 +57,9 @@ function Hero() {
         alt="Event venue"
         className="absolute inset-0 w-full h-full object-cover object-center"
       />
-      <div className="absolute inset-0"
-        style={{ background: "linear-gradient(to bottom, color-mix(in srgb, var(--color-navy) 75%, transparent) 0%, color-mix(in srgb, var(--color-navy) 25%, transparent) 40%, color-mix(in srgb, var(--color-navy) 15%, transparent) 60%, transparent 75%)" }} />
-      <div className="absolute inset-0"
-        style={{ background: "linear-gradient(to top, var(--color-navy) 0%, color-mix(in srgb, var(--color-navy) 93%, transparent) 14%, color-mix(in srgb, var(--color-navy) 40%, transparent) 35%, transparent 58%)" }} />
-      <div className="absolute inset-0"
-        style={{ background: "linear-gradient(105deg, color-mix(in srgb, var(--color-navy) 80%, transparent) 0%, color-mix(in srgb, var(--color-navy) 25%, transparent) 38%, transparent 56%)" }} />
+      <div className="absolute inset-0" style={{ background: topGradient }} />
+      <div className="absolute inset-0" style={{ background: bottomGradient }} />
+      <div className="absolute inset-0" style={{ background: sideGradient }} />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 pb-12 pt-[100px]">
         <div className="max-w-[530px]">

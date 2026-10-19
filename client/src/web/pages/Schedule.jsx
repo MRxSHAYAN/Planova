@@ -135,15 +135,29 @@ export default function Schedule() {
   const [activeType, setActiveType] = useState("All");
   const [bookmarks,  setBookmarks]  = useState([]);
 
-  const toggleBookmark = (id) =>
-    setBookmarks((prev) => prev.includes(id) ? prev.filter((b) => b !== id) : [...prev, id]);
+  // Toggle a session bookmark: if it's already bookmarked, remove it; if not, add it
+  function toggleBookmark(id) {
+    setBookmarks(function(prev) {
+      const alreadyBookmarked = prev.includes(id);
+      if (alreadyBookmarked) {
+        // Remove from bookmarks
+        return prev.filter(function(b) { return b !== id; });
+      } else {
+        // Add to bookmarks
+        return [...prev, id];
+      }
+    });
+  }
 
+  // Filter Logic
   const filtered = SESSIONS.filter((s) => {
     const matchExpo = activeExpo === "All" || s.expo === activeExpo;
     const matchType = activeType === "All" || s.type === activeType;
     return matchExpo && matchType;
   });
 
+  // Group sessions by "Expo Name — Day" so we can render them under headers.
+  // For example: { "Karachi Technology Expo — Day 1" : [session1, session2], ... }
   const grouped = filtered.reduce((acc, s) => {
     const key = `${s.expo} — ${s.day}`;
     if (!acc[key]) acc[key] = [];

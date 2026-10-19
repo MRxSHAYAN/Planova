@@ -1,32 +1,48 @@
 import { Link } from "react-router-dom";
 import iconImg from "../../assets/Icon.png";
 
+// All route paths in one place — easy to update
+const ROUTES = {
+  exploreExpos:       "/explore-expos",
+  exhibitors:         "/exhibitors",
+  schedule:           "/schedule",
+  floorPlans:         "/floor-plans",
+  about:              "/about",
+  contact:            "/contact",
+  support:            "/support",
+  privacy:            "/privacy",
+  registerAttendee:   "/register?role=attendee",
+  registerExhibitor:  "/register?role=exhibitor",
+  registerOrganizer:  "/register?role=organizer",
+  login:              "/login",
+};
+
 const COLS = [
   {
     heading: "Platform",
     links: [
-      ["Explore Expos",       "/explore-expos"],
-      ["Exhibitor Directory",  "/exhibitors"],
-      ["Session Schedule",    "/schedule"],
-      ["Floor Plans",         "/floor-plans"],
+      ["Explore Expos",       ROUTES.exploreExpos],
+      ["Exhibitor Directory",  ROUTES.exhibitors],
+      ["Session Schedule",    ROUTES.schedule],
+      ["Floor Plans",         ROUTES.floorPlans],
     ],
   },
   {
     heading: "Company",
     links: [
-      ["About Us",        "/about"],
-      ["Contact",         "/contact"],
-      ["Support",         "/support"],
-      ["Privacy Policy",  "/privacy"],
+      ["About Us",        ROUTES.about],
+      ["Contact",         ROUTES.contact],
+      ["Support",         ROUTES.support],
+      ["Privacy Policy",  ROUTES.privacy],
     ],
   },
   {
     heading: "Get Involved",
     links: [
-      ["Register as Attendee", "/register?role=attendee"],
-      ["Apply as Exhibitor",   "/register?role=exhibitor"],
-      ["Organizer Portal",     "/register?role=organizer"],
-      ["Log In",               "/login"],
+      ["Register as Attendee", ROUTES.registerAttendee],
+      ["Apply as Exhibitor",   ROUTES.registerExhibitor],
+      ["Organizer Portal",     ROUTES.registerOrganizer],
+      ["Log In",               ROUTES.login],
     ],
   },
 ];
