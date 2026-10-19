@@ -1,4 +1,33 @@
+# Dependencies
 client/node_modules/
+server/node_modules/
+node_modules/
+
+# Environment variables
 client/.env
+server/.env
+.env
+.env.local
+.env.*.local
+
+# Build output
 client/dist/
+server/dist/
+
+# Logs
 client/*.log
+server/*.log
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Root-level docs & planning files
+*.md
+*.txt
