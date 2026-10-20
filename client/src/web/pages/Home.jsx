@@ -61,8 +61,8 @@ function Hero() {
       <div className="absolute inset-0" style={{ background: bottomGradient }} />
       <div className="absolute inset-0" style={{ background: sideGradient }} />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 pb-12 pt-[100px]">
-        <div className="max-w-[530px]">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 pb-12 pt-100px">
+        <div className="max-w-530px">
 
           <div className="flex items-center gap-2.5 mb-4">
             <span className="w-6 h-px bg-accent" />
@@ -77,24 +77,24 @@ function Hero() {
             one platform.
           </h1>
 
-          <p className="text-white/60 text-[14px] leading-relaxed mb-7 max-w-[420px]">
+          <p className="text-white/60 text-[14px] leading-relaxed mb-7 max-w-420px">
             Organizers, exhibitors, and attendees â€” managed end to end.
             Booths, schedules, applications, and live analytics.
           </p>
 
           <div className="flex flex-wrap gap-2.5 mb-10">
             <Link to="/explore-expos"
-              className="px-5 py-2.5 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center">
+              className="px-5 py-2.5 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-44px flex items-center">
               Browse Expos
             </Link>
             <Link to="/register"
-              className="px-5 py-2.5 rounded-lg text-[13px] font-medium text-white/70 border border-white/25 hover:border-white/50 hover:text-white transition-colors min-h-[44px] flex items-center">
+              className="px-5 py-2.5 rounded-lg text-[13px] font-medium text-white/70 border border-white/25 hover:border-white/50 hover:text-white transition-colors min-h-44px flex items-center">
               Register Free
             </Link>
           </div>
 
           {/* Search bar */}
-          <div className="mb-10 max-w-[440px]">
+          <div className="mb-10 max-w-440px">
             <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 backdrop-blur-sm">
               <svg className="w-4 h-4 text-white/40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
@@ -133,11 +133,11 @@ function ExpoCard({ expo }) {
   };
 
   return (
-    <article className="group bg-surface rounded-xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 min-w-[300px] sm:min-w-0">
-      <div className="relative h-[155px] overflow-hidden bg-ice">
+    <article className="group bg-surface rounded-xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 min-w-300px sm:min-w-0">
+      <div className="relative h-155px overflow-hidden bg-ice">
         <img src={expo.image} alt={expo.title}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/35 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-navy/35 to-transparent" />
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${badge[expo.category] || "bg-accent-light text-navy"}`}>
             {expo.category}
@@ -290,10 +290,10 @@ function HowItWorks() {
             </div>
           </div>
 
-          <div className="relative rounded-xl overflow-hidden border border-border aspect-[4/3] shadow-md lg:sticky lg:top-24">
+          <div className="relative rounded-xl overflow-hidden border border-border aspect-4/3 shadow-md lg:sticky lg:top-24">
             <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=75"
               alt="Exhibition floor plan" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-navy/45 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-navy/45 to-transparent" />
             <div className="absolute bottom-4 left-4 bg-surface rounded-lg px-4 py-2.5 border border-border shadow-sm">
               <div className="text-[10.5px] text-body mb-0.5">Interactive floor plan</div>
               <div className="text-[13.5px] font-black text-dark">Booth B-12 â€” Available</div>
@@ -331,7 +331,7 @@ function ForWho() {
               Publish expos, review applications, assign booths on the floor planner, manage sessions, and watch analytics live.
             </p>
             <Link to="/register?role=organizer"
-              className="mt-6 inline-flex items-center justify-center text-[12.5px] font-bold py-3 px-5 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-[44px]">
+              className="mt-6 inline-flex items-center justify-center text-[12.5px] font-bold py-3 px-5 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-44px">
               Start organizing â†’
             </Link>
           </div>
@@ -363,7 +363,7 @@ function ForWho() {
                 <h3 className="text-dark font-black text-[17px] mb-2">{role.title}</h3>
                 <p className="text-body text-[12.5px] leading-relaxed flex-1">{role.desc}</p>
                 <Link to={role.href}
-                  className="mt-6 inline-flex items-center justify-center text-[12.5px] font-bold py-3 px-5 rounded-lg border border-border text-dark hover:bg-ice hover:border-accent/50 transition-colors min-h-[44px]">
+                  className="mt-6 inline-flex items-center justify-center text-[12.5px] font-bold py-3 px-5 rounded-lg border border-border text-dark hover:bg-ice hover:border-accent/50 transition-colors min-h-44px">
                   {role.cta}
                 </Link>
               </div>
@@ -405,7 +405,7 @@ function Newsletter() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="flex-1 sm:w-[220px] px-4 py-2.5 rounded-lg border border-border bg-surface text-[13px] text-dark placeholder-muted outline-none focus:border-accent transition-colors"
+                className="flex-1 sm:w-220px px-4 py-2.5 rounded-lg border border-border bg-surface text-[13px] text-dark placeholder-muted outline-none focus:border-accent transition-colors"
               />
               <button type="submit"
                 className="px-5 py-2.5 rounded-lg bg-navy text-white text-[13px] font-bold hover:bg-navy-mid transition-colors shrink-0">
@@ -437,11 +437,11 @@ function CTA() {
           </div>
           <div className="flex flex-wrap gap-2.5 shrink-0">
             <Link to="/explore-expos"
-              className="px-6 py-3 rounded-lg bg-accent text-navy text-[13px] font-bold hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center">
+              className="px-6 py-3 rounded-lg bg-accent text-navy text-[13px] font-bold hover:bg-accent-hover hover:text-white transition-colors min-h-44px flex items-center">
               Browse Expos
             </Link>
             <Link to="/register"
-              className="px-6 py-3 rounded-lg text-[13px] font-medium text-white/55 border border-white/15 hover:border-white/30 hover:text-white transition-colors min-h-[44px] flex items-center">
+              className="px-6 py-3 rounded-lg text-[13px] font-medium text-white/55 border border-white/15 hover:border-white/30 hover:text-white transition-colors min-h-44px flex items-center">
               Create an account
             </Link>
           </div>
@@ -456,11 +456,11 @@ function MobileBar() {
   return (
     <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-navy/97 backdrop-blur-md border-t border-white/10 px-4 py-3 flex gap-2.5 safe-area-bottom">
       <Link to="/explore-expos"
-        className="flex-1 text-center text-[13px] font-bold py-3 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center justify-center">
+        className="flex-1 text-center text-[13px] font-bold py-3 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-44px flex items-center justify-center">
         Browse Expos
       </Link>
       <Link to="/login"
-        className="flex-1 text-center text-[13px] font-semibold py-3 rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors min-h-[44px] flex items-center justify-center">
+        className="flex-1 text-center text-[13px] font-semibold py-3 rounded-lg border border-white/15 text-white/70 hover:text-white hover:border-white/30 transition-colors min-h-44px flex items-center justify-center">
         Log in
       </Link>
     </div>
@@ -480,7 +480,7 @@ export default function Home() {
         <CTA />
       </Layout>
       <MobileBar />
-      <div className="md:hidden h-[72px]" />
+      <div className="md:hidden h-72px" />
     </>
   );
 }

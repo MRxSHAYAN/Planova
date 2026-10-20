@@ -66,7 +66,7 @@ export default function Privacy() {
   return (
     <Layout>
       {/* header */}
-      <div className="bg-navy pt-[90px] pb-16 px-5 sm:px-8">
+      <div className="bg-navy pt-90px pb-16 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-4">
             <span className="w-5 h-px bg-accent" />
@@ -75,7 +75,7 @@ export default function Privacy() {
           <h1 className="text-[2rem] sm:text-[2.6rem] font-black text-white leading-[1.1] mb-4">
             Privacy Policy
           </h1>
-          <p className="text-white/50 text-[14px] max-w-[460px]">
+          <p className="text-white/50 text-[14px] max-w-460px">
             No legal walls. Just six things you should know about how we handle your data.
           </p>
           <p className="text-white/30 text-[12px] mt-2">Last updated October 2026</p>

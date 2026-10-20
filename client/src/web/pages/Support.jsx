@@ -120,7 +120,7 @@ export default function Support() {
   return (
     <Layout>
       {/* header */}
-      <div className="bg-navy pt-[90px] pb-16 px-5 sm:px-8">
+      <div className="bg-navy pt-90px pb-16 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-4">
             <span className="w-5 h-px bg-accent" />
@@ -134,7 +134,7 @@ export default function Support() {
           </p>
 
           {/* search */}
-          <div className="mt-6 max-w-[500px]">
+          <div className="mt-6 max-w-500px">
             <div className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-xl px-4 py-3">
               <svg className="w-4 h-4 text-white/40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
@@ -212,7 +212,7 @@ export default function Support() {
           </div>
           <Link
             to="/contact"
-            className="px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center shrink-0"
+            className="px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-44px flex items-center shrink-0"
           >
             Contact Us →
           </Link>

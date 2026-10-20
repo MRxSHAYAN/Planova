@@ -118,7 +118,7 @@ function ExpoModal({ expo, onClose }) {
             alt={expo.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-navy/60 to-transparent" />
 
           {/* close btn */}
           <button
@@ -196,13 +196,13 @@ function ExpoModal({ expo, onClose }) {
 function ExpoCard({ expo, onView }) {
   return (
     <article className="group bg-surface rounded-xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="relative h-[155px] overflow-hidden bg-ice">
+      <div className="relative h-155px overflow-hidden bg-ice">
         <img
           src={expo.image}
           alt={expo.title}
           className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-navy/35 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-navy/35 to-transparent" />
         <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[expo.category]}`}>
             {expo.category}
@@ -268,7 +268,7 @@ export default function ExploreExpos() {
   return (
     <Layout>
       {/* page header */}
-      <div className="bg-navy pt-[90px] pb-12 px-5 sm:px-8">
+      <div className="bg-navy pt-90px pb-12 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-3">
             <span className="w-5 h-px bg-accent" />
@@ -279,7 +279,7 @@ export default function ExploreExpos() {
             Browse Pakistan's upcoming trade shows, exhibitions, and industry summits.
           </p>
 
-          <div className="mt-6 max-w-[480px]">
+          <div className="mt-6 max-w-480px">
             <div className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-xl px-4 py-2.5">
               <svg className="w-4 h-4 text-white/40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />

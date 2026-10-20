@@ -66,10 +66,10 @@ export default function Register() {
 
           <div>
             <p className="text-accent text-[11px] font-semibold tracking-[0.18em] uppercase mb-2">Join Planova</p>
-            <h2 className="text-white text-[1.5rem] font-black leading-tight max-w-[280px]">
+            <h2 className="text-white text-[1.5rem] font-black leading-tight max-w-280px">
               One account for every role in Pakistan's expo industry.
             </h2>
-            <p className="text-white/50 text-[13px] mt-2 max-w-[260px] leading-relaxed">
+            <p className="text-white/50 text-[13px] mt-2 max-w-260px leading-relaxed">
               Exhibit or attend — you're covered.
             </p>
             <div className="mt-6 flex flex-col gap-3">
@@ -91,7 +91,7 @@ export default function Register() {
         <AuthNavbar />
 
         <div className="flex-1 flex items-center justify-center px-8">
-          <div className="w-full max-w-[400px]">
+          <div className="w-full max-w-400px">
 
             <h1 className="text-[1.6rem] font-black text-dark mb-1">Create your account</h1>
             <p className="text-body text-[14px] mb-5">Join Pakistan's expo management platform.</p>

@@ -287,7 +287,7 @@ export default function Exhibitors() {
 
   return (
     <Layout>
-      <div className="bg-navy pt-[90px] pb-12 px-5 sm:px-8">
+      <div className="bg-navy pt-90px pb-12 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-3">
             <span className="w-5 h-px bg-accent" />
@@ -298,7 +298,7 @@ export default function Exhibitors() {
             Companies participating across all upcoming expos on Planova.
           </p>
 
-          <div className="mt-6 max-w-[480px]">
+          <div className="mt-6 max-w-480px">
             <div className="flex items-center gap-2 bg-white/10 border border-white/15 rounded-xl px-4 py-2.5">
               <svg className="w-4 h-4 text-white/40 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />

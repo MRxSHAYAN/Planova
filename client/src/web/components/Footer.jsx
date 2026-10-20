@@ -47,7 +47,7 @@ export default function Footer() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
           <div className="col-span-2 md:col-span-1">
-            <p className="text-[12.5px] text-white/28 leading-relaxed max-w-[200px]">
+            <p className="text-[12.5px] text-white/28 leading-relaxed max-w-200px">
               Pakistan's expo and trade show management platform — for organizers,
               exhibitors, and attendees.
             </p>

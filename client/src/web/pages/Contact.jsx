@@ -39,7 +39,7 @@ export default function Contact() {
   return (
     <Layout>
       {/* header */}
-      <div className="bg-navy pt-[90px] pb-16 px-5 sm:px-8">
+      <div className="bg-navy pt-90px pb-16 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-4">
             <span className="w-5 h-px bg-accent" />
@@ -48,7 +48,7 @@ export default function Contact() {
           <h1 className="text-[2rem] sm:text-[2.6rem] font-black text-white leading-[1.1] mb-4">
             We'd love to hear from you.
           </h1>
-          <p className="text-white/50 text-[14px] leading-relaxed max-w-[480px]">
+          <p className="text-white/50 text-[14px] leading-relaxed max-w-480px">
             Whether you have a question about an expo, need help with your account, or want to partner with us — reach out and we'll get back to you within 24 hours.
           </p>
         </div>
@@ -133,7 +133,7 @@ export default function Contact() {
 
                 <button
                   type="submit"
-                  className="self-start px-7 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-[44px]"
+                  className="self-start px-7 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-44px"
                 >
                   Send Message
                 </button>
@@ -192,7 +192,7 @@ export default function Contact() {
           </div>
           <Link
             to="/support"
-            className="px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-[44px] flex items-center shrink-0"
+            className="px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-44px flex items-center shrink-0"
           >
             Go to Support →
           </Link>
