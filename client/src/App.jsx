@@ -13,6 +13,8 @@ import Login               from "./web/pages/auth/Login";
 import Register            from "./web/pages/auth/Register";
 import AttendeeDashboard   from "./users/attendee/AttendeeDashboard";
 import ExhibitorDashboard  from "./users/exhibitor/ExhibitorDashboard";
+import AdminLogin          from "./admin/pages/AdminLogin";
+import AdminDashboard      from "./admin/AdminDashboard";
 
 function NotFound() {
   return (
@@ -48,6 +50,8 @@ export default function App() {
         <Route path="/register"      element={<Register />} />
         <Route path="/users/dashboard/attendee/*"  element={<AttendeeDashboard />} />
         <Route path="/users/dashboard/exhibitor/*" element={<ExhibitorDashboard />} />
+        <Route path="/admin/login"     element={<AdminLogin />} />
+        <Route path="/admin/*"         element={<AdminDashboard />} />
         <Route path="*"              element={<NotFound />} />
       </Routes>
     </>
