@@ -104,30 +104,23 @@ export default function Register() {
                   // Build the button class based on whether this role is selected
                   const isSelected = form.role === id;
 
-                  const buttonClass = isSelected
-                    ? "flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all border-accent bg-accent/5"
-                    : "flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all border-border-card bg-page hover:border-border";
-
-                  const iconContainerClass = isSelected
-                    ? "w-8 h-8 rounded-full flex items-center justify-center bg-accent"
-                    : "w-8 h-8 rounded-full flex items-center justify-center bg-ice";
-
-                  const iconClass = isSelected ? "text-white" : "text-accent";
-
-                  const labelClass = isSelected
-                    ? "text-[11.5px] font-bold text-accent"
-                    : "text-[11.5px] font-bold text-dark";
-
                   return (
                     <button
-                      key={id} type="button"
+                      key={id}
+                      type="button"
                       onClick={() => { setForm((p) => ({ ...p, role: id })); setError(""); }}
-                      className={buttonClass}
+                      className={`flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all ${
+                        form.role === id
+                          ? "border-accent bg-accent/5"
+                          : "border-border-card bg-page hover:border-border"
+                      }`}
                     >
-                      <div className={iconContainerClass}>
-                        <Icon size={15} className={iconClass} />
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                        form.role === id ? "bg-accent" : "bg-ice"
+                      }`}>
+                        <Icon size={15} className={form.role === id ? "text-white" : "text-accent"} />
                       </div>
-                      <span className={labelClass}>
+                      <span className={`text-[11.5px] font-bold ${form.role === id ? "text-accent" : "text-dark"}`}>
                         {label}
                       </span>
                     </button>

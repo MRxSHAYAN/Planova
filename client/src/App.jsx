@@ -6,6 +6,9 @@ import ExploreExpos        from "./web/pages/ExploreExpos";
 import Exhibitors          from "./web/pages/Exhibitors";
 import Schedule            from "./web/pages/Schedule";
 import About               from "./web/pages/About";
+import Contact             from "./web/pages/Contact";
+import Support             from "./web/pages/Support";
+import Privacy             from "./web/pages/Privacy";
 import Login               from "./web/pages/auth/Login";
 import Register            from "./web/pages/auth/Register";
 import AttendeeDashboard   from "./users/attendee/AttendeeDashboard";
@@ -38,6 +41,9 @@ export default function App() {
         <Route path="/exhibitors"    element={<Exhibitors />} />
         <Route path="/schedule"      element={<Schedule />} />
         <Route path="/about"         element={<About />} />
+        <Route path="/contact"       element={<Contact />} />
+        <Route path="/support"       element={<Support />} />
+        <Route path="/privacy"       element={<Privacy />} />
         <Route path="/login"         element={<Login />} />
         <Route path="/register"      element={<Register />} />
         <Route path="/users/dashboard/attendee/*"  element={<AttendeeDashboard />} />
