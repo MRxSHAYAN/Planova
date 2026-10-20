@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginImg from "../../assets/Login_Booth.jpg";
 import AuthNavbar from "../../components/AuthNavbar";
 
-// Icon shown when password is hidden (eye open = show password)
+// Show password icon
 function EyeIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -13,7 +13,7 @@ function EyeIcon() {
   );
 }
 
-// Icon shown when password is visible (eye with slash = hide password)
+// Hide password icon
 function EyeOffIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

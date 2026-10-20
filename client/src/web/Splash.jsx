@@ -13,8 +13,6 @@ export default function Splash({ onDone }) {
     return () => [t1, t2, t3, t4, t5, t6].forEach(clearTimeout);
   }, [onDone]);
 
-  // Splash screen animation styles — each depends on the current animation step
-
   const containerStyle = {
     opacity: step === 5 ? 0 : 1,
     transition: step === 5 ? "opacity 0.5s ease" : "none",

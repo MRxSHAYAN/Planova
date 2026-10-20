@@ -94,7 +94,7 @@ const categoryBadge = {
   Food: "bg-[#FEF3C7] text-[#92620A]",
 };
 
-// ── Expo detail popup ──────────────────────────────────────────────────────────
+// Expo detail modal
 function ExpoModal({ expo, onClose }) {
   if (!expo) return null;
 
@@ -103,8 +103,7 @@ function ExpoModal({ expo, onClose }) {
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
-      {/* backdrop */}
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+      {/* backdrop */}      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
 
       {/* modal box */}
       <div
@@ -192,7 +191,7 @@ function ExpoModal({ expo, onClose }) {
   );
 }
 
-// ── Expo card ──────────────────────────────────────────────────────────────────
+// Expo card
 function ExpoCard({ expo, onView }) {
   return (
     <article className="group bg-surface rounded-xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
@@ -249,7 +248,7 @@ function ExpoCard({ expo, onView }) {
   );
 }
 
-// ── Page ───────────────────────────────────────────────────────────────────────
+// Page
 export default function ExploreExpos() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");

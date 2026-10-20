@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import iconImg from "../../assets/Icon.png";
 
-// All route paths in one place — easy to update
 const ROUTES = {
   home: "/",
   exploreExpos: "/explore-expos",
@@ -31,7 +30,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  // Extract inline style values into readable variables
   const headerBackground = scrolled
     ? "color-mix(in srgb, var(--color-navy) 97%, transparent)"
     : "color-mix(in srgb, var(--color-navy) 85%, transparent)";
@@ -42,7 +40,7 @@ export default function Navbar() {
 
   const headerBoxShadow = scrolled ? "0 1px 20px rgba(0,0,0,0.4)" : "none";
 
-  // Hamburger icon animation variables
+  // Hamburger bar transforms
   const topBarStyle = {
     transform: open ? "translateY(6.5px) rotate(45deg)" : "none",
   };

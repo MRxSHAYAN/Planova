@@ -112,7 +112,7 @@ const categoryBadge = {
   Food: "bg-[#FEF3C7] text-[#92620A]",
 };
 
-// ── Exhibitor detail popup ─────────────────────────────────────────────────────
+// Exhibitor detail modal
 function ExhibitorModal({ ex, onClose }) {
   if (!ex) return null;
 
@@ -209,7 +209,7 @@ function ExhibitorModal({ ex, onClose }) {
   );
 }
 
-// ── Exhibitor card ─────────────────────────────────────────────────────────────
+// Exhibitor card
 function ExhibitorCard({ ex, onView }) {
   return (
     <article className="bg-surface rounded-xl border border-border p-5 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
@@ -271,7 +271,7 @@ function ExhibitorCard({ ex, onView }) {
   );
 }
 
-// ── Page ───────────────────────────────────────────────────────────────────────
+// Page
 export default function Exhibitors() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");

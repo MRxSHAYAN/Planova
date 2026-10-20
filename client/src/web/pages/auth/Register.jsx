@@ -9,7 +9,7 @@ const ROLES = [
   { id: "exhibitor", label: "Exhibitor", Icon: BarChart2,  desc: "Apply to expos, pick a booth, and manage your profile." },
 ];
 
-// Icon shown when password is hidden (eye open = show password)
+// Show password icon
 function EyeIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -19,7 +19,7 @@ function EyeIcon() {
   );
 }
 
-// Icon shown when password is visible (eye with slash = hide password)
+// Hide password icon
 function EyeOffIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -101,7 +101,6 @@ export default function Register() {
               <p className="text-[11.5px] font-bold text-dark uppercase tracking-wider mb-2">I am joining as…</p>
               <div className="grid grid-cols-2 gap-2">
                 {ROLES.map(({ id, label, Icon }) => {
-                  // Build the button class based on whether this role is selected
                   const isSelected = form.role === id;
 
                   return (
