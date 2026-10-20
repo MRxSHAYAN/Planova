@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import ScrollToTop         from "./ScrollToTop";
 import Splash              from "./web/Splash";
 import Home                from "./web/pages/Home";
 import ExploreExpos        from "./web/pages/ExploreExpos";
@@ -36,6 +37,7 @@ export default function App() {
   return (
     <>
       {!splashDone && <Splash onDone={() => setSplashDone(true)} />}
+      <ScrollToTop />
 
       <Routes>
         <Route path="/"              element={<Home />} />
@@ -50,8 +52,8 @@ export default function App() {
         <Route path="/register"      element={<Register />} />
         <Route path="/users/dashboard/attendee/*"  element={<AttendeeDashboard />} />
         <Route path="/users/dashboard/exhibitor/*" element={<ExhibitorDashboard />} />
-        <Route path="/admin/login"     element={<AdminLogin />} />
-        <Route path="/admin/*"         element={<AdminDashboard />} />
+        <Route path="/admin/login"   element={<AdminLogin />} />
+        <Route path="/admin/*"       element={<AdminDashboard />} />
         <Route path="*"              element={<NotFound />} />
       </Routes>
     </>

@@ -287,7 +287,7 @@ export default function Exhibitors() {
 
   return (
     <Layout>
-      <div className="bg-navy pt-90px pb-12 px-5 sm:px-8">
+      <div className="bg-navy pt-[90px] pb-12 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-2.5 mb-3">
             <span className="w-5 h-px bg-accent" />
