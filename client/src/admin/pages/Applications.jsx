@@ -35,7 +35,7 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
               [Globe, app.company], [Building2, `Founded ${app.founded}`],
             ].map(([Icon, text], i) => (
               <div key={i} className="flex items-center gap-2 text-slate-600">
-                <Icon size={13} className="text-orange-500 shrink-0" />
+                <Icon size={13} className="text-cyan-500 shrink-0" />
                 <span className="truncate">{text}</span>
               </div>
             ))}
@@ -152,11 +152,11 @@ export default function Applications() {
         {tabs.map(tab => (
           <button key={tab} onClick={() => setTab(tab)}
             className={`px-4 py-2.5 text-[13px] font-semibold border-b-2 transition-all -mb-px ${
-              activeTab === tab ? "border-orange-500 text-orange-500" : "border-transparent text-slate-400 hover:text-slate-600"
+              activeTab === tab ? "border-cyan-500 text-cyan-500" : "border-transparent text-slate-400 hover:text-slate-600"
             }`}>
             {tab}
             <span className={`ml-1.5 text-[10.5px] px-1.5 py-0.5 rounded-full font-bold ${
-              activeTab === tab ? "bg-orange-100 text-orange-600" : "bg-slate-100 text-slate-400"
+              activeTab === tab ? "bg-cyan-100 text-cyan-600" : "bg-slate-100 text-slate-400"
             }`}>{counts[tab]}</span>
           </button>
         ))}
@@ -203,7 +203,7 @@ export default function Applications() {
                     <td className="px-4 py-3"><StatusBadge status={app.status} /></td>
                     <td className="px-4 py-3">
                       <button onClick={() => setSelected(app)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-50 border border-orange-200 text-orange-600 text-[12px] font-semibold hover:bg-orange-100 transition-colors">
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-600 text-[12px] font-semibold hover:bg-cyan-100 transition-colors">
                         <Eye size={12} /> Review
                       </button>
                     </td>

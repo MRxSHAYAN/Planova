@@ -13,7 +13,7 @@ export default function AdminTopbar({ title, onMenuToggle }) {
 
       {/* Hamburger — mobile only */}
       <button
-        className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-orange-400 hover:text-orange-500 transition-colors"
+        className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-cyan-400 hover:text-cyan-500 transition-colors"
         onClick={onMenuToggle}
         aria-label="Toggle menu"
       >
@@ -25,13 +25,13 @@ export default function AdminTopbar({ title, onMenuToggle }) {
 
       {/* Notifications */}
       <button
-        className="relative w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-orange-400 hover:text-orange-500 transition-colors"
+        className="relative w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-cyan-400 hover:text-cyan-500 transition-colors"
         onClick={() => navigate("/admin/notifications")}
         aria-label="Notifications"
       >
         <Bell size={15} />
         {unread > 0 && (
-          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-orange-500 border-[1.5px] border-white" />
+          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-cyan-500 border-[1.5px] border-white" />
         )}
       </button>
 
@@ -41,7 +41,7 @@ export default function AdminTopbar({ title, onMenuToggle }) {
           className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-slate-50 transition-colors"
           onClick={() => setDropOpen((v) => !v)}
         >
-          <div className="w-7 h-7 rounded-full bg-orange-500/15 text-orange-600 text-[11px] font-black flex items-center justify-center border-2 border-orange-200">
+          <div className="w-7 h-7 rounded-full bg-cyan-500/15 text-cyan-600 text-[11px] font-black flex items-center justify-center border-2 border-cyan-200">
             {ADMIN_USER.initials}
           </div>
           <div className="hidden sm:flex flex-col text-left">

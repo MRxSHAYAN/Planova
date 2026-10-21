@@ -5,14 +5,29 @@ import { EXHIBITORS } from "../../data.js";
 
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 
-const categoryBadge = {
-  Technology: "bg-accent-light text-navy",
-  Healthcare: "bg-status-open-bg text-status-open",
-  Energy: "bg-[#FEF3C7] text-[#92620A]",
-  Agriculture: "bg-status-open-bg text-status-open",
-  Fashion: "bg-[#FCE7F3] text-[#9D174D]",
-  Food: "bg-[#FEF3C7] text-[#92620A]",
+const categoryColor = {
+  Technology:  { bg: "bg-accent-light",    text: "text-navy" },
+  Healthcare:  { bg: "bg-status-open-bg",  text: "text-status-open" },
+  Energy:      { bg: "bg-[#FEF3C7]",       text: "text-[#92620A]" },
+  Agriculture: { bg: "bg-status-open-bg",  text: "text-status-open" },
+  Fashion:     { bg: "bg-[#FCE7F3]",       text: "text-[#9D174D]" },
+  Food:        { bg: "bg-[#FEF3C7]",       text: "text-[#92620A]" },
 };
+
+// Deterministic avatar color from company name
+const avatarPalette = [
+  "bg-[#DBEAFE] text-[#1D4ED8]",
+  "bg-[#D1FAE5] text-[#065F46]",
+  "bg-[#FEF3C7] text-[#92400E]",
+  "bg-[#FCE7F3] text-[#9D174D]",
+  "bg-[#E0E7FF] text-[#3730A3]",
+  "bg-[#FEE2E2] text-[#991B1B]",
+];
+function avatarColor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return avatarPalette[Math.abs(hash) % avatarPalette.length];
+}
 
 // Exhibitor detail modal
 function ExhibitorModal({ ex, onClose }) {
@@ -35,14 +50,10 @@ function ExhibitorModal({ ex, onClose }) {
         <div className="bg-navy px-6 py-5 flex items-start justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-9 h-9 rounded-lg bg-accent/15 flex items-center justify-center shrink-0">
-                <svg className="w-4.5 h-4.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <rect x="2" y="7" width="6" height="10" rx="1" />
-                  <rect x="9" y="3" width="6" height="14" rx="1" />
-                  <rect x="16" y="9" width="6" height="8" rx="1" />
-                </svg>
+              <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 font-black text-[13px] ${avatarColor(ex.company)}`}>
+                {ex.company.substring(0, 2).toUpperCase()}
               </div>
-              <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[ex.category]}`}>
+              <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${(categoryColor[ex.category] || categoryColor.Technology).bg} ${(categoryColor[ex.category] || categoryColor.Technology).text}`}>
                 {ex.category}
               </span>
             </div>
@@ -113,60 +124,47 @@ function ExhibitorModal({ ex, onClose }) {
 
 // Exhibitor card
 function ExhibitorCard({ ex, onView }) {
+  const c = categoryColor[ex.category] || categoryColor.Technology;
+  const initials = ex.company.split(" ").map(w => w[0]).join("").substring(0, 2).toUpperCase();
+
   return (
-    <article className="bg-surface rounded-xl border border-border p-5 flex flex-col gap-3 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="flex items-start justify-between gap-3">
-        <div className="w-11 h-11 rounded-lg bg-ice flex items-center justify-center shrink-0">
-          <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-            <rect x="2" y="7" width="6" height="10" rx="1" />
-            <rect x="9" y="3" width="6" height="14" rx="1" />
-            <rect x="16" y="9" width="6" height="8" rx="1" />
-          </svg>
+    <article className="group bg-surface rounded-2xl border border-border-card p-5 flex flex-col gap-3 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
+      {/* Header row */}
+      <div className="flex items-start gap-3">
+        <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 font-black text-[13px] ${avatarColor(ex.company)}`}>
+          {initials}
         </div>
-        <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[ex.category]}`}>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-dark font-bold text-[14.5px] leading-tight truncate group-hover:text-accent transition-colors">{ex.company}</h3>
+          <p className="text-[11.5px] text-muted mt-0.5">{ex.city}</p>
+        </div>
+        <span className={`text-[10.5px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${c.bg} ${c.text}`}>
           {ex.category}
         </span>
       </div>
 
-      <div>
-        <h3 className="text-dark font-black text-[15px] mb-1">{ex.company}</h3>
-        <p className="text-body text-[12.5px] leading-relaxed">{ex.description}</p>
+      {/* Description */}
+      <p className="text-body text-[12.5px] leading-relaxed line-clamp-2">{ex.description}</p>
+
+      {/* Meta row */}
+      <div className="flex items-center gap-3 text-[11.5px] text-muted pt-1">
+        <span>{ex.employees} employees</span>
+        <span className="text-border">·</span>
+        <span>Est. {ex.founded}</span>
+        <span className="text-border">·</span>
+        <span className="font-mono font-semibold text-dark">Booth {ex.booth}</span>
       </div>
 
-      <div className="flex flex-wrap gap-3 text-[12px] text-body">
-        <span className="flex items-center gap-1">
-          <svg className="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-          Booth {ex.booth}
-        </span>
-        <span className="flex items-center gap-1">
-          <svg className="w-3.5 h-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-          </svg>
-          {ex.employees} employees
-        </span>
-      </div>
-
-      <div className="pt-2 border-t border-border-card">
-        <p className="text-[11.5px] text-body">
-          Exhibiting at: <span className="text-dark font-semibold">{ex.expo}</span>
+      {/* Footer */}
+      <div className="pt-3 border-t border-border-card">
+        <p className="text-[11.5px] text-muted mb-3">
+          Exhibiting at <span className="text-dark font-semibold">{ex.expo}</span>
         </p>
-      </div>
-
-      <div className="mt-auto flex gap-2">
         <button
           onClick={() => onView(ex)}
-          className="flex-1 text-center text-[12.5px] font-bold py-2.5 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors"
+          className="w-full text-center text-[12.5px] font-bold py-2.5 rounded-lg bg-accent text-white hover:bg-accent-hover transition-colors"
         >
           View Profile
-        </button>
-        <button
-          onClick={() => onView(ex)}
-          className="px-4 py-2.5 rounded-lg border border-border text-[12.5px] text-body hover:border-accent hover:text-accent transition-colors"
-        >
-          Website
         </button>
       </div>
     </article>

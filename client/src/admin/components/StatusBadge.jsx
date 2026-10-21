@@ -4,13 +4,13 @@ const styles = {
   Draft:       "bg-slate-100 text-slate-500 border-slate-200",
   Archived:    "bg-slate-100 text-slate-400 border-slate-200",
   // Application status
-  Pending:     "bg-orange-50 text-orange-600 border-orange-200",
+  Pending:     "bg-cyan-50 text-cyan-600 border-cyan-200",
   Approved:    "bg-green-50 text-green-700 border-green-200",
   Rejected:    "bg-red-50 text-red-600 border-red-200",
   // User
   Active:      "bg-green-50 text-green-700 border-green-200",
   Inactive:    "bg-slate-100 text-slate-400 border-slate-200",
-  Admin:       "bg-orange-50 text-orange-700 border-orange-200",
+  Admin:       "bg-cyan-50 text-cyan-700 border-cyan-200",
   Attendee:    "bg-blue-50 text-blue-600 border-blue-200",
   Exhibitor:   "bg-violet-50 text-violet-700 border-violet-200",
   // Booth

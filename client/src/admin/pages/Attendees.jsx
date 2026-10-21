@@ -11,7 +11,7 @@ function AttendeeDetail({ att, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm" onClick={onClose}>
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden" onClick={e => e.stopPropagation()}>
         <div className="flex items-center gap-3 p-5 border-b border-slate-100">
-          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-[14px] font-black text-white shrink-0">
+          <div className="w-11 h-11 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-[14px] font-black text-white shrink-0">
             {att.name.charAt(0)}
           </div>
           <div className="flex-1">
@@ -80,11 +80,11 @@ export default function Attendees() {
             className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
         </div>
         <select value={filterExpo} onChange={e => { setExpo(e.target.value); setPage(1); }}
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-orange-400 max-w-[220px]">
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-cyan-400 max-w-[220px]">
           {expoNames.map(n => <option key={n}>{n}</option>)}
         </select>
         <select value={filterSt} onChange={e => { setSt(e.target.value); setPage(1); }}
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-orange-400">
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-cyan-400">
           {["All","Confirmed","Pending","Cancelled"].map(s => <option key={s}>{s}</option>)}
         </select>
       </div>
@@ -110,7 +110,7 @@ export default function Attendees() {
                   <tr key={att.id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-2.5">
-                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-[10px] font-black text-white shrink-0">
+                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-[10px] font-black text-white shrink-0">
                           {att.name.charAt(0)}
                         </div>
                         <span className="font-semibold text-slate-700 whitespace-nowrap">{att.name}</span>
@@ -123,7 +123,7 @@ export default function Attendees() {
                     <td className="px-4 py-3"><StatusBadge status={att.status} /></td>
                     <td className="px-4 py-3">
                       <button onClick={() => setSel(att)}
-                        className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-[12px] font-semibold hover:border-orange-400 hover:text-orange-500 transition-colors">
+                        className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-[12px] font-semibold hover:border-cyan-400 hover:text-cyan-500 transition-colors">
                         View
                       </button>
                     </td>
@@ -142,7 +142,7 @@ export default function Attendees() {
           <div className="flex gap-1">
             {Array.from({ length: totalPages }, (_, i) => i+1).map(p => (
               <button key={p} onClick={() => setPage(p)}
-                className={`w-8 h-8 rounded-lg text-[12.5px] font-semibold transition-colors ${page===p ? "bg-orange-500 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-orange-400"}`}>
+                className={`w-8 h-8 rounded-lg text-[12.5px] font-semibold transition-colors ${page===p ? "bg-cyan-500 text-white" : "bg-white border border-slate-200 text-slate-600 hover:border-cyan-400"}`}>
                 {p}
               </button>
             ))}

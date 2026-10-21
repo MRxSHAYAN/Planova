@@ -5,13 +5,13 @@ import { EXPOS } from "../../data.js";
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 const STATUSES = ["All", "Published", "Draft"];
 
-const categoryBadge = {
-  Technology: "bg-accent-light text-navy",
-  Healthcare: "bg-status-open-bg text-status-open",
-  Energy: "bg-[#FEF3C7] text-[#92620A]",
-  Agriculture: "bg-status-open-bg text-status-open",
-  Fashion: "bg-[#FCE7F3] text-[#9D174D]",
-  Food: "bg-[#FEF3C7] text-[#92620A]",
+const categoryColor = {
+  Technology:  { bg: "bg-accent-light",    text: "text-navy" },
+  Healthcare:  { bg: "bg-status-open-bg",  text: "text-status-open" },
+  Energy:      { bg: "bg-[#FEF3C7]",       text: "text-[#92620A]" },
+  Agriculture: { bg: "bg-status-open-bg",  text: "text-status-open" },
+  Fashion:     { bg: "bg-[#FCE7F3]",       text: "text-[#9D174D]" },
+  Food:        { bg: "bg-[#FEF3C7]",       text: "text-[#92620A]" },
 };
 
 // Expo detail modal
@@ -51,17 +51,17 @@ function ExpoModal({ expo, onClose }) {
 
           {/* badges on image */}
           <div className="absolute bottom-3 left-4 flex gap-1.5">
-            <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[expo.category]}`}>
+            <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${(categoryColor[expo.category] || categoryColor.Technology).bg} ${(categoryColor[expo.category] || categoryColor.Technology).text}`}>
               {expo.category}
             </span>
             {expo.status === "Published" && (
-              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-status-open-bg text-status-open">
-                Open
+              <span className="text-[10.5px] font-bold px-2.5 py-0.5 rounded-full bg-white/95 text-status-open">
+                ● Open
               </span>
             )}
             {expo.status === "Draft" && (
-              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/20 text-white border border-white/25">
-                Soon
+              <span className="text-[10.5px] font-bold px-2.5 py-0.5 rounded-full bg-white/15 text-white border border-white/25 backdrop-blur-sm">
+                Coming soon
               </span>
             )}
           </div>
@@ -113,54 +113,44 @@ function ExpoModal({ expo, onClose }) {
 
 // Expo card
 function ExpoCard({ expo, onView }) {
+  const c = categoryColor[expo.category] || categoryColor.Technology;
   return (
-    <article className="group bg-surface rounded-xl border border-border overflow-hidden flex flex-col hover:shadow-md hover:-translate-y-0.5 transition-all duration-200">
-      <div className="relative h-155px overflow-hidden bg-ice">
-        <img
-          src={expo.image}
-          alt={expo.title}
-          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-linear-to-t from-navy/35 to-transparent" />
-        <div className="absolute top-3 left-3 flex gap-1.5 flex-wrap">
-          <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[expo.category]}`}>
-            {expo.category}
-          </span>
-          {expo.status === "Published" && (
-            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-status-open-bg text-status-open">Open</span>
-          )}
-          {expo.status === "Draft" && (
-            <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/15 text-white border border-white/20">Soon</span>
-          )}
+    <article className="group bg-surface rounded-2xl border border-border-card overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" onClick={() => onView(expo)}>
+      <div className="relative h-[160px] overflow-hidden bg-ice shrink-0">
+        <img src={expo.image} alt={expo.title}
+          className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#09152E]/50 to-transparent" />
+        <div className="absolute top-3 right-3">
+          {expo.status === "Published"
+            ? <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/95 text-status-open shadow-sm">● Open</span>
+            : <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/15 text-white border border-white/25 backdrop-blur-sm">Coming soon</span>
+          }
+        </div>
+        <div className="absolute bottom-3 left-3">
+          <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${c.bg} ${c.text}`}>{expo.category}</span>
         </div>
       </div>
 
       <div className="p-4 flex flex-col flex-1">
-        <h3 className="text-dark font-bold text-[14px] leading-snug mb-3">{expo.title}</h3>
-        <div className="space-y-1.5 mb-4">
-          <div className="flex items-center gap-1.5 text-[12.5px] text-body">
-            <svg className="w-3.5 h-3.5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
-            </svg>
+        <h3 className="text-dark font-bold text-[14.5px] leading-snug mb-2 group-hover:text-accent transition-colors">{expo.title}</h3>
+        <div className="flex flex-col gap-1 mb-4">
+          <p className="text-[12px] text-muted flex items-center gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-accent inline-block shrink-0" />
             {expo.date}
-          </div>
-          <div className="flex items-center gap-1.5 text-[12.5px] text-body">
-            <svg className="w-3.5 h-3.5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z" /><circle cx="12" cy="9" r="2.5" />
-            </svg>
+          </p>
+          <p className="text-[12px] text-muted flex items-center gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-muted/40 inline-block shrink-0" />
             {expo.venue}
-          </div>
+          </p>
         </div>
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
-          <div className="flex gap-3 text-[11.5px] text-body">
-            <span><strong className="text-dark font-semibold">{expo.exhibitors}</strong> exhibitors</span>
-            <span><strong className="text-dark font-semibold">{expo.attendees.toLocaleString()}</strong> attending</span>
+          <div className="flex items-center gap-3 text-[11.5px]">
+            <span className="text-dark font-semibold">{expo.exhibitors} <span className="text-muted font-normal">exhibitors</span></span>
+            <span className="text-muted">·</span>
+            <span className="text-dark font-semibold">{expo.attendees.toLocaleString()} <span className="text-muted font-normal">attending</span></span>
           </div>
-          <button
-            onClick={() => onView(expo)}
-            className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors"
-          >
-            View →
+          <button className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors shrink-0">
+            Details →
           </button>
         </div>
       </div>

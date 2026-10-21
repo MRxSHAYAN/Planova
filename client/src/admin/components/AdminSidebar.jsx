@@ -2,9 +2,10 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, ClipboardList, Map,
   Users, CalendarClock, ShieldCheck, BarChart2,
-  Bell, Settings, LogOut, Zap,
+  Bell, Settings, LogOut,
 } from "lucide-react";
 import { ADMIN_USER, NOTIFICATIONS } from "../data/adminData";
+import logo from "../../assets/Icon.png";
 
 const BASE = "/admin";
 
@@ -58,14 +59,14 @@ export default function AdminSidebar({ onClose }) {
       {/* Logo */}
       <div className="px-5 pt-5 pb-4 shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
-            <Zap size={15} color="white" strokeWidth={2.5} />
+          <div className="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/30 overflow-hidden">
+            <img src={logo} alt="Planova" className="w-6 h-6 object-contain" />
           </div>
           <span className="font-black text-white text-[17px] tracking-tight">Planova</span>
         </div>
-        <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-orange-500/15 border border-orange-500/25">
-          <ShieldCheck size={9} className="text-orange-400" />
-          <span className="text-[9.5px] font-bold tracking-widest uppercase text-orange-400">Admin Panel</span>
+        <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-cyan-500/15 border border-cyan-500/25">
+          <ShieldCheck size={9} className="text-cyan-400" />
+          <span className="text-[9.5px] font-bold tracking-widest uppercase text-cyan-400">Admin Panel</span>
         </div>
       </div>
 
@@ -95,7 +96,7 @@ export default function AdminSidebar({ onClose }) {
                       }
                       style={({ isActive }) =>
                         isActive
-                          ? { background: "rgba(249,115,22,0.18)", color: "#fff" }
+                          ? { background: "rgba(6,182,212,0.18)", color: "#fff" }
                           : { color: "rgba(255,255,255,0.45)" }
                       }
                     >
@@ -105,12 +106,12 @@ export default function AdminSidebar({ onClose }) {
                             size={15}
                             strokeWidth={isActive ? 2.3 : 1.8}
                             className="shrink-0"
-                            style={{ color: isActive ? "#F97316" : "inherit" }}
+                            style={{ color: isActive ? "#06B6D4" : "inherit" }}
                           />
                           <span className="flex-1">{label}</span>
                           {count > 0 && (
                             <span className="h-4 min-w-[16px] px-1 rounded-full text-[9px] font-black flex items-center justify-center"
-                              style={{ background: "#F97316", color: "#fff" }}>
+                              style={{ background: "#06B6D4", color: "#fff" }}>
                               {count}
                             </span>
                           )}
@@ -134,7 +135,7 @@ export default function AdminSidebar({ onClose }) {
           onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
           onClick={() => { navigate(`${BASE}/settings`); onClose?.(); }}
         >
-          <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 bg-orange-500/20 text-orange-400">
+          <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 bg-cyan-500/20 text-cyan-400">
             {ADMIN_USER.initials}
           </span>
           <div className="flex-1 min-w-0">

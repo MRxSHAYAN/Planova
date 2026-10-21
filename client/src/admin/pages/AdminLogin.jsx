@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ADMIN_CREDENTIALS } from "../data/adminData";
+import logo from "../../assets/Icon.png";
 
 function EyeIcon() {
   return (
@@ -36,7 +37,6 @@ export default function AdminLogin() {
     e.preventDefault();
     if (!form.email || !form.password) return setError("Please fill in all fields.");
     setLoading(true);
-    // Simulate network delay
     setTimeout(() => {
       if (
         form.email.toLowerCase() === ADMIN_CREDENTIALS.email &&
@@ -55,18 +55,16 @@ export default function AdminLogin() {
       {/* Background accent */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full opacity-10"
-          style={{ background: "radial-gradient(circle, #F97316, transparent)" }} />
+          style={{ background: "radial-gradient(circle, #06B6D4, transparent)" }} />
         <div className="absolute -bottom-40 -left-40 w-[400px] h-[400px] rounded-full opacity-8"
-          style={{ background: "radial-gradient(circle, #F97316, transparent)" }} />
+          style={{ background: "radial-gradient(circle, #06B6D4, transparent)" }} />
       </div>
 
       <div className="relative w-full max-w-[420px]">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-orange-500 mb-4 shadow-lg shadow-orange-500/30">
-            <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
-            </svg>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-500 mb-4 shadow-lg shadow-cyan-500/30">
+            <img src={logo} alt="Planova" className="w-9 h-9 object-contain" />
           </div>
           <h1 className="text-2xl font-black text-white">Planova Admin</h1>
           <p className="text-slate-400 text-sm mt-1">Operations & Management Portal</p>
@@ -76,7 +74,7 @@ export default function AdminLogin() {
         <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-8 shadow-2xl">
           <h2 className="text-white font-bold text-[1.1rem] mb-1">Sign in to Admin Panel</h2>
           <p className="text-slate-400 text-[13px] mb-6">
-            Demo credentials: <span className="text-orange-400 font-mono">admin@planova.com</span> / <span className="text-orange-400 font-mono">admin123</span>
+            Demo credentials: <span className="text-cyan-400 font-mono">admin@planova.com</span> / <span className="text-cyan-400 font-mono">admin123</span>
           </p>
 
           {error && (
@@ -94,7 +92,7 @@ export default function AdminLogin() {
               <input
                 type="email" name="email" value={form.email} onChange={handleChange}
                 placeholder="admin@planova.com"
-                className="w-full px-4 py-2.5 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
+                className="w-full px-4 py-2.5 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
               />
             </div>
 
@@ -104,7 +102,7 @@ export default function AdminLogin() {
                 <input
                   type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full px-4 py-2.5 pr-10 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
+                  className="w-full px-4 py-2.5 pr-10 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
                 />
                 <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
@@ -116,7 +114,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-orange-500 text-white font-bold text-[14px] hover:bg-orange-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1 flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg bg-cyan-500 text-white font-bold text-[14px] hover:bg-cyan-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

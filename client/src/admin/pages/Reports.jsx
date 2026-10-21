@@ -1,6 +1,6 @@
 import { EXPOS, APPLICATIONS, BOOTHS, ATTENDEES, SESSIONS } from "../data/adminData";
 
-function StatBar({ label, value, max, color = "#F97316" }) {
+function StatBar({ label, value, max, color = "#06B6D4" }) {
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
   return (
     <div>
@@ -53,7 +53,7 @@ export default function Reports() {
           ["Total Expos",       EXPOS.length,      "text-blue-600 bg-blue-50"],
           ["Total Attendees",   ATTENDEES.length,   "text-green-600 bg-green-50"],
           ["Approved Exhibitors",approved,           "text-violet-600 bg-violet-50"],
-          ["Booths Occupied",   occupied,            "text-orange-500 bg-orange-50"],
+          ["Booths Occupied",   occupied,            "text-cyan-500 bg-cyan-50"],
         ].map(([label, val, cls]) => (
           <div key={label} className="bg-white rounded-xl border border-slate-200 p-5 text-center">
             <div className={`text-[28px] font-black ${cls.split(" ")[0]}`}>{val}</div>
@@ -68,11 +68,11 @@ export default function Reports() {
         <SectionCard title="Exhibitor Application Status">
           <div className="space-y-3">
             <StatBar label="Approved"  value={approved} max={totalApps} color="#22C55E" />
-            <StatBar label="Pending"   value={pending}  max={totalApps} color="#F97316" />
+            <StatBar label="Pending"   value={pending}  max={totalApps} color="#06B6D4" />
             <StatBar label="Rejected"  value={rejected} max={totalApps} color="#EF4444" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[12px]">
-            {[["Approved",approved,"text-green-600"],["Pending",pending,"text-orange-500"],["Rejected",rejected,"text-red-500"]].map(([l,v,c])=>(
+            {[["Approved",approved,"text-green-600"],["Pending",pending,"text-cyan-500"],["Rejected",rejected,"text-red-500"]].map(([l,v,c])=>(
               <div key={l} className="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
                 <div className={`font-black text-[18px] ${c}`}>{v}</div>
                 <div className="text-slate-400">{l}</div>
@@ -85,11 +85,11 @@ export default function Reports() {
         <SectionCard title="Booth Occupancy">
           <div className="space-y-3">
             <StatBar label="Occupied"  value={occupied}  max={totalB} color="#3B82F6" />
-            <StatBar label="Pending"   value={pendingB}  max={totalB} color="#F97316" />
+            <StatBar label="Pending"   value={pendingB}  max={totalB} color="#06B6D4" />
             <StatBar label="Available" value={available} max={totalB} color="#22C55E" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[12px]">
-            {[["Occupied",occupied,"text-blue-600"],["Pending",pendingB,"text-orange-500"],["Available",available,"text-green-600"]].map(([l,v,c])=>(
+            {[["Occupied",occupied,"text-blue-600"],["Pending",pendingB,"text-cyan-500"],["Available",available,"text-green-600"]].map(([l,v,c])=>(
               <div key={l} className="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
                 <div className={`font-black text-[18px] ${c}`}>{v}</div>
                 <div className="text-slate-400">{l}</div>
@@ -111,7 +111,7 @@ export default function Reports() {
         <SectionCard title="Session Attendance">
           <div className="space-y-3">
             {SESSIONS.slice(0,5).map(s => (
-              <StatBar key={s.id} label={s.title} value={s.attendees} max={500} color="#F97316" />
+              <StatBar key={s.id} label={s.title} value={s.attendees} max={500} color="#06B6D4" />
             ))}
           </div>
         </SectionCard>
@@ -123,7 +123,7 @@ export default function Reports() {
           <div className="grid grid-cols-3 gap-4 text-center">
             {[
               ["Confirmed", confirmed,  "text-green-600 bg-green-50"],
-              ["Pending",   ATTENDEES.filter(a=>a.status==="Pending").length, "text-orange-500 bg-orange-50"],
+              ["Pending",   ATTENDEES.filter(a=>a.status==="Pending").length, "text-cyan-500 bg-cyan-50"],
               ["Cancelled", cancelledA, "text-red-500 bg-red-50"],
             ].map(([label, val, cls]) => (
               <div key={label} className={`rounded-xl border border-slate-100 p-5 ${cls.split(" ")[1]}`}>

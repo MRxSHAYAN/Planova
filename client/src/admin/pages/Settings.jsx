@@ -36,7 +36,7 @@ export default function Settings() {
         {/* Profile */}
         <Section title="Admin Profile">
           <div className="flex items-center gap-4 mb-5">
-            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white text-[18px] font-black shadow-md shadow-orange-500/20">
+            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-white text-[18px] font-black shadow-md shadow-cyan-500/20">
               {ADMIN_USER.initials}
             </div>
             <div>
@@ -48,15 +48,15 @@ export default function Settings() {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Display Name</label>
               <input value={profile.name} onChange={e => setProfile(p => ({...p, name: e.target.value}))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all" />
             </div>
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Email Address</label>
               <input value={profile.email} onChange={e => setProfile(p => ({...p, email: e.target.value}))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all" />
             </div>
             <button onClick={() => showToast("Profile saved successfully.")}
-              className="px-5 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
+              className="px-5 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors">
               Save Profile
             </button>
           </div>
@@ -69,11 +69,11 @@ export default function Settings() {
               <div key={label}>
                 <label className="block text-[12px] font-semibold text-slate-600 mb-1">{label}</label>
                 <input type="password" placeholder="••••••••"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all" />
               </div>
             ))}
             <button onClick={() => showToast("Password updated successfully.")}
-              className="px-5 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
+              className="px-5 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors">
               Update Password
             </button>
           </div>
@@ -90,11 +90,11 @@ export default function Settings() {
               <div key={label}>
                 <label className="block text-[12px] font-semibold text-slate-600 mb-1">{label}</label>
                 <input defaultValue={val}
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
+                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all" />
               </div>
             ))}
             <button onClick={() => showToast("Settings saved successfully.")}
-              className="px-5 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
+              className="px-5 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors">
               Save Settings
             </button>
           </div>

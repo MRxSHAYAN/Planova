@@ -9,7 +9,7 @@ const STATUS_FILTER = ["All", "Available", "Pending", "Occupied"];
 const boothColors = {
   Available: "border-green-200 bg-green-50 text-green-700 hover:border-green-400",
   Occupied:  "border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400",
-  Pending:   "border-orange-200 bg-orange-50 text-orange-600 hover:border-orange-400",
+  Pending:   "border-cyan-200 bg-cyan-50 text-cyan-600 hover:border-cyan-400",
 };
 
 // Assign modal — shown when clicking "Assign Exhibitor" on an available booth
@@ -52,8 +52,8 @@ function AssignModal({ booth, booths, onAssign, onClose }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-center">
-              <UserCheck size={15} className="text-orange-500" />
+            <div className="w-8 h-8 rounded-lg bg-cyan-50 border border-cyan-200 flex items-center justify-center">
+              <UserCheck size={15} className="text-cyan-500" />
             </div>
             <div>
               <h2 className="font-bold text-[14.5px] text-slate-800 leading-tight">
@@ -112,7 +112,7 @@ function AssignModal({ booth, booths, onAssign, onClose }) {
                 <select
                   value={selectedExhibitor}
                   onChange={e => { setSelectedExhibitor(e.target.value); setError(""); }}
-                  className={`w-full px-3 py-2.5 rounded-lg border text-[13.5px] text-slate-700 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all appearance-none ${
+                  className={`w-full px-3 py-2.5 rounded-lg border text-[13.5px] text-slate-700 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all appearance-none ${
                     error ? "border-red-400 bg-red-50" : "border-slate-200"
                   }`}
                 >
@@ -174,7 +174,7 @@ function AssignModal({ booth, booths, onAssign, onClose }) {
             <button
               onClick={handleConfirm}
               disabled={available.length === 0}
-              className="flex-1 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5"
+              className="flex-1 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-1.5"
             >
               <UserCheck size={14} />
               Assign Booth
@@ -256,7 +256,7 @@ export default function Booths() {
           ["Total Booths", stats.total,     "bg-slate-50 border-slate-200 text-slate-600"],
           ["Available",    stats.available,  "bg-green-50 border-green-200 text-green-700"],
           ["Occupied",     stats.occupied,   "bg-blue-50 border-blue-200 text-blue-700"],
-          ["Pending",      stats.pending,    "bg-orange-50 border-orange-200 text-orange-600"],
+          ["Pending",      stats.pending,    "bg-cyan-50 border-cyan-200 text-cyan-600"],
         ].map(([label, val, cls]) => (
           <div key={label} className={`rounded-xl border p-4 text-center ${cls}`}>
             <div className="text-[22px] font-black">{val}</div>
@@ -279,14 +279,14 @@ export default function Booths() {
         <select
           value={filterExpo}
           onChange={e => setExpo(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-orange-400 max-w-[220px]"
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-cyan-400 max-w-[220px]"
         >
           {EXPO_NAMES.map(n => <option key={n}>{n}</option>)}
         </select>
         <select
           value={filterStatus}
           onChange={e => setSt(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-orange-400"
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-cyan-400"
         >
           {STATUS_FILTER.map(s => <option key={s}>{s}</option>)}
         </select>
@@ -296,7 +296,7 @@ export default function Booths() {
               key={v}
               onClick={() => setView(v)}
               className={`px-3 py-2 text-[12px] font-semibold transition-colors ${
-                view === v ? "bg-orange-500 text-white" : "text-slate-500 hover:bg-slate-50"
+                view === v ? "bg-cyan-500 text-white" : "text-slate-500 hover:bg-slate-50"
               }`}
             >
               {v === "grid" ? "⊞ Grid" : "≡ Table"}
@@ -310,7 +310,7 @@ export default function Booths() {
         {[
           ["Available", "bg-green-500"],
           ["Occupied",  "bg-blue-500"],
-          ["Pending",   "bg-orange-500"],
+          ["Pending",   "bg-cyan-500"],
         ].map(([label, cls]) => (
           <div key={label} className="flex items-center gap-1.5">
             <span className={`w-2.5 h-2.5 rounded-full ${cls}`} />
@@ -376,7 +376,7 @@ export default function Booths() {
                     <td className="px-4 py-3">
                       <button
                         onClick={() => setSel(booth)}
-                        className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-[12px] font-semibold hover:border-orange-400 hover:text-orange-500 transition-colors"
+                        className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-[12px] font-semibold hover:border-cyan-400 hover:text-cyan-500 transition-colors"
                       >
                         Details
                       </button>
@@ -436,7 +436,7 @@ export default function Booths() {
                   {!showAssign ? (
                     <button
                       onClick={() => setShowAssign(true)}
-                      className="w-full py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
+                      className="w-full py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2"
                     >
                       <UserCheck size={14} />
                       Assign Exhibitor
@@ -544,7 +544,7 @@ function AssignDropdown({ booth, booths, onAssign, onCancel }) {
       <select
         value={pick}
         onChange={e => { setPick(e.target.value); setErr(""); }}
-        className={`w-full px-3 py-2.5 rounded-lg border text-[13px] text-slate-700 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all ${
+        className={`w-full px-3 py-2.5 rounded-lg border text-[13px] text-slate-700 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all ${
           err ? "border-red-400 bg-red-50" : "border-slate-200"
         }`}
       >
@@ -586,7 +586,7 @@ function AssignDropdown({ booth, booths, onAssign, onCancel }) {
             if (!pick) { setErr("Please select an exhibitor."); return; }
             onAssign(booth.id, pick);
           }}
-          className="flex-1 py-2 rounded-lg bg-orange-500 text-white text-[12.5px] font-bold hover:bg-orange-600 transition-colors flex items-center justify-center gap-1.5"
+          className="flex-1 py-2 rounded-lg bg-cyan-500 text-white text-[12.5px] font-bold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-1.5"
         >
           <UserCheck size={13} /> Assign
         </button>

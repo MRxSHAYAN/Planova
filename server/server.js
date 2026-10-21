@@ -1,6 +1,7 @@
-  import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import express  from "express";
+import cors     from "cors";
+import dotenv   from "dotenv";
+import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -37,8 +38,53 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/users",         userRoutes);
 app.use("/api/admin",         adminRoutes);
 
-// Health check
-app.get("/", (req, res) => res.json({ message: "Planova API running" }));
+// ── Health check ────────────────────────────────────────────────────────────
+// GET /            → simple ping
+// GET /api/health  → full DB status + route list
+app.get("/", (_req, res) => res.json({ message: "Planova API running" }));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.get("/api/health", (_req, res) => {
+  const DB_STATES = { 0: "disconnected", 1: "connected", 2: "connecting", 3: "disconnecting" };
+  const dbState   = mongoose.connection.readyState;
+
+  res.status(dbState === 1 ? 200 : 503).json({
+    status: dbState === 1 ? "ok" : "error",
+    api:    "running",
+    database: {
+      state: DB_STATES[dbState] ?? "unknown",
+      name:  mongoose.connection.name  || "—",
+      host:  mongoose.connection.host  || "—",
+      mode:  process.env.NODE_ENV === "production" ? "Atlas (cloud)" : "Local MongoDB",
+    },
+    routes: {
+      auth:          ["POST /api/auth/register", "POST /api/auth/login", "POST /api/auth/admin/login", "GET /api/auth/me"],
+      events:        ["GET /api/events", "GET /api/events/:id"],
+      sessions:      ["GET /api/sessions"],
+      exhibitors:    ["GET /api/exhibitors", "GET /api/exhibitors/:id"],
+      booths:        ["GET /api/booths"],
+      registrations: ["POST /api/registrations", "GET /api/registrations/my"],
+      bookmarks:     ["GET /api/bookmarks", "POST /api/bookmarks"],
+      notifications: ["GET /api/notifications"],
+      users:         ["GET /api/users/profile"],
+      admin:         ["GET /api/admin/users", "GET /api/admin/reports"],
+    },
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// ── Start server ─────────────────────────────────────────────────────────────
+const PORT   = process.env.PORT   || 5000;
+const ENV    = process.env.NODE_ENV || "development";
+const CLIENT = process.env.CLIENT_URL || "http://localhost:5173";
+
+app.listen(PORT, () => {
+  console.log("");
+  console.log("  🚀  Planova API");
+  console.log("");
+  console.log(`  ➜  API:        http://localhost:${PORT}`);
+  console.log(`  ➜  Health:     http://localhost:${PORT}/api/health`);
+  console.log(`  ➜  Frontend:   ${CLIENT}`);
+  console.log(`  ➜  Mode:       ${ENV}`);
+  console.log(`  ➜  DB:         ${ENV === "production" ? "Atlas (cloud)" : "Local MongoDB"}`);
+  console.log("");
+});

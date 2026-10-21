@@ -13,7 +13,7 @@ function ClipboardIcon({ size, className }) {
   );
 }
 
-const typeColor = { application: "bg-orange-100 text-orange-600", expo: "bg-blue-100 text-blue-600", attendee: "bg-green-100 text-green-600", booth: "bg-violet-100 text-violet-600", system: "bg-slate-100 text-slate-500" };
+const typeColor = { application: "bg-cyan-100 text-cyan-600", expo: "bg-blue-100 text-blue-600", attendee: "bg-green-100 text-green-600", booth: "bg-violet-100 text-violet-600", system: "bg-slate-100 text-slate-500" };
 
 export default function Notifications() {
   const [notifs, setNotifs] = useState(NOTIFICATIONS);
@@ -31,7 +31,7 @@ export default function Notifications() {
         </div>
         {unread > 0 && (
           <button onClick={markAll}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-slate-600 text-[13px] font-semibold hover:border-orange-400 hover:text-orange-500 transition-colors">
+            className="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 text-slate-600 text-[13px] font-semibold hover:border-cyan-400 hover:text-cyan-500 transition-colors">
             <CheckCheck size={14} /> Mark all read
           </button>
         )}
@@ -50,7 +50,7 @@ export default function Notifications() {
             const Icon = typeIcon[n.type] || Bell;
             return (
               <div key={n.id}
-                className={`flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-slate-50 transition-colors ${!n.read ? "bg-orange-50/40" : ""}`}
+                className={`flex items-start gap-4 px-5 py-4 cursor-pointer hover:bg-slate-50 transition-colors ${!n.read ? "bg-cyan-50/40" : ""}`}
                 onClick={() => markRead(n.id)}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${typeColor[n.type] || "bg-slate-100 text-slate-500"}`}>
                   <Icon size={14} />
@@ -62,7 +62,7 @@ export default function Notifications() {
                   <p className="text-[11.5px] text-slate-400 mt-0.5">{n.time}</p>
                 </div>
                 {!n.read && (
-                  <span className="w-2 h-2 rounded-full bg-orange-500 mt-2 shrink-0" />
+                  <span className="w-2 h-2 rounded-full bg-cyan-500 mt-2 shrink-0" />
                 )}
               </div>
             );

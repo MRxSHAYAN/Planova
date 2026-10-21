@@ -31,7 +31,7 @@ function ExpoModal({ expo, onClose }) {
               [Map, `${expo.occupiedBooths}/${expo.totalBooths} booths occupied`],
             ].map(([Icon, text], i) => (
               <div key={i} className="flex items-center gap-2 text-slate-600">
-                <Icon size={13} className="text-orange-500 shrink-0" />
+                <Icon size={13} className="text-cyan-500 shrink-0" />
                 <span className="truncate">{text}</span>
               </div>
             ))}
@@ -76,7 +76,7 @@ function ExpoForm({ initial, onSave, onClose }) {
     <div>
       <label className="block text-[12px] font-semibold text-slate-600 mb-1">{label}{req && <span className="text-red-400 ml-0.5">*</span>}</label>
       <input type={type} value={form[name]} onChange={e => setForm(p => ({...p, [name]: e.target.value}))}
-        className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all ${errors[name] ? "border-red-400" : "border-slate-200"}`} />
+        className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all ${errors[name] ? "border-red-400" : "border-slate-200"}`} />
       {errors[name] && <p className="text-[11.5px] text-red-500 mt-1">{errors[name]}</p>}
     </div>
   );
@@ -100,7 +100,7 @@ function ExpoForm({ initial, onSave, onClose }) {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Category</label>
               <select value={form.category} onChange={e => setForm(p => ({...p, category: e.target.value}))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all">
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all">
                 <option value="">Select…</option>
                 {CATEGORIES.map(c => <option key={c}>{c}</option>)}
               </select>
@@ -109,7 +109,7 @@ function ExpoForm({ initial, onSave, onClose }) {
           <div>
             <label className="block text-[12px] font-semibold text-slate-600 mb-1">Status</label>
             <select value={form.status} onChange={e => setForm(p => ({...p, status: e.target.value}))}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all">
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all">
               <option>Draft</option>
               <option>Published</option>
               <option>Archived</option>
@@ -118,11 +118,11 @@ function ExpoForm({ initial, onSave, onClose }) {
           <div>
             <label className="block text-[12px] font-semibold text-slate-600 mb-1">Description</label>
             <textarea value={form.description} onChange={e => setForm(p => ({...p, description: e.target.value}))} rows={3}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all resize-none" />
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-100 transition-all resize-none" />
           </div>
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-[13px] font-semibold hover:bg-slate-50 transition-colors">Cancel</button>
-            <button type="submit" className="flex-1 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
+            <button type="submit" className="flex-1 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors">
               {initial?.id ? "Save Changes" : "Create Expo"}
             </button>
           </div>
@@ -181,7 +181,7 @@ export default function ExpoManagement() {
           <p className="text-slate-400 text-[13px] mt-0.5">{expos.length} expos · {expos.filter(e=>e.status==="Published").length} published</p>
         </div>
         <button onClick={() => { setEditExpo(null); setShowForm(true); }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors shadow-sm shadow-orange-500/20">
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors shadow-sm shadow-cyan-500/20">
           <Plus size={15} /> New Expo
         </button>
       </div>
@@ -194,7 +194,7 @@ export default function ExpoManagement() {
             className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
         </div>
         <select value={filterStatus} onChange={e => setFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-orange-400">
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-cyan-400">
           {["All","Published","Draft","Archived"].map(s => <option key={s}>{s}</option>)}
         </select>
       </div>
@@ -241,7 +241,7 @@ export default function ExpoManagement() {
                           <Eye size={13} />
                         </button>
                         <button onClick={() => { setEditExpo(expo); setShowForm(true); }} title="Edit"
-                          className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-orange-50 text-slate-400 hover:text-orange-500 transition-colors">
+                          className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-cyan-50 text-slate-400 hover:text-cyan-500 transition-colors">
                           <Pencil size={13} />
                         </button>
                         {expo.status !== "Archived" && (
