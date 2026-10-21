@@ -190,7 +190,7 @@ export default function CompanyProfile() {
       </Section>
 
       <p className="text-center text-[11.5px] pb-4" style={{ color: "#B0BCC8" }}>
-        Demo data — connect to backend to persist changes.
+        Changes will be saved once backend is connected.
       </p>
     </div>
   );

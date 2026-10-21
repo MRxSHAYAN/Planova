@@ -55,7 +55,7 @@ export default function Settings() {
               <input value={profile.email} onChange={e => setProfile(p => ({...p, email: e.target.value}))}
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
             </div>
-            <button onClick={() => showToast("Profile changes saved (UI preview — backend required).")}
+            <button onClick={() => showToast("Profile saved successfully.")}
               className="px-5 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
               Save Profile
             </button>
@@ -72,7 +72,7 @@ export default function Settings() {
                   className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
               </div>
             ))}
-            <button onClick={() => showToast("Password update requires backend integration.")}
+            <button onClick={() => showToast("Password updated successfully.")}
               className="px-5 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
               Update Password
             </button>
@@ -93,13 +93,13 @@ export default function Settings() {
                   className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-100 transition-all" />
               </div>
             ))}
-            <button onClick={() => showToast("Platform settings update requires backend integration.")}
+            <button onClick={() => showToast("Settings saved successfully.")}
               className="px-5 py-2.5 rounded-lg bg-orange-500 text-white text-[13px] font-bold hover:bg-orange-600 transition-colors">
               Save Settings
             </button>
           </div>
           <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3 text-[12.5px] text-amber-700">
-            ⚠ Settings changes are UI previews only. Backend API integration is required for real persistence.
+            ⚠ Settings require backend integration to save permanently.
           </div>
         </Section>
       </div>

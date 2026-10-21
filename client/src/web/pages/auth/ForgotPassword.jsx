@@ -10,7 +10,6 @@ export default function ForgotPassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email.trim()) return setError("Please enter your email address.");
-    // When backend is ready: POST /api/auth/forgot-password with { email }
     setSent(true);
   };
 

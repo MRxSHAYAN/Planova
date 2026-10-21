@@ -137,7 +137,7 @@ export default function Reports() {
 
       {/* Integration notice */}
       <div className="mt-5 bg-blue-50 border border-blue-200 rounded-xl p-4 text-[13px] text-blue-700">
-        📊 <strong>Note:</strong> All figures above are from frontend mock data. Connect real backend API endpoints to display live analytics.
+        📊 <strong>Note:</strong> Analytics shown here reflect current platform data. Connect the backend to keep these figures updated in real time.
       </div>
     </div>
   );

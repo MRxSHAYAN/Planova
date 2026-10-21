@@ -139,7 +139,7 @@ export default function MyApplications() {
 
       {/* Note */}
       <p className="text-[12px]" style={{ color: "#94A3B8" }}>
-        Demo data — applications cannot be approved by exhibitors.
+        Applications are reviewed by the expo organizer.
       </p>
 
       {list.length > 0 ? (

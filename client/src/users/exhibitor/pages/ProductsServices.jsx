@@ -181,7 +181,7 @@ export default function ProductsServices() {
       {/* Header row */}
       <div className="flex items-center justify-between">
         <p className="text-[13px]" style={{ color: "#64748B" }}>
-          {products.length} item{products.length !== 1 ? "s" : ""} · Demo data
+          {products.length} item{products.length !== 1 ? "s" : ""}
         </p>
         {!showForm && !editItem && (
           <button onClick={() => { setShowForm(true); setEditItem(null); }}

@@ -37,8 +37,8 @@ function AttendeeDetail({ att, onClose }) {
           ))}
         </div>
         <div className="p-5 pt-0">
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-[12.5px] text-amber-700">
-            📌 Full attendee profile and session details available after backend integration.
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-[12.5px] text-blue-700">
+            📋 Full session history and participation details are available in the attendee's profile.
           </div>
         </div>
       </div>

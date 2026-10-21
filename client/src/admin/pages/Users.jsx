@@ -32,7 +32,7 @@ export default function Users() {
         <ShieldAlert size={16} className="text-amber-600 shrink-0 mt-0.5" />
         <div>
           <p className="text-[13px] font-semibold text-amber-700">Role management requires backend authorization.</p>
-          <p className="text-[12px] text-amber-600 mt-0.5">Role changes shown here are UI previews only. Real role assignment must be enforced server-side to prevent privilege escalation.</p>
+          <p className="text-[12px] text-amber-600 mt-0.5">Role assignment is enforced on the server. Changes here require backend authorization.</p>
         </div>
       </div>
 

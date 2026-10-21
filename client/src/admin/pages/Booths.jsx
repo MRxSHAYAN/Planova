@@ -458,7 +458,7 @@ export default function Booths() {
               {selected.status === "Occupied" && (
                 <div className="pt-3 space-y-2">
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-[12px] text-amber-700">
-                    ⚠ Clearing a booth removes the exhibitor assignment. This is a UI-only action — backend confirmation required in production.
+                    ⚠ Clearing a booth removes the exhibitor assignment. This will reflect across the platform once the backend is connected.
                   </div>
                   <div className="flex gap-2">
                     <button
