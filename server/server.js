@@ -1,7 +1,6 @@
  import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -36,23 +35,8 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.get("/", (_req, res) => res.json({ message: "Planova API running" }));
-
-app.get("/api/health", (_req, res) => {
-  const STATES = { 0: "disconnected", 1: "connected", 2: "connecting", 3: "disconnecting" };
-  const state = mongoose.connection.readyState;
-
-  res.status(state === 1 ? 200 : 503).json({
-    status: state === 1 ? "ok" : "error",
-    database: {
-      state: STATES[state] || "unknown",
-      name: mongoose.connection.name || "—",
-      host: mongoose.connection.host || "—",
-      mode: process.env.NODE_ENV === "production" ? "Atlas" : "Local",
-    },
-    timestamp: new Date().toISOString(),
-  });
-});
+app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API running" }));
+app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
 
 // Local dev only — Vercel serves via the exported app
 const PORT = process.env.PORT || 5000;
