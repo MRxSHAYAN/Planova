@@ -1,5 +1,12 @@
-// Demo data — replace with API calls before production
+// Exhibitor data — imports shared business data from src/data.js
+// Company-specific data (profile, applications, booths, products) stays here.
+// When backend is ready, replace the imports with API calls.
 
+import {
+  EXPOS as SHARED_EXPOS,
+} from "../../../data.js";
+
+// ── Current company (exhibitor profile) ──────
 export const CURRENT_COMPANY = {
   id: "co_001",
   name: "TechBridge Solutions",
@@ -28,119 +35,31 @@ export const CURRENT_COMPANY = {
   },
 };
 
-export const EXPOS = [
-  {
-    id: "exp_001",
-    title: "Karachi Technology Expo 2026",
-    shortTitle: "KTE 2026",
-    date: "Nov 15–17, 2026",
-    dateStart: "2026-11-15",
-    dateEnd: "2026-11-17",
-    location: "Expo Centre, Karachi",
-    venue: "Hall A–C, Expo Centre Karachi",
-    city: "Karachi",
-    category: "Technology",
-    description:
-      "Pakistan's largest technology expo — AI, fintech, cybersecurity, SaaS. 142 exhibitors, 4,800 attendees expected.",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75",
-    totalBooths: 160,
-    availableBooths: 18,
-    attendees: 4800,
-    applicationDeadline: "2026-10-25",
-    applicationOpen: true,
-    featured: true,
-    boothPriceFrom: 45000,
-  },
-  {
-    id: "exp_002",
-    title: "Pakistan Health & Pharma Summit",
-    shortTitle: "PHPS 2026",
-    date: "Dec 3–5, 2026",
-    dateStart: "2026-12-03",
-    dateEnd: "2026-12-05",
-    location: "Convention Centre, Lahore",
-    venue: "Main Convention Hall, PCL",
-    city: "Lahore",
-    category: "Healthcare",
-    description:
-      "Connecting medical professionals, pharma companies, and health-tech innovators across Pakistan.",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=75",
-    totalBooths: 100,
-    availableBooths: 5,
-    attendees: 2600,
-    applicationDeadline: "2026-11-01",
-    applicationOpen: true,
-    featured: false,
-    boothPriceFrom: 38000,
-  },
-  {
-    id: "exp_003",
-    title: "Green Energy & Sustainability Expo",
-    shortTitle: "GESE 2027",
-    date: "Jan 20–22, 2027",
-    dateStart: "2027-01-20",
-    dateEnd: "2027-01-22",
-    location: "Jinnah Convention, Islamabad",
-    venue: "Jinnah Convention Centre",
-    city: "Islamabad",
-    category: "Energy",
-    description:
-      "Solar, wind, and energy-storage solutions from across South Asia. Keynotes from global sustainability leaders.",
-    image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=700&q=75",
-    totalBooths: 80,
-    availableBooths: 34,
-    attendees: 1900,
-    applicationDeadline: "2026-12-15",
-    applicationOpen: true,
-    featured: false,
-    boothPriceFrom: 30000,
-  },
-  {
-    id: "exp_004",
-    title: "Pakistan Startup Summit 2027",
-    shortTitle: "PSS 2027",
-    date: "Feb 14–15, 2027",
-    dateStart: "2027-02-14",
-    dateEnd: "2027-02-15",
-    location: "Arfa Software Park, Lahore",
-    venue: "Arfa Tower, Lahore",
-    city: "Lahore",
-    category: "Technology",
-    description:
-      "Pakistan's premier startup ecosystem event — pitches, VCs, and workshops for early-stage companies.",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=700&q=75",
-    totalBooths: 50,
-    availableBooths: 0,
-    attendees: 1500,
-    applicationDeadline: "2026-12-01",
-    applicationOpen: false,
-    featured: false,
-    boothPriceFrom: 22000,
-  },
-  {
-    id: "exp_005",
-    title: "AgriPak Expo 2026",
-    shortTitle: "AgriPak 2026",
-    date: "Sep 10–12, 2026",
-    dateStart: "2026-09-10",
-    dateEnd: "2026-09-12",
-    location: "PNCA, Islamabad",
-    venue: "PNCA Exhibition Hall",
-    city: "Islamabad",
-    category: "Agriculture",
-    description:
-      "Pakistan's annual agricultural technology and innovation expo.",
-    image: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=75",
-    totalBooths: 110,
-    availableBooths: 0,
-    attendees: 2100,
-    applicationDeadline: "2026-08-15",
-    applicationOpen: false,
-    featured: false,
-    boothPriceFrom: 28000,
-  },
-];
+// ── Expos (mapped from shared EXPOS) ──────────
+// Adds exhibitor-specific fields like availableBooths, applicationOpen, boothPriceFrom
+export const EXPOS = SHARED_EXPOS.map((e) => ({
+  id: `exp_${String(e.id).padStart(3, "0")}`,
+  title: e.title,
+  shortTitle: e.title.split(" ").slice(0, 2).join(" ") + " " + (e.startDate || "").slice(0, 4),
+  date: e.date,
+  dateStart: e.startDate,
+  dateEnd: e.endDate,
+  location: e.venue,
+  venue: e.venue,
+  city: e.city,
+  category: e.category,
+  description: e.description,
+  image: e.image,
+  totalBooths: e.totalBooths,
+  availableBooths: e.totalBooths - e.occupiedBooths,
+  attendees: e.attendees,
+  applicationDeadline: e.status === "Published" ? "2026-10-25" : "2026-12-01",
+  applicationOpen: e.status === "Published",
+  featured: e.id <= 2,
+  boothPriceFrom: [45000, 38000, 30000, 28000, 22000, 25000][e.id - 1] || 30000,
+}));
 
+// ── Applications (company-specific, kept local) ─
 export const APPLICATIONS = [
   {
     id: "app_001",
@@ -176,11 +95,11 @@ export const APPLICATIONS = [
   },
   {
     id: "app_003",
-    expoId: "exp_005",
-    expoTitle: "AgriPak Expo 2026",
-    expoDate: "Sep 10–12, 2026",
-    expoImage: "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=700&q=75",
-    expoCity: "Islamabad",
+    expoId: "exp_004",
+    expoTitle: "Agri-Tech Pakistan 2026",
+    expoDate: "Dec 10–12, 2026",
+    expoImage: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=75",
+    expoCity: "Faisalabad",
     appliedDate: "2026-08-01",
     appliedDateLabel: "Aug 1, 2026",
     boothPreference: "Any available",
@@ -192,6 +111,7 @@ export const APPLICATIONS = [
   },
 ];
 
+// ── Booths (company-specific, kept local) ─────
 export const BOOTHS = [
   {
     id: "bth_001",
@@ -214,6 +134,7 @@ export const BOOTHS = [
   },
 ];
 
+// ── Products (company-specific, kept local) ───
 export const PRODUCTS = [
   {
     id: "prd_001",
@@ -247,97 +168,16 @@ export const PRODUCTS = [
   },
 ];
 
-export const CONVERSATIONS = [
-  {
-    id: "conv_001",
-    with: "KTE 2026 Organiser",
-    org: "Expo Centre Karachi",
-    initials: "KE",
-    color: "#3478F6",
-    lastMessage: "Your booth setup instructions have been sent. Please confirm receipt.",
-    lastMessageTime: "10:30 AM",
-    unread: 1,
-    messages: [
-      { id: "m1", from: "them", text: "Welcome to Karachi Technology Expo 2026! Your application has been approved.", time: "Oct 8, 09:15" },
-      { id: "m2", from: "me",   text: "Thank you! We're very excited. Could you confirm the booth dimensions for A-14?", time: "Oct 8, 11:42" },
-      { id: "m3", from: "them", text: "Booth A-14 is a corner unit, 4×4 m, Hall A, Ground Floor. Setup opens Nov 14 from 9 AM.", time: "Oct 8, 14:05" },
-      { id: "m4", from: "me",   text: "Perfect, that works for us. Will power outlets be included?", time: "Oct 9, 09:30" },
-      { id: "m5", from: "them", text: "Your booth setup instructions have been sent. Please confirm receipt.", time: "Today, 10:30" },
-    ],
-  },
-  {
-    id: "conv_002",
-    with: "PHPS 2026 Organiser",
-    org: "Pakistan Convention Centre",
-    initials: "PC",
-    color: "#12875A",
-    lastMessage: "We are reviewing your application. You will hear from us shortly.",
-    lastMessageTime: "Oct 6",
-    unread: 0,
-    messages: [
-      { id: "m1", from: "them", text: "Thank you for your application to the Pakistan Health & Pharma Summit.", time: "Oct 6, 10:00" },
-      { id: "m2", from: "them", text: "We are reviewing your application. You will hear from us shortly.", time: "Oct 6, 10:02" },
-    ],
-  },
-];
-
+// ── Exhibitor notifications (local) ───────────
 export const NOTIFICATIONS = [
-  {
-    id: "ntf_001",
-    type: "approved",
-    title: "Application Approved",
-    message: "Your application for Karachi Technology Expo 2026 has been approved. Booth A-14, Hall A is assigned to you.",
-    timeLabel: "2 days ago",
-    read: false,
-    expoId: "exp_001",
-  },
-  {
-    id: "ntf_002",
-    type: "booth",
-    title: "Booth Assignment Confirmed",
-    message: "Booth A-14 (Hall A, 4×4 m corner) at KTE 2026 is confirmed. Setup opens Nov 14, 9:00 AM.",
-    timeLabel: "2 days ago",
-    read: false,
-    expoId: "exp_001",
-  },
-  {
-    id: "ntf_003",
-    type: "deadline",
-    title: "Application Deadline Approaching",
-    message: "Pakistan Health & Pharma Summit application deadline is Oct 25. Your application is under review.",
-    timeLabel: "3 days ago",
-    read: false,
-    expoId: "exp_002",
-  },
-  {
-    id: "ntf_004",
-    type: "profile",
-    title: "Complete Your Company Profile",
-    message: "Your profile is 72% complete. Add your company logo and website to improve visibility with organizers.",
-    timeLabel: "5 days ago",
-    read: true,
-    expoId: null,
-  },
-  {
-    id: "ntf_005",
-    type: "rejected",
-    title: "Application Not Accepted",
-    message: "Your application for AgriPak Expo 2026 was not accepted. Organiser note: priority given to agri-sector exhibitors.",
-    timeLabel: "Sep 10",
-    read: true,
-    expoId: "exp_005",
-  },
-  {
-    id: "ntf_006",
-    type: "announcement",
-    title: "KTE 2026 Exhibitor Briefing",
-    message: "An online briefing for KTE 2026 exhibitors is scheduled for Nov 1 at 3:00 PM. Join link will be emailed.",
-    timeLabel: "Oct 1",
-    read: true,
-    expoId: "exp_001",
-  },
+  { id: "ntf_001", type: "approved", title: "Application Approved", message: "Your application for Karachi Technology Expo 2026 has been approved. Booth A-14, Hall A is assigned to you.", timeLabel: "2 days ago", read: false, expoId: "exp_001" },
+  { id: "ntf_002", type: "booth", title: "Booth Assignment Confirmed", message: "Booth A-14 (Hall A, 4×4 m corner) at KTE 2026 is confirmed. Setup opens Nov 14, 9:00 AM.", timeLabel: "2 days ago", read: false, expoId: "exp_001" },
+  { id: "ntf_003", type: "deadline", title: "Application Deadline Approaching", message: "Pakistan Health & Pharma Summit application deadline is Oct 25. Your application is under review.", timeLabel: "3 days ago", read: false, expoId: "exp_002" },
+  { id: "ntf_004", type: "profile", title: "Complete Your Company Profile", message: "Your profile is 72% complete. Add your company logo and website to improve visibility with organizers.", timeLabel: "5 days ago", read: true, expoId: null },
+  { id: "ntf_005", type: "rejected", title: "Application Not Accepted", message: "Your application for Agri-Tech Pakistan 2026 was not accepted. Organiser note: priority given to agri-sector exhibitors.", timeLabel: "Sep 10", read: true, expoId: "exp_004" },
 ];
 
+// ── Style maps (local) ────────────────────────
 export const CATEGORY_COLORS = {
   Technology:       { bg: "#DCE8FF", text: "#09152E" },
   Healthcare:       { bg: "#DDF7E7", text: "#16804A" },
@@ -345,10 +185,8 @@ export const CATEGORY_COLORS = {
   Agriculture:      { bg: "#ECFDF5", text: "#065F46" },
   "Software & IT":  { bg: "#DCE8FF", text: "#1D4ED8" },
   Fintech:          { bg: "#DDF7E7", text: "#16804A" },
-  Cybersecurity:    { bg: "#FEF3C7", text: "#92620A" },
   "Enterprise Software": { bg: "#EDE9FE", text: "#5B21B6" },
   "Business Intelligence": { bg: "#CFFAFE", text: "#155E75" },
-  "Smart Cities":   { bg: "#EDE9FE", text: "#5B21B6" },
   Cloud:            { bg: "#DBEAFE", text: "#1E40AF" },
 };
 

@@ -12,6 +12,7 @@ import Support             from "./web/pages/Support";
 import Privacy             from "./web/pages/Privacy";
 import Login               from "./web/pages/auth/Login";
 import Register            from "./web/pages/auth/Register";
+import ForgotPassword      from "./web/pages/auth/ForgotPassword";
 import AttendeeDashboard   from "./users/attendee/AttendeeDashboard";
 import ExhibitorDashboard  from "./users/exhibitor/ExhibitorDashboard";
 import AdminLogin          from "./admin/pages/AdminLogin";
@@ -50,6 +51,7 @@ export default function App() {
         <Route path="/privacy"       element={<Privacy />} />
         <Route path="/login"         element={<Login />} />
         <Route path="/register"      element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/users/dashboard/attendee/*"  element={<AttendeeDashboard />} />
         <Route path="/users/dashboard/exhibitor/*" element={<ExhibitorDashboard />} />
         <Route path="/admin/login"   element={<AdminLogin />} />

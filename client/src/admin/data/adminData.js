@@ -1,7 +1,4 @@
-// Admin mock data — frontend preview only
-// Replace with real API calls when backend is ready
-// Fake admin credentials: admin@planova.com / admin123
-
+// Admin credentials stay in the admin folder
 export const ADMIN_CREDENTIALS = {
   email: "admin@planova.com",
   password: "admin123",
@@ -14,132 +11,12 @@ export const ADMIN_USER = {
   role: "Super Admin",
 };
 
-export const EXPOS = [
-  {
-    id: 1, title: "Karachi Technology Expo 2026",
-    category: "Technology", startDate: "2026-11-15", endDate: "2026-11-17",
-    venue: "Expo Centre, Karachi", city: "Karachi",
-    status: "Published", exhibitors: 142, attendees: 4800,
-    totalBooths: 160, occupiedBooths: 142,
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75",
-    description: "Pakistan's largest technology expo showcasing AI, fintech, cybersecurity and SaaS.",
-  },
-  {
-    id: 2, title: "Pakistan Health & Pharma Summit",
-    category: "Healthcare", startDate: "2026-12-03", endDate: "2026-12-05",
-    venue: "Convention Centre, Lahore", city: "Lahore",
-    status: "Published", exhibitors: 87, attendees: 2600,
-    totalBooths: 100, occupiedBooths: 87,
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=75",
-    description: "Premier healthcare summit connecting medical professionals and pharma companies.",
-  },
-  {
-    id: 3, title: "Green Energy & Sustainability Expo",
-    category: "Energy", startDate: "2027-01-20", endDate: "2027-01-22",
-    venue: "Jinnah Convention, Islamabad", city: "Islamabad",
-    status: "Draft", exhibitors: 65, attendees: 1900,
-    totalBooths: 80, occupiedBooths: 65,
-    image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=700&q=75",
-    description: "Solar, wind, and energy-storage solutions across South Asia.",
-  },
-  {
-    id: 4, title: "Agri-Tech Pakistan 2026",
-    category: "Agriculture", startDate: "2026-12-10", endDate: "2026-12-12",
-    venue: "Faisalabad Expo Centre", city: "Faisalabad",
-    status: "Published", exhibitors: 54, attendees: 1500,
-    totalBooths: 70, occupiedBooths: 54,
-    image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=75",
-    description: "Connecting farmers, agri-tech startups, and agricultural equipment manufacturers.",
-  },
-  {
-    id: 5, title: "Textile & Fashion Expo Pakistan",
-    category: "Fashion", startDate: "2027-02-05", endDate: "2027-02-07",
-    venue: "Lahore Expo Centre", city: "Lahore",
-    status: "Draft", exhibitors: 0, attendees: 0,
-    totalBooths: 130, occupiedBooths: 0,
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=75",
-    description: "Pakistan's booming textile industry showcase.",
-  },
-];
+// Re-export shared data from src/data.js so admin pages use the same data as the website
+import {
+  EXPOS, EXHIBITORS, SESSIONS, BOOTHS, ATTENDEES, USERS,
+  ADMIN_NOTIFICATIONS, ADMIN_ACTIVITY,
+} from "../../data.js";
 
-export const APPLICATIONS = [
-  { id: 1, company: "Netsol Technologies",   contact: "Kamran Ali",    phone: "+92 300 111 2222", email: "kamran@netsol.com",  expo: "Karachi Technology Expo 2026",       appliedAt: "2026-09-10", booth: "A-04", status: "Approved",  category: "Technology", city: "Lahore",    desc: "Pakistan's leading IT solutions provider specializing in leasing and finance software.", employees: "1000+", founded: "1995" },
-  { id: 2, company: "Shaukat Khanum Labs",   contact: "Dr. Sara Khan", phone: "+92 321 555 6666", email: "sara@sk.org.pk",     expo: "Pakistan Health & Pharma Summit",    appliedAt: "2026-09-15", booth: "B-11", status: "Approved",  category: "Healthcare", city: "Lahore",    desc: "Diagnostic and pathology services arm of Shaukat Khanum Cancer Hospital network.",      employees: "500+",  founded: "1994" },
-  { id: 3, company: "SolarMax Pakistan",     contact: "Usman Tariq",   phone: "+92 333 777 8888", email: "usman@solarmax.pk",  expo: "Green Energy & Sustainability Expo", appliedAt: "2026-10-01", booth: "C-07", status: "Pending",   category: "Energy",    city: "Islamabad", desc: "Solar panel manufacturer and installer serving residential and commercial sectors.",      employees: "200+",  founded: "2019" },
-  { id: 4, company: "Engro Fertilizers",     contact: "Ali Hassan",    phone: "+92 300 222 3333", email: "ali@engro.com",      expo: "Agri-Tech Pakistan 2026",            appliedAt: "2026-10-05", booth: "D-02", status: "Pending",   category: "Agriculture",city: "Karachi",  desc: "Pakistan's largest fertilizer producer advancing precision farming solutions.",         employees: "2000+", founded: "1965" },
-  { id: 5, company: "Gul Ahmed Textile",     contact: "Fatima Raza",   phone: "+92 321 444 5555", email: "fatima@gulahmed.com", expo: "Textile & Fashion Expo Pakistan",   appliedAt: "2026-10-08", booth: "E-01", status: "Pending",   category: "Fashion",   city: "Karachi",  desc: "One of Pakistan's largest textile manufacturers with global export operations.",        employees: "5000+", founded: "1953" },
-  { id: 6, company: "K-Electric",            contact: "Bilal Mirza",   phone: "+92 300 888 9999", email: "bilal@ke.com.pk",    expo: "Green Energy & Sustainability Expo", appliedAt: "2026-09-28", booth: "C-02", status: "Approved",  category: "Energy",    city: "Karachi",  desc: "Karachi's primary electric utility, showcasing renewable energy transition programs.",   employees: "10000+",founded: "1913" },
-  { id: 7, company: "HealthTech Solutions",  contact: "Dr. Ayesha",    phone: "+92 312 666 7777", email: "ayesha@healthtech.pk", expo: "Pakistan Health & Pharma Summit",  appliedAt: "2026-10-12", booth: "B-14", status: "Rejected",  category: "Healthcare",city: "Karachi",  desc: "Early-stage healthtech startup developing telemedicine software for rural clinics.",     employees: "80+",   founded: "2022", rejectReason: "Incomplete documentation submitted." },
-  { id: 8, company: "Systems Limited",       contact: "Hassan Shah",   phone: "+92 300 333 4444", email: "hassan@systemsltd.com",expo: "Karachi Technology Expo 2026",      appliedAt: "2026-09-22", booth: "A-09", status: "Approved",  category: "Technology",city: "Lahore",   desc: "Enterprise technology and BPO company listed on PSX.",                                  employees: "8000+", founded: "1977" },
-];
-
-export const BOOTHS = [
-  { id: "A-01", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "A-02", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "TechVision PK" },
-  { id: "A-03", expo: "Karachi Technology Expo 2026", type: "Premium",  size: "6×3m", status: "Occupied",   exhibitor: "DevSync" },
-  { id: "A-04", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "Netsol Technologies" },
-  { id: "A-05", expo: "Karachi Technology Expo 2026", type: "Corner",   size: "4×4m", status: "Pending",    exhibitor: "Inbox Business" },
-  { id: "A-06", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "A-07", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "A-08", expo: "Karachi Technology Expo 2026", type: "Premium",  size: "6×3m", status: "Occupied",   exhibitor: "10Pearls" },
-  { id: "A-09", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "Systems Limited" },
-  { id: "A-10", expo: "Karachi Technology Expo 2026", type: "Corner",   size: "4×4m", status: "Available",  exhibitor: null },
-  { id: "B-01", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "B-02", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "MedCo Pakistan" },
-  { id: "B-11", expo: "Pakistan Health & Pharma Summit", type: "Premium",  size: "6×3m", status: "Occupied",   exhibitor: "Shaukat Khanum Labs" },
-  { id: "B-14", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "3×3m", status: "Pending",    exhibitor: "HealthTech Solutions" },
-  { id: "C-02", expo: "Green Energy & Sustainability Expo", type: "Standard", size: "3×3m", status: "Occupied", exhibitor: "K-Electric" },
-  { id: "C-07", expo: "Green Energy & Sustainability Expo", type: "Premium",  size: "6×3m", status: "Pending",  exhibitor: "SolarMax Pakistan" },
-  { id: "D-02", expo: "Agri-Tech Pakistan 2026", type: "Standard", size: "3×3m", status: "Pending", exhibitor: "Engro Fertilizers" },
-  { id: "E-01", expo: "Textile & Fashion Expo Pakistan", type: "Corner", size: "4×4m", status: "Pending", exhibitor: "Gul Ahmed Textile" },
-];
-
-export const ATTENDEES = [
-  { id: 1,  name: "Ahmed Raza",    email: "ahmed.raza@gmail.com",  expo: "Karachi Technology Expo 2026",    registeredAt: "2026-10-01", status: "Confirmed", sessions: 3 },
-  { id: 2,  name: "Sara Khan",     email: "sara.khan@outlook.com", expo: "Karachi Technology Expo 2026",    registeredAt: "2026-10-03", status: "Confirmed", sessions: 2 },
-  { id: 3,  name: "Bilal Tariq",   email: "bilal.t@hotmail.com",   expo: "Pakistan Health & Pharma Summit", registeredAt: "2026-10-05", status: "Confirmed", sessions: 4 },
-  { id: 4,  name: "Zainab Malik",  email: "zainab@yahoo.com",      expo: "Pakistan Health & Pharma Summit", registeredAt: "2026-10-07", status: "Cancelled", sessions: 0 },
-  { id: 5,  name: "Omar Siddiqui", email: "omars@gmail.com",       expo: "Karachi Technology Expo 2026",    registeredAt: "2026-10-08", status: "Confirmed", sessions: 1 },
-  { id: 6,  name: "Hira Farooq",   email: "hira.f@proton.me",      expo: "Agri-Tech Pakistan 2026",         registeredAt: "2026-10-10", status: "Pending",   sessions: 0 },
-  { id: 7,  name: "Faisal Mirza",  email: "fmirza@gmail.com",      expo: "Karachi Technology Expo 2026",    registeredAt: "2026-10-11", status: "Confirmed", sessions: 2 },
-  { id: 8,  name: "Nadia Hussain", email: "nadia.h@gmail.com",     expo: "Green Energy & Sustainability Expo", registeredAt: "2026-10-12", status: "Confirmed", sessions: 3 },
-  { id: 9,  name: "Iqbal Ansari",  email: "iqbal.a@live.com",      expo: "Pakistan Health & Pharma Summit", registeredAt: "2026-10-13", status: "Confirmed", sessions: 2 },
-  { id: 10, name: "Mariam Javed",  email: "mariam.j@gmail.com",    expo: "Textile & Fashion Expo Pakistan", registeredAt: "2026-10-14", status: "Pending",   sessions: 0 },
-];
-
-export const SESSIONS = [
-  { id: 1, expo: "Karachi Technology Expo 2026",       title: "Opening Keynote: Pakistan's Digital Future",  speaker: "Dr. Umar Saif",      type: "Keynote",  date: "2026-11-15", time: "09:00", duration: "60 min", room: "Main Hall",       attendees: 420 },
-  { id: 2, expo: "Karachi Technology Expo 2026",       title: "AI in Pakistani Industry: Case Studies",       speaker: "Sana Tariq",         type: "Talk",     date: "2026-11-15", time: "11:00", duration: "45 min", room: "Room A",           attendees: 180 },
-  { id: 3, expo: "Karachi Technology Expo 2026",       title: "Startup Pitching Competition",                 speaker: "Panel of 5 Judges",  type: "Workshop", date: "2026-11-16", time: "10:00", duration: "90 min", room: "Innovation Stage", attendees: 260 },
-  { id: 4, expo: "Pakistan Health & Pharma Summit",    title: "Post-COVID Healthcare Infrastructure",         speaker: "Prof. Zafar Mirza",  type: "Keynote",  date: "2026-12-03", time: "09:30", duration: "60 min", room: "Grand Auditorium", attendees: 310 },
-  { id: 5, expo: "Pakistan Health & Pharma Summit",    title: "Telemedicine Adoption in Rural Pakistan",      speaker: "Dr. Ayesha Raza",    type: "Talk",     date: "2026-12-04", time: "14:00", duration: "45 min", room: "Hall B",           attendees: 150 },
-  { id: 6, expo: "Green Energy & Sustainability Expo", title: "Renewable Energy Policy in Pakistan",          speaker: "Eng. Sarfraz Ahmed", type: "Keynote",  date: "2027-01-20", time: "10:00", duration: "60 min", room: "Main Stage",       attendees: 200 },
-];
-
-export const USERS = [
-  { id: 1, name: "Ahmed Raza",     email: "ahmed.raza@gmail.com",   role: "Attendee",  status: "Active",   joinedAt: "2026-09-12" },
-  { id: 2, name: "Sara Khan",      email: "sara.khan@outlook.com",  role: "Attendee",  status: "Active",   joinedAt: "2026-09-18" },
-  { id: 3, name: "Kamran Ali",     email: "kamran@netsol.com",      role: "Exhibitor", status: "Active",   joinedAt: "2026-09-10" },
-  { id: 4, name: "Bilal Tariq",    email: "bilal.t@hotmail.com",    role: "Attendee",  status: "Active",   joinedAt: "2026-10-05" },
-  { id: 5, name: "Zainab Malik",   email: "zainab@yahoo.com",       role: "Attendee",  status: "Inactive", joinedAt: "2026-10-07" },
-  { id: 6, name: "Usman Tariq",    email: "usman@solarmax.pk",      role: "Exhibitor", status: "Active",   joinedAt: "2026-10-01" },
-  { id: 7, name: "Admin",          email: "admin@planova.com",      role: "Admin",     status: "Active",   joinedAt: "2026-01-01" },
-  { id: 8, name: "Fatima Raza",    email: "fatima@gulahmed.com",    role: "Exhibitor", status: "Active",   joinedAt: "2026-10-08" },
-];
-
-export const NOTIFICATIONS = [
-  { id: 1, type: "application", message: "SolarMax Pakistan submitted a new exhibitor application.", time: "2 hours ago",  read: false },
-  { id: 2, type: "application", message: "Engro Fertilizers submitted a new exhibitor application.", time: "4 hours ago",  read: false },
-  { id: 3, type: "expo",        message: "Textile & Fashion Expo Pakistan has been drafted.",         time: "Yesterday",    read: false },
-  { id: 4, type: "attendee",    message: "42 new attendees registered for Karachi Tech Expo.",        time: "2 days ago",   read: true  },
-  { id: 5, type: "booth",       message: "Booth A-05 is pending assignment confirmation.",            time: "3 days ago",   read: true  },
-  { id: 6, type: "system",      message: "System backup completed successfully.",                     time: "3 days ago",   read: true  },
-];
-
-export const ACTIVITY = [
-  { id: 1, action: "Approved application from K-Electric",           user: "Admin", time: "1 hour ago",  type: "success" },
-  { id: 2, action: "Rejected application from HealthTech Solutions",  user: "Admin", time: "3 hours ago", type: "error"   },
-  { id: 3, action: "Published Karachi Technology Expo 2026",          user: "Admin", time: "Yesterday",   type: "info"    },
-  { id: 4, action: "Assigned Booth A-04 to Netsol Technologies",      user: "Admin", time: "2 days ago",  type: "info"    },
-  { id: 5, action: "Added session: AI in Pakistani Industry",          user: "Admin", time: "2 days ago",  type: "info"    },
-];
+// Admin pages call them APPLICATIONS, so re-export with that name
+export { EXPOS, EXHIBITORS as APPLICATIONS, SESSIONS, BOOTHS, ATTENDEES, USERS };
+export { ADMIN_NOTIFICATIONS as NOTIFICATIONS, ADMIN_ACTIVITY as ACTIVITY };

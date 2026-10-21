@@ -1,89 +1,9 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
-
-const EXPOS = [
-  {
-    id: 1,
-    title: "Karachi Technology Expo 2026",
-    date: "Nov 15–17, 2026",
-    location: "Expo Centre, Karachi",
-    category: "Technology",
-    exhibitors: 142,
-    attendees: 4800,
-    status: "Open",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75",
-    description:
-      "The biggest technology gathering in Karachi. Over 140 exhibitors showcasing the latest in AI, fintech, cybersecurity, and consumer electronics. Attendees get access to keynotes, live product demos, and networking events across three days.",
-  },
-  {
-    id: 2,
-    title: "Pakistan Health & Pharma Summit",
-    date: "Dec 3–5, 2026",
-    location: "Convention Centre, Lahore",
-    category: "Healthcare",
-    exhibitors: 87,
-    attendees: 2600,
-    status: "Open",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=75",
-    description:
-      "A dedicated summit for healthcare professionals, pharma brands, and medical device companies. Sessions cover public health policy, new drug approvals, hospital management, and mental health awareness.",
-  },
-  {
-    id: 3,
-    title: "Green Energy & Sustainability Expo",
-    date: "Jan 20–22, 2027",
-    location: "Jinnah Convention, Islamabad",
-    category: "Energy",
-    exhibitors: 65,
-    attendees: 1900,
-    status: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=700&q=75",
-    description:
-      "Pakistan's first large-scale green energy expo. Focus on solar, wind, and hydro innovations from local and international companies. Includes government policy discussions and investor roundtables.",
-  },
-  {
-    id: 4,
-    title: "Agri-Tech Pakistan 2026",
-    date: "Dec 10–12, 2026",
-    location: "Faisalabad Expo Centre",
-    category: "Agriculture",
-    exhibitors: 54,
-    attendees: 1500,
-    status: "Open",
-    image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=75",
-    description:
-      "Connecting farmers, agri-tech startups, and agricultural equipment manufacturers. Live field demos, drone showcases, and workshops on precision farming and smart irrigation.",
-  },
-  {
-    id: 5,
-    title: "Textile & Fashion Expo Pakistan",
-    date: "Feb 5–7, 2027",
-    location: "Lahore Expo Centre",
-    category: "Fashion",
-    exhibitors: 110,
-    attendees: 3200,
-    status: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=700&q=75",
-    description:
-      "A showcase of Pakistan's booming textile industry. Domestic and international buyers meet manufacturers, designers, and fabric innovators. Includes fashion shows and B2B matchmaking sessions.",
-  },
-  {
-    id: 6,
-    title: "Pakistan Food & Beverage Expo",
-    date: "Mar 1–3, 2027",
-    location: "Karachi Expo Centre",
-    category: "Food",
-    exhibitors: 98,
-    attendees: 2900,
-    status: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=75",
-    description:
-      "Everything food — from street food brands going national to large FMCG companies launching new products. Cooking competitions, tastings, and retail buyer meetups all under one roof.",
-  },
-];
+import { EXPOS } from "../../data.js";
 
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
-const STATUSES = ["All", "Open", "Coming Soon"];
+const STATUSES = ["All", "Published", "Draft"];
 
 const categoryBadge = {
   Technology: "bg-accent-light text-navy",
@@ -134,12 +54,12 @@ function ExpoModal({ expo, onClose }) {
             <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[expo.category]}`}>
               {expo.category}
             </span>
-            {expo.status === "Open" && (
+            {expo.status === "Published" && (
               <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-status-open-bg text-status-open">
                 Open
               </span>
             )}
-            {expo.status === "Coming Soon" && (
+            {expo.status === "Draft" && (
               <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/20 text-white border border-white/25">
                 Soon
               </span>
@@ -162,7 +82,7 @@ function ExpoModal({ expo, onClose }) {
               <svg className="w-4 h-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z" /><circle cx="12" cy="9" r="2.5" />
               </svg>
-              {expo.location}
+              {expo.venue}
             </div>
           </div>
 
@@ -180,7 +100,7 @@ function ExpoModal({ expo, onClose }) {
           </div>
 
           <a
-            href="/register?role=attendee"
+            href="/register"
             className="w-full block text-center py-3 rounded-xl bg-accent text-navy font-bold text-[13.5px] hover:bg-accent-hover hover:text-white transition-colors"
           >
             Register to Attend
@@ -206,10 +126,10 @@ function ExpoCard({ expo, onView }) {
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${categoryBadge[expo.category]}`}>
             {expo.category}
           </span>
-          {expo.status === "Open" && (
+          {expo.status === "Published" && (
             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-status-open-bg text-status-open">Open</span>
           )}
-          {expo.status === "Coming Soon" && (
+          {expo.status === "Draft" && (
             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/15 text-white border border-white/20">Soon</span>
           )}
         </div>
@@ -228,7 +148,7 @@ function ExpoCard({ expo, onView }) {
             <svg className="w-3.5 h-3.5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z" /><circle cx="12" cy="9" r="2.5" />
             </svg>
-            {expo.location}
+            {expo.venue}
           </div>
         </div>
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
@@ -258,7 +178,7 @@ export default function ExploreExpos() {
   const filtered = EXPOS.filter((e) => {
     const matchSearch =
       e.title.toLowerCase().includes(search.toLowerCase()) ||
-      e.location.toLowerCase().includes(search.toLowerCase());
+      e.venue.toLowerCase().includes(search.toLowerCase());
     const matchCategory = category === "All" || e.category === category;
     const matchStatus = status === "All" || e.status === status;
     return matchSearch && matchCategory && matchStatus;

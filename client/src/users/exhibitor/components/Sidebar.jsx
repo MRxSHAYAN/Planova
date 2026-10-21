@@ -6,7 +6,6 @@ import {
   MapPin,
   Building2,
   Package,
-  MessageSquare,
   Bell,
   Settings,
   LogOut,
@@ -41,7 +40,6 @@ const NAV_GROUPS = [
   {
     group: "Account",
     items: [
-      { label: "Messages",          path: `${BASE}/messages`,           icon: MessageSquare, badge: "messages" },
       { label: "Notifications",     path: `${BASE}/notifications`,      icon: Bell,          badge: "notifications" },
       { label: "Settings",          path: `${BASE}/settings`,           icon: Settings },
     ],

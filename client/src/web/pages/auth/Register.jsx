@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { User, BarChart2 } from "lucide-react";
 import SignImg from "../../assets/Sign_Booth.jpg";
 import AuthNavbar from "../../components/AuthNavbar";
@@ -32,9 +32,7 @@ function EyeOffIcon() {
 
 export default function Register() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-
-  const [form, setForm]         = useState({ name: "", email: "", password: "", role: searchParams.get("role") || "attendee" });
+  const [form, setForm]         = useState({ name: "", email: "", password: "", role: "attendee" });
   const [showPass, setShowPass] = useState(false);
   const [error, setError]       = useState("");
 
@@ -47,7 +45,12 @@ export default function Register() {
     e.preventDefault();
     if (!form.name || !form.email || !form.password) return setError("Please fill in all fields.");
     if (form.password.length < 8) return setError("Password must be at least 8 characters.");
-    navigate("/");
+    // Redirect based on role after registration
+    if (form.role === "exhibitor") {
+      navigate("/users/dashboard/exhibitor");
+    } else {
+      navigate("/users/dashboard/attendee");
+    }
   };
 
   const activeRole = ROLES.find((r) => r.id === form.role);

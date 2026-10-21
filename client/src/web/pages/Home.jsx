@@ -2,46 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import heroImg from "./../assets/Hero.jpg";
+import { EXPOS } from "../../data.js";
 
 const HERO_IMAGE = heroImg;
 
-const EXPOS = [
-  {
-    id: 1,
-    title: "Karachi Technology Expo 2026",
-    date: "Nov 15–17, 2026",
-    location: "Expo Centre, Karachi",
-    category: "Technology",
-    exhibitors: 142,
-    attendees: 4800,
-    status: "Open",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75",
-  },
-  {
-    id: 2,
-    title: "Pakistan Health & Pharma Summit",
-    date: "Dec 3–5, 2026",
-    location: "Convention Centre, Lahore",
-    category: "Healthcare",
-    exhibitors: 87,
-    attendees: 2600,
-    status: "Open",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=75",
-  },
-  {
-    id: 3,
-    title: "Green Energy & Sustainability Expo",
-    date: "Jan 20–22, 2027",
-    location: "Jinnah Convention, Islamabad",
-    category: "Energy",
-    exhibitors: 65,
-    attendees: 1900,
-    status: "Coming Soon",
-    image: "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=700&q=75",
-  },
-];
-
-const FILTERS = ["All", "Technology", "Healthcare", "Energy"];
+const FILTERS = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 
 // Hero section
 function Hero() {
@@ -142,10 +107,10 @@ function ExpoCard({ expo }) {
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${badge[expo.category] || "bg-accent-light text-navy"}`}>
             {expo.category}
           </span>
-          {expo.status === "Open" && (
+          {expo.status === "Published" && (
             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-status-open-bg text-status-open">Open</span>
           )}
-          {expo.status === "Coming Soon" && (
+          {expo.status === "Draft" && (
             <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/15 text-white border border-white/20">Soon</span>
           )}
         </div>
@@ -164,7 +129,7 @@ function ExpoCard({ expo }) {
             <svg className="w-3.5 h-3.5 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7Z"/><circle cx="12" cy="9" r="2.5"/>
             </svg>
-            {expo.location}
+            {expo.venue}
           </div>
         </div>
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
@@ -178,7 +143,7 @@ function ExpoCard({ expo }) {
                 <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4M10 16h4"/>
               </svg>
             </button>
-            <Link to={`/expo/${expo.id}`} className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors">
+            <Link to="/explore-expos" className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors">
               View →
             </Link>
           </div>
@@ -330,7 +295,7 @@ function ForWho() {
             <p className="text-white/45 text-[12.5px] leading-relaxed flex-1">
               Publish expos, review applications, assign booths on the floor planner, manage sessions, and watch analytics live.
             </p>
-            <Link to="/register?role=organizer"
+            <Link to="/register"
               className="mt-6 inline-flex items-center justify-center text-[12.5px] font-bold py-3 px-5 rounded-lg bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors min-h-44px">
               Start organizing →
             </Link>
@@ -343,14 +308,14 @@ function ForWho() {
                 title: "Exhibitors",
                 desc: "Build a company profile, apply to expos, choose your booth, and list what you're showcasing. All statuses tracked in one place.",
                 cta: "Apply as exhibitor →",
-                href: "/register?role=exhibitor",
+                href: "/register",
                 icon: <><rect x="2" y="7" width="6" height="10" rx="1"/><rect x="9" y="3" width="6" height="14" rx="1"/><rect x="16" y="9" width="6" height="8" rx="1"/></>,
               },
               {
                 title: "Attendees",
                 desc: "Register for expos, browse exhibitors, bookmark sessions, and navigate the venue with the live floor map on the day.",
                 cta: "Register to attend →",
-                href: "/register?role=attendee",
+                href: "/register",
                 icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></>,
               },
             ].map((role) => (

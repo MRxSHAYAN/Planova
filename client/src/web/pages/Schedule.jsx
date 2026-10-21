@@ -1,86 +1,6 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
-
-const SESSIONS = [
-  {
-    id: 1,
-    expo: "Karachi Technology Expo 2026",
-    expoDate: "Nov 15–17, 2026",
-    day: "Day 1 — Nov 15",
-    time: "09:00 AM",
-    duration: "60 min",
-    title: "Opening Keynote: Pakistan's Digital Future",
-    speaker: "Dr. Umar Saif",
-    role: "Former Chair, PITB",
-    type: "Keynote",
-    room: "Main Hall",
-  },
-  {
-    id: 2,
-    expo: "Karachi Technology Expo 2026",
-    expoDate: "Nov 15–17, 2026",
-    day: "Day 1 — Nov 15",
-    time: "11:00 AM",
-    duration: "45 min",
-    title: "AI in Pakistani Industry: Case Studies",
-    speaker: "Sana Tariq",
-    role: "CTO, Netsol Technologies",
-    type: "Talk",
-    room: "Conference Room A",
-  },
-  {
-    id: 3,
-    expo: "Karachi Technology Expo 2026",
-    expoDate: "Nov 15–17, 2026",
-    day: "Day 2 — Nov 16",
-    time: "10:00 AM",
-    duration: "90 min",
-    title: "Startup Pitching Competition",
-    speaker: "Panel of 5 Judges",
-    role: "Various",
-    type: "Workshop",
-    room: "Innovation Stage",
-  },
-  {
-    id: 4,
-    expo: "Pakistan Health & Pharma Summit",
-    expoDate: "Dec 3–5, 2026",
-    day: "Day 1 — Dec 3",
-    time: "09:30 AM",
-    duration: "60 min",
-    title: "Post-COVID Healthcare Infrastructure",
-    speaker: "Prof. Zafar Mirza",
-    role: "Former SAPM Health",
-    type: "Keynote",
-    room: "Grand Auditorium",
-  },
-  {
-    id: 5,
-    expo: "Pakistan Health & Pharma Summit",
-    expoDate: "Dec 3–5, 2026",
-    day: "Day 2 — Dec 4",
-    time: "02:00 PM",
-    duration: "45 min",
-    title: "Telemedicine Adoption in Rural Pakistan",
-    speaker: "Dr. Ayesha Raza",
-    role: "Chief Medical Officer, Sehat Kahani",
-    type: "Talk",
-    room: "Hall B",
-  },
-  {
-    id: 6,
-    expo: "Green Energy & Sustainability Expo",
-    expoDate: "Jan 20–22, 2027",
-    day: "Day 1 — Jan 20",
-    time: "10:00 AM",
-    duration: "60 min",
-    title: "Renewable Energy Policy in Pakistan",
-    speaker: "Eng. Sarfraz Ahmed",
-    role: "Director, AEDB",
-    type: "Keynote",
-    room: "Main Stage",
-  },
-];
+import { SESSIONS } from "../../data.js";
 
 const TYPE_COLORS = {
   Keynote:  "bg-accent-light text-navy",
@@ -91,6 +11,12 @@ const TYPE_COLORS = {
 
 const ALL_EXPOS = ["All", ...new Set(SESSIONS.map((s) => s.expo))];
 const ALL_TYPES = ["All", "Keynote", "Talk", "Workshop", "Panel"];
+
+// Format date like "Nov 15" from "2026-11-15"
+function dayLabel(dateStr) {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
 
 function SessionCard({ session, bookmarked, onToggle }) {
   return (
@@ -123,7 +49,7 @@ function SessionCard({ session, bookmarked, onToggle }) {
 
         <h3 className="text-dark font-bold text-[14px] leading-snug mb-1">{session.title}</h3>
         <p className="text-[12.5px] text-body">
-          {session.speaker} · <span className="text-muted">{session.role}</span>
+          {session.speaker} · <span className="text-muted">{session.speakerRole}</span>
         </p>
       </div>
     </div>
@@ -150,7 +76,7 @@ export default function Schedule() {
 
   // Group sessions by "Expo — Day" for section headers
   const grouped = filtered.reduce((acc, s) => {
-    const key = `${s.expo} — ${s.day}`;
+    const key = `${s.expo} — ${dayLabel(s.date)}`;
     if (!acc[key]) acc[key] = [];
     acc[key].push(s);
     return acc;

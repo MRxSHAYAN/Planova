@@ -1,105 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-
-const EXHIBITORS = [
-  {
-    id: 1,
-    company: "Netsol Technologies",
-    category: "Technology",
-    expos: ["Karachi Technology Expo 2026"],
-    booth: "A-04",
-    description: "Pakistan's leading IT solutions provider specializing in leasing and finance software.",
-    website: "https://netsoltech.com",
-    employees: "1000+",
-    founded: "1995",
-    city: "Lahore",
-  },
-  {
-    id: 2,
-    company: "Shaukat Khanum Labs",
-    category: "Healthcare",
-    expos: ["Pakistan Health & Pharma Summit"],
-    booth: "B-11",
-    description: "Diagnostic and pathology services arm of the Shaukat Khanum Cancer Hospital network.",
-    website: "https://shaukatkhanum.org.pk",
-    employees: "500+",
-    founded: "1994",
-    city: "Lahore",
-  },
-  {
-    id: 3,
-    company: "K-Electric",
-    category: "Energy",
-    expos: ["Green Energy & Sustainability Expo"],
-    booth: "C-02",
-    description: "Karachi's primary electric utility, showcasing renewable energy transition programs.",
-    website: "https://ke.com.pk",
-    employees: "10,000+",
-    founded: "1913",
-    city: "Karachi",
-  },
-  {
-    id: 4,
-    company: "Engro Fertilizers",
-    category: "Agriculture",
-    expos: ["Agri-Tech Pakistan 2026"],
-    booth: "D-07",
-    description: "Largest fertilizer producer in Pakistan, advancing precision farming solutions.",
-    website: "https://engrofertilizers.com",
-    employees: "2000+",
-    founded: "1965",
-    city: "Karachi",
-  },
-  {
-    id: 5,
-    company: "Gul Ahmed Textile",
-    category: "Fashion",
-    expos: ["Textile & Fashion Expo Pakistan"],
-    booth: "E-15",
-    description: "One of Pakistan's largest textile manufacturers with global export operations.",
-    website: "https://gulahmedgroup.com",
-    employees: "5000+",
-    founded: "1953",
-    city: "Karachi",
-  },
-  {
-    id: 6,
-    company: "Shan Foods",
-    category: "Food",
-    expos: ["Pakistan Food & Beverage Expo"],
-    booth: "F-03",
-    description: "Pakistan's number one spice and recipe mix brand, exported to over 65 countries.",
-    website: "https://shanfoods.com",
-    employees: "1200+",
-    founded: "1981",
-    city: "Karachi",
-  },
-  {
-    id: 7,
-    company: "Systems Limited",
-    category: "Technology",
-    expos: ["Karachi Technology Expo 2026"],
-    booth: "A-09",
-    description: "Enterprise technology and business process outsourcing company listed on PSX.",
-    website: "https://systemsltd.com",
-    employees: "8000+",
-    founded: "1977",
-    city: "Lahore",
-  },
-  {
-    id: 8,
-    company: "Agahe Pakistan",
-    category: "Healthcare",
-    expos: ["Pakistan Health & Pharma Summit"],
-    booth: "B-06",
-    description: "NGO focused on community health, nutrition, and public awareness campaigns.",
-    website: "https://agahe.org.pk",
-    employees: "200+",
-    founded: "1991",
-    city: "Islamabad",
-  },
-];
+import { EXHIBITORS } from "../../data.js";
 
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 
@@ -183,7 +85,7 @@ function ExhibitorModal({ ex, onClose }) {
             <svg className="w-4 h-4 text-accent shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /><polyline points="9 22 9 12 15 12 15 22" />
             </svg>
-            <span className="text-[12.5px] text-body">Exhibiting at: <strong className="text-dark">{ex.expos[0]}</strong></span>
+            <span className="text-[12.5px] text-body">Exhibiting at: <strong className="text-dark">{ex.expo}</strong></span>
           </div>
 
           {/* actions */}
@@ -197,7 +99,7 @@ function ExhibitorModal({ ex, onClose }) {
               Visit Website
             </a>
             <Link
-              to="/register?role=attendee"
+              to="/register"
               className="flex-1 text-center py-3 rounded-xl border border-border text-body font-semibold text-[13px] hover:border-accent hover:text-accent transition-colors"
             >
               Register to Meet
@@ -249,7 +151,7 @@ function ExhibitorCard({ ex, onView }) {
 
       <div className="pt-2 border-t border-border-card">
         <p className="text-[11.5px] text-body">
-          Exhibiting at: <span className="text-dark font-semibold">{ex.expos[0]}</span>
+          Exhibiting at: <span className="text-dark font-semibold">{ex.expo}</span>
         </p>
       </div>
 
@@ -362,7 +264,7 @@ export default function Exhibitors() {
               <p className="text-white/40 text-[13px]">Apply to showcase your company at the next expo.</p>
             </div>
             <Link
-              to="/register?role=exhibitor"
+              to="/register"
               className="shrink-0 px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors"
             >
               Apply as Exhibitor →

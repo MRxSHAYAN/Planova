@@ -22,8 +22,8 @@ const COLS = [
   {
     heading: "Get Involved",
     links: [
-      ["Register as Attendee", "/register?role=attendee"],
-      ["Apply as Exhibitor",   "/register?role=exhibitor"],
+      ["Register as Attendee", "/register"],
+      ["Apply as Exhibitor",   "/register"],
       ["Log In",               "/login"],
     ],
   },
@@ -73,7 +73,7 @@ export default function Footer() {
 
         <div className="border-t border-white/6 pt-6 flex flex-col sm:flex-row justify-between gap-2 text-[11.5px] text-white/20">
           <span>© 2026 Planova Management. All rights reserved.</span>
-          <span>MERN Stack · Aptech eProject</span>
+          <span>Built with MERN Stack</span>
         </div>
       </div>
     </footer>

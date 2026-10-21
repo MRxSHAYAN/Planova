@@ -38,7 +38,8 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!form.email || !form.password) return setError("Please fill in all fields.");
-    navigate("/");
+    // Redirect to attendee dashboard after login (backend will handle real auth)
+    navigate("/users/dashboard/attendee");
   };
 
   return (

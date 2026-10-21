@@ -12,7 +12,6 @@ const PAGE_TITLES = {
   [`${BASE}/booths`]:          "My Booths",
   [`${BASE}/profile`]:         "Company Profile",
   [`${BASE}/products`]:        "Products & Services",
-  [`${BASE}/messages`]:        "Messages",
   [`${BASE}/notifications`]:   "Notifications",
   [`${BASE}/settings`]:        "Settings",
 };
