@@ -1,0 +1,15 @@
+{
+  "name": "planova",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev":    "concurrently \"npm run client\" \"npm run server\"",
+    "client": "npm run dev --prefix client",
+    "server": "npm run dev --prefix server",
+    "build":  "npm run build --prefix client",
+    "install:all": "npm install --prefix client && npm install --prefix server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
