@@ -77,14 +77,22 @@ const PORT   = process.env.PORT   || 5000;
 const ENV    = process.env.NODE_ENV || "development";
 const CLIENT = process.env.CLIENT_URL || "http://localhost:5173";
 
-app.listen(PORT, () => {
-  console.log("");
-  console.log("  🚀  Planova API");
-  console.log("");
-  console.log(`  ➜  API:        http://localhost:${PORT}`);
-  console.log(`  ➜  Health:     http://localhost:${PORT}/api/health`);
-  console.log(`  ➜  Frontend:   ${CLIENT}`);
-  console.log(`  ➜  Mode:       ${ENV}`);
-  console.log(`  ➜  DB:         ${ENV === "production" ? "Atlas (cloud)" : "Local MongoDB"}`);
-  console.log("");
-});
+// Only listen on a port in local development.
+// On Vercel (production), the serverless runtime imports this file
+// and serves requests via the exported app — app.listen() must NOT run.
+if (process.env.NODE_ENV !== "production") {
+  app.listen(PORT, () => {
+    console.log("");
+    console.log("  🚀  Planova API");
+    console.log("");
+    console.log(`  ➜  API:        http://localhost:${PORT}`);
+    console.log(`  ➜  Health:     http://localhost:${PORT}/api/health`);
+    console.log(`  ➜  Frontend:   ${CLIENT}`);
+    console.log(`  ➜  Mode:       ${ENV}`);
+    console.log(`  ➜  DB:         Local MongoDB`);
+    console.log("");
+  });
+}
+
+// Export the app so Vercel's @vercel/node can serve it as a serverless function
+export default app;

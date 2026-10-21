@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
 
-let cached = null;
+// Cache on the global object so the connection survives across
+// serverless function invocations (Vercel reuses the same Node process).
+const cached = global.mongooseConn || { conn: null, promise: null };
 
 export default async function connectDB() {
-  if (cached) return cached;
+  if (cached.conn) return cached.conn;
 
   // Use local MongoDB in development, Atlas in production (Vercel)
   const uri =
@@ -12,20 +14,25 @@ export default async function connectDB() {
       : process.env.MONGO_URI_LOCAL;
 
   if (!uri) {
-    console.error("❌  No MongoDB URI found. Check your .env file.");
-    process.exit(1);
+    console.error("❌  No MongoDB URI found. Check your environment variables.");
+    throw new Error("MONGO_URI not set");
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(uri).then((m) => m);
   }
 
   try {
-    cached = await mongoose.connect(uri);
+    cached.conn = await cached.promise;
     const label =
       process.env.NODE_ENV === "production"
-        ? `Atlas  → ${cached.connection.host}`
-        : `Local  → ${cached.connection.host}`;
+        ? `Atlas  → ${cached.conn.connection.host}`
+        : `Local  → ${cached.conn.connection.host}`;
     console.log(`🍃  MongoDB connected (${label})`);
-    return cached;
+    global.mongooseConn = cached;
+    return cached.conn;
   } catch (error) {
     console.error(`❌  MongoDB error: ${error.message}`);
-    process.exit(1);
+    throw error;
   }
 }
