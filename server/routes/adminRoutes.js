@@ -1,9 +1,9 @@
 import { Router } from "express";
 const router = Router();
 
-// TODO: GET /api/admin/users               (admin only)
-// TODO: GET /api/admin/users/:id           (admin only)
-// TODO: PUT /api/admin/users/:id/status    (admin only)
-// TODO: GET /api/admin/reports             (admin only)
+// GET /api/admin/users?role=&status=&search=
+// GET /api/admin/users/:id
+// PUT /api/admin/users/:id/status
+// GET /api/admin/reports?eventId=
 
 export default router;

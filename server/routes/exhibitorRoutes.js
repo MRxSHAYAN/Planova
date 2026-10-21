@@ -1,10 +1,10 @@
 import { Router } from "express";
 const router = Router();
 
-// TODO: GET  /api/exhibitors?eventId=&status=approved  (public)
-// TODO: GET  /api/exhibitors/:id                        (public)
-// TODO: POST /api/exhibitors                            (exhibitor only)
-// TODO: GET  /api/exhibitors/my                         (exhibitor only)
-// TODO: PUT  /api/exhibitors/:id/status                 (admin only)
+// GET /api/exhibitors?eventId=&status=approved
+// GET /api/exhibitors/:id
+// POST /api/exhibitors (exhibitor)
+// GET /api/exhibitors/my (exhibitor)
+// PUT /api/exhibitors/:id/status (admin)
 
 export default router;

@@ -1,9 +1,9 @@
 import { Router } from "express";
 const router = Router();
 
-// TODO: POST   /api/registrations          (attendee only)
-// TODO: GET    /api/registrations/my       (attendee only)
-// TODO: DELETE /api/registrations/:id      (attendee only)
-// TODO: GET    /api/registrations?eventId= (admin only)
+// POST   /api/registrations (attendee)
+// GET    /api/registrations/my (attendee)
+// DELETE /api/registrations/:id (attendee)
+// GET    /api/registrations?eventId= (admin)
 
 export default router;

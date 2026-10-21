@@ -1,11 +1,11 @@
 import { Router } from "express";
 const router = Router();
 
-// TODO: GET    /api/events
-// TODO: GET    /api/events/:id
-// TODO: POST   /api/events        (admin only)
-// TODO: PUT    /api/events/:id    (admin only)
-// TODO: PUT    /api/events/:id/status (admin only)
-// TODO: DELETE /api/events/:id    (admin only)
+// GET    /api/events
+// GET    /api/events/:id
+// POST   /api/events        (admin)
+// PUT    /api/events/:id    (admin)
+// PUT    /api/events/:id/status (admin)
+// DELETE /api/events/:id    (admin)
 
 export default router;
