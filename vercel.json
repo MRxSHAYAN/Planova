@@ -1,7 +1,4 @@
 {
-    "version": 2,
-  "buildCommand": "npm run build",
-  "outputDirectory": "client/dist",
   "builds": [
     {
       "src": "client/package.json",
@@ -13,14 +10,8 @@
       "use": "@vercel/node"
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "server/server.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "client/dist/$1"
-    }
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server/server.js" },
+    { "source": "/(.*)", "destination": "/client/dist/index.html" }
   ]
 }
