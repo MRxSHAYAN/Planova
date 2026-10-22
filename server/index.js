@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 
 dotenv.config();
@@ -16,10 +17,23 @@ app.use(async (_req, _res, next) => {
 });
 
 app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API" }));
+
 app.get("/api/health", (_req, res) => {
-  res.status(200).json({
-    status: "ok",
-    message: "Planova API is responding",
+  const STATES = { 0: "disconnected", 1: "connected", 2: "connecting", 3: "disconnecting" };
+  const conn = mongoose.connection;
+
+  res.json({
+    status: conn.readyState === 1 ? "ok" : "error",
+    server: {
+      port: process.env.PORT || 5000,
+      env: process.env.NODE_ENV || "development",
+    },
+    database: {
+      state: STATES[conn.readyState] || "unknown",
+      name: conn.name || "—",
+      host: conn.host || "—",
+    },
+    time: new Date().toISOString(),
   });
 });
 const PORT = process.env.PORT || 5000;
