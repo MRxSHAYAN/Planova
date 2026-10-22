@@ -1,10 +1,10 @@
 {
   "services": {
-    "frontend": {
+    "client": {
       "root": "client",
       "framework": "vite"
     },
-    "backend": {
+    "server": {
       "root": "server",
       "entrypoint": "index.js"
     }
