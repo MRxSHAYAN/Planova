@@ -2,9 +2,9 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, ClipboardList, Map,
   Users, CalendarClock, ShieldCheck, BarChart2,
-  Bell, Settings, LogOut,
+  Settings, LogOut,
 } from "lucide-react";
-import { ADMIN_USER, NOTIFICATIONS } from "../data/adminData";
+import { ADMIN_USER } from "../data/adminData";
 import logo from "../../assets/Icon.png";
 
 const BASE = "/admin";
@@ -36,7 +36,6 @@ const NAV_GROUPS = [
     group: "Insights & System",
     items: [
       { label: "Reports & Analytics",    path: `${BASE}/reports`,            icon: BarChart2 },
-      { label: "Notifications",          path: `${BASE}/notifications`,      icon: Bell, badge: "notif" },
       { label: "Settings",               path: `${BASE}/settings`,           icon: Settings },
     ],
   },
@@ -44,12 +43,10 @@ const NAV_GROUPS = [
 
 export default function AdminSidebar({ onClose }) {
   const navigate = useNavigate();
-  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
   const pendingApps = 3;
 
   const getBadge = (key) => {
-    if (key === "notif") return unread;
-    if (key === "apps")  return pendingApps;
+    if (key === "apps") return pendingApps;
     return 0;
   };
 

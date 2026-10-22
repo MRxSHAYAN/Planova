@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { Bell, Menu, X } from "lucide-react";
-import { CURRENT_USER, NOTIFICATIONS } from "../data/mockData";
+import { Menu, X } from "lucide-react";
+import { CURRENT_USER } from "../data/mockData";
 
 export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
   const navigate = useNavigate();
-  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
 
   return (
     <header
@@ -34,24 +33,6 @@ export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
       >
         {title}
       </h1>
-
-      {/* Bell */}
-      <button
-        className="relative w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
-        style={{ color: "#94A3B8" }}
-        onMouseEnter={(e) => { e.currentTarget.style.background = "#F5F7FA"; e.currentTarget.style.color = "#09152E"; }}
-        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#94A3B8"; }}
-        onClick={() => navigate("/users/dashboard/attendee/notifications")}
-        aria-label={`Notifications, ${unread} unread`}
-      >
-        <Bell size={17} />
-        {unread > 0 && (
-          <span
-            className="absolute top-1 right-1 w-[7px] h-[7px] rounded-full"
-            style={{ background: "#3478F6" }}
-          />
-        )}
-      </button>
 
       {/* User chip */}
       <button

@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, Bell, ChevronDown, LogOut, Settings } from "lucide-react";
-import { ADMIN_USER, NOTIFICATIONS } from "../data/adminData";
+import { Menu, ChevronDown, LogOut, Settings } from "lucide-react";
+import { ADMIN_USER } from "../data/adminData";
 
 export default function AdminTopbar({ title, onMenuToggle }) {
   const navigate = useNavigate();
   const [dropOpen, setDropOpen] = useState(false);
-  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
 
   return (
     <div className="h-[56px] shrink-0 flex items-center gap-3 px-5 bg-white border-b border-slate-200">
@@ -22,18 +21,6 @@ export default function AdminTopbar({ title, onMenuToggle }) {
 
       {/* Page title */}
       <span className="flex-1 font-bold text-[15px] text-slate-800 truncate">{title}</span>
-
-      {/* Notifications */}
-      <button
-        className="relative w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-cyan-400 hover:text-cyan-500 transition-colors"
-        onClick={() => navigate("/admin/notifications")}
-        aria-label="Notifications"
-      >
-        <Bell size={15} />
-        {unread > 0 && (
-          <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-cyan-500 border-[1.5px] border-white" />
-        )}
-      </button>
 
       {/* Profile */}
       <div className="relative">

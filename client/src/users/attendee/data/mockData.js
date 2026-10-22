@@ -1,5 +1,5 @@
 // Attendee data — imports shared business data from src/data.js
-// User-specific data (profile, notifications) stays here.
+// User-specific data (profile) stays here.
 // When backend is ready, replace the imports with API calls.
 
 import {
@@ -20,13 +20,6 @@ export const CURRENT_USER = {
   avatar: null,
   initials: "AS",
   joinedDate: "March 2025",
-  notificationPrefs: {
-    registrationConfirmations: true,
-    scheduleUpdates: true,
-    announcements: true,
-    reminders: true,
-    emailDigest: false,
-  },
 };
 
 // ── Events (mapped from shared EXPOS) ─────────
@@ -89,70 +82,7 @@ export const EXHIBITORS = SHARED_EXHIBITORS.filter(e => e.status === "Approved")
 }));
 
 // ── Attendee notifications (local) ───────────
-export const NOTIFICATIONS = [
-  {
-    id: "ntf_001",
-    type: "confirmation",
-    title: "Registration Confirmed",
-    message: "You're registered for Karachi Technology Expo 2026. Check your schedule.",
-    timestamp: "2026-10-10T09:15:00",
-    timeLabel: "2 days ago",
-    read: false,
-    eventId: "evt_001",
-  },
-  {
-    id: "ntf_002",
-    type: "update",
-    title: "Session Time Changed",
-    message: "\"AI in Pakistani Industry\" has moved to 11:00 AM on Nov 15. Update your schedule.",
-    timestamp: "2026-10-09T14:30:00",
-    timeLabel: "3 days ago",
-    read: false,
-    eventId: "evt_001",
-  },
-  {
-    id: "ntf_003",
-    type: "reminder",
-    title: "Event in 36 Days",
-    message: "Karachi Technology Expo starts Nov 15. Download the agenda and review exhibitors.",
-    timestamp: "2026-10-09T08:00:00",
-    timeLabel: "3 days ago",
-    read: false,
-    eventId: "evt_001",
-  },
-  {
-    id: "ntf_004",
-    type: "announcement",
-    title: "New Exhibitor Added",
-    message: "Systems Limited has joined KTE 2026. View their profile and visit Booth A-09.",
-    timestamp: "2026-10-07T11:00:00",
-    timeLabel: "5 days ago",
-    read: true,
-    eventId: "evt_001",
-  },
-  {
-    id: "ntf_005",
-    type: "confirmation",
-    title: "Registration Pending",
-    message: "Your registration for Pakistan Health & Pharma Summit is under review.",
-    timestamp: "2026-10-05T16:45:00",
-    timeLabel: "7 days ago",
-    read: true,
-    eventId: "evt_002",
-  },
-  {
-    id: "ntf_006",
-    type: "reminder",
-    title: "Complete Your Profile",
-    message: "Add your professional details to get personalized event recommendations.",
-    timestamp: "2026-10-01T10:00:00",
-    timeLabel: "11 days ago",
-    read: true,
-    eventId: null,
-  },
-];
 
-// ── Category colors (local style map) ────────
 export const CATEGORY_COLORS = {
   Technology:   { bg: "#DCE8FF", text: "#09152E" },
   Healthcare:   { bg: "#DDF7E7", text: "#16804A" },

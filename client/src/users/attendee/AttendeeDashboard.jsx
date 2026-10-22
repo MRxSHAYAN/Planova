@@ -6,7 +6,6 @@ import MyEvents        from "./pages/MyEvents";
 import MySchedule      from "./pages/MySchedule";
 import ExhibitorsPage  from "./pages/Exhibitors";
 import SavedItems      from "./pages/SavedItems";
-import Notifications   from "./pages/Notifications";
 import MyProfile       from "./pages/MyProfile";
 
 export default function AttendeeDashboard() {
@@ -19,7 +18,6 @@ export default function AttendeeDashboard() {
         <Route path="schedule"    element={<MySchedule />} />
         <Route path="exhibitors"  element={<ExhibitorsPage />} />
         <Route path="saved"       element={<SavedItems />} />
-        <Route path="notifications" element={<Notifications />} />
         <Route path="profile"     element={<MyProfile />} />
         <Route path="*" element={<Navigate to="/users/dashboard/attendee" replace />} />
       </Routes>

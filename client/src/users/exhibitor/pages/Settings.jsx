@@ -33,7 +33,6 @@ function Section({ icon: Icon, title, children }) {
 }
 
 export default function Settings() {
-  const [prefs, setPrefs] = useState({ ...CURRENT_COMPANY.notificationPrefs });
   const [saved, setSaved] = useState(false);
   const [account, setAccount] = useState({
     contactPerson: CURRENT_COMPANY.contactPerson,
@@ -117,39 +116,6 @@ export default function Settings() {
             onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#3478F6"; e.currentTarget.style.color = "#3478F6"; }}
             onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E8EEF8"; e.currentTarget.style.color = "#3E506D"; }}>
             Change
-          </button>
-        </div>
-      </Section>
-
-      {/* Notification prefs */}
-      <Section icon={Bell} title="Notification Preferences">
-        <Toggle label="Application Updates"
-          description="Approval, rejection, or status changes on your applications."
-          checked={prefs.applicationUpdates}
-          onChange={() => setPrefs((p) => ({ ...p, applicationUpdates: !p.applicationUpdates }))} />
-        <Toggle label="Booth Assignments"
-          description="Notify when an organizer assigns or updates your booth."
-          checked={prefs.boothAssignments}
-          onChange={() => setPrefs((p) => ({ ...p, boothAssignments: !p.boothAssignments }))} />
-        <Toggle label="Deadline Reminders"
-          description="Reminders before application and setup deadlines."
-          checked={prefs.deadlineReminders}
-          onChange={() => setPrefs((p) => ({ ...p, deadlineReminders: !p.deadlineReminders }))} />
-        <Toggle label="Organizer Messages"
-          description="Notify when an organizer sends you a message."
-          checked={prefs.organiserMessages}
-          onChange={() => setPrefs((p) => ({ ...p, organiserMessages: !p.organiserMessages }))} />
-        <Toggle label="Platform Announcements"
-          description="General updates from the Planova team."
-          checked={prefs.platformAnnouncements}
-          onChange={() => setPrefs((p) => ({ ...p, platformAnnouncements: !p.platformAnnouncements }))} />
-        <div className="py-4">
-          <button onClick={showToast}
-            className="px-5 py-2.5 rounded-lg text-[13px] font-bold text-white transition-colors"
-            style={{ background: "#3478F6" }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = "#1D5FE0")}
-            onMouseLeave={(e) => (e.currentTarget.style.background = "#3478F6")}>
-            Save Preferences
           </button>
         </div>
       </Section>

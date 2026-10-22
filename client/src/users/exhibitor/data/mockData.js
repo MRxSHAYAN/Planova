@@ -26,13 +26,6 @@ export const CURRENT_COMPANY = {
   twitter: "",
   profileComplete: 72,
   memberSince: "January 2025",
-  notificationPrefs: {
-    applicationUpdates: true,
-    boothAssignments: true,
-    deadlineReminders: true,
-    organiserMessages: true,
-    platformAnnouncements: false,
-  },
 };
 
 // ── Expos (mapped from shared EXPOS) ──────────
@@ -169,13 +162,6 @@ export const PRODUCTS = [
 ];
 
 // ── Exhibitor notifications (local) ───────────
-export const NOTIFICATIONS = [
-  { id: "ntf_001", type: "approved", title: "Application Approved", message: "Your application for Karachi Technology Expo 2026 has been approved. Booth A-14, Hall A is assigned to you.", timeLabel: "2 days ago", read: false, expoId: "exp_001" },
-  { id: "ntf_002", type: "booth", title: "Booth Assignment Confirmed", message: "Booth A-14 (Hall A, 4×4 m corner) at KTE 2026 is confirmed. Setup opens Nov 14, 9:00 AM.", timeLabel: "2 days ago", read: false, expoId: "exp_001" },
-  { id: "ntf_003", type: "deadline", title: "Application Deadline Approaching", message: "Pakistan Health & Pharma Summit application deadline is Oct 25. Your application is under review.", timeLabel: "3 days ago", read: false, expoId: "exp_002" },
-  { id: "ntf_004", type: "profile", title: "Complete Your Company Profile", message: "Your profile is 72% complete. Add your company logo and website to improve visibility with organizers.", timeLabel: "5 days ago", read: true, expoId: null },
-  { id: "ntf_005", type: "rejected", title: "Application Not Accepted", message: "Your application for Agri-Tech Pakistan 2026 was not accepted. Organiser note: priority given to agri-sector exhibitors.", timeLabel: "Sep 10", read: true, expoId: "exp_004" },
-];
 
 // ── Style maps (local) ────────────────────────
 export const CATEGORY_COLORS = {

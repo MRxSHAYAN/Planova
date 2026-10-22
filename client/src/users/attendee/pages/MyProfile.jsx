@@ -70,7 +70,7 @@ function Section({ title, children, action }) {
 export default function MyProfile() {
   const [editPersonal, setEditPersonal] = useState(false);
   const [editContact,  setEditContact]  = useState(false);
-  const [saved,        setSavedToast]   = useState(false);
+  const [savedToast, setSavedToast] = useState(false);
 
   const [personal, setPersonal] = useState({
     name:    CURRENT_USER.name,
@@ -82,7 +82,6 @@ export default function MyProfile() {
     email: CURRENT_USER.email,
     phone: CURRENT_USER.phone,
   });
-  const [prefs, setPrefs] = useState({ ...CURRENT_USER.notificationPrefs });
 
   const showToast = () => { setSavedToast(true); setTimeout(() => setSavedToast(false), 2200); };
 
@@ -213,41 +212,6 @@ export default function MyProfile() {
             Change
           </button>
         </div>
-      </Section>
-
-      {/* Notification prefs */}
-      <Section title="Notification Preferences">
-        <Toggle
-          label="Registration Confirmations"
-          description="Confirmed, pending, or cancelled registrations."
-          checked={prefs.registrationConfirmations}
-          onChange={() => setPrefs((p) => ({ ...p, registrationConfirmations: !p.registrationConfirmations }))}
-        />
-        <Toggle
-          label="Schedule Updates"
-          description="Session time or venue changes."
-          checked={prefs.scheduleUpdates}
-          onChange={() => setPrefs((p) => ({ ...p, scheduleUpdates: !p.scheduleUpdates }))}
-        />
-        <Toggle
-          label="Event Announcements"
-          description="New exhibitors, news, and highlights."
-          checked={prefs.announcements}
-          onChange={() => setPrefs((p) => ({ ...p, announcements: !p.announcements }))}
-        />
-        <Toggle
-          label="Event Reminders"
-          description="Reminders before events begin."
-          checked={prefs.reminders}
-          onChange={() => setPrefs((p) => ({ ...p, reminders: !p.reminders }))}
-        />
-        <Toggle
-          label="Weekly Email Digest"
-          description="A weekly roundup of upcoming events."
-          checked={prefs.emailDigest}
-          onChange={() => setPrefs((p) => ({ ...p, emailDigest: !p.emailDigest }))}
-        />
-        <div className="h-3" />
       </Section>
     </div>
   );

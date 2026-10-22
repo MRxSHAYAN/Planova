@@ -14,7 +14,6 @@ const TITLES = {
   [`${BASE}/schedule`]:         "Schedule & Sessions",
   [`${BASE}/users`]:            "Users & Roles",
   [`${BASE}/reports`]:          "Reports & Analytics",
-  [`${BASE}/notifications`]:    "Notifications",
   [`${BASE}/settings`]:         "Settings",
 };
 

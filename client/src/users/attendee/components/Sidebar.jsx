@@ -6,12 +6,11 @@ import {
   CalendarDays,
   Building2,
   Bookmark,
-  Bell,
-   UserCircle2,
+  UserCircle2,
   LogOut,
 } from "lucide-react";
 import iconImg from "../../../assets/Icon.png";
-import { CURRENT_USER, NOTIFICATIONS } from "../data/mockData";
+import { CURRENT_USER } from "../data/mockData";
 
 const BASE = "/users/dashboard/attendee";
 
@@ -40,7 +39,6 @@ const NAV_GROUPS = [
   {
     group: "Account",
     items: [
-      { label: "Notifications",  path: `${BASE}/notifications`,      icon: Bell, badge: true },
       { label: "My Profile",     path: `${BASE}/profile`,            icon: UserCircle2 },
     ],
   },
@@ -48,7 +46,6 @@ const NAV_GROUPS = [
 
 export default function Sidebar({ onClose }) {
   const navigate = useNavigate();
-  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
 
   return (
     <aside className="flex flex-col h-full w-full overflow-y-auto" style={{ background: "#0A1628" }}>
@@ -110,14 +107,6 @@ export default function Sidebar({ onClose }) {
                           style={{ color: isActive ? "#3478F6" : "inherit" }}
                         />
                         <span className="flex-1">{label}</span>
-                        {badge && unread > 0 && (
-                          <span
-                            className="h-4 min-w-4 px-1 rounded-full text-white text-[9px] font-black flex items-center justify-center"
-                            style={{ background: "#3478F6", fontSize: "9px" }}
-                          >
-                            {unread}
-                          </span>
-                        )}
                       </>
                     )}
                   </NavLink>

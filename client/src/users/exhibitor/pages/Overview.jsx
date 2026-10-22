@@ -1,29 +1,18 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, FileText, Bell, CheckCircle2, Clock, AlertCircle } from "lucide-react";
-import { CURRENT_COMPANY, APPLICATIONS, BOOTHS, NOTIFICATIONS, EXPOS } from "../data/mockData";
+import { ArrowRight, FileText, CheckCircle2, Clock, AlertCircle } from "lucide-react";
+import { CURRENT_COMPANY, APPLICATIONS, BOOTHS, EXPOS } from "../data/mockData";
 import { StatusBadge } from "../components/StatusBadge";
 
 const BASE = "/users/dashboard/exhibitor";
-
-const NOTIF_DOTS = {
-  approved:     "#12875A",
-  booth:        "#3478F6",
-  deadline:     "#D97706",
-  profile:      "#7C3AED",
-  rejected:     "#B91C1C",
-  announcement: "#64748B",
-};
 
 export default function Overview() {
   const navigate = useNavigate();
   const approved      = APPLICATIONS.filter((a) => a.status === "approved").length;
   const pending       = APPLICATIONS.filter((a) => a.status === "pending").length;
   const rejected      = APPLICATIONS.filter((a) => a.status === "rejected").length;
-  const unread        = NOTIFICATIONS.filter((n) => !n.read).length;
   const latestApp     = APPLICATIONS[0];
   const assignedBooth = BOOTHS[0] || null;
   const upcomingExpo  = EXPOS.find((e) => e.applicationOpen && e.featured);
-  const recentNotifs  = NOTIFICATIONS.filter((n) => !n.read).slice(0, 3);
   const profilePct    = CURRENT_COMPANY.profileComplete;
 
   return (

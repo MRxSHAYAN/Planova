@@ -12,7 +12,6 @@ const PAGE_TITLES = {
   [`${BASE}/schedule`]:        "My Schedule",
   [`${BASE}/exhibitors`]:      "Exhibitors",
   [`${BASE}/saved`]:           "Saved Items",
-  [`${BASE}/notifications`]:   "Notifications",
   [`${BASE}/profile`]:         "My Profile",
 };
 

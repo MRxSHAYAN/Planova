@@ -10,13 +10,7 @@ const userSchema = new mongoose.Schema({
   city:     { type: String },
   company:  { type: String },
   avatar:   { type: String },
-  notificationPrefs: {
-    registrationConfirmations: { type: Boolean, default: true },
-    scheduleUpdates:            { type: Boolean, default: true },
-    announcements:              { type: Boolean, default: true },
-    reminders:                  { type: Boolean, default: true },
-  },
-  isActive:         { type: Boolean, default: true },
+    isActive:         { type: Boolean, default: true },
   resetToken:       { type: String },
   resetTokenExpiry: { type: Date },
 }, { timestamps: true });

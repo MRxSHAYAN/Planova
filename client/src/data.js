@@ -383,15 +383,7 @@ export const USERS = [
   { id: 8, name: "Fatima Raza",  email: "fatima@gulahmed.com",    role: "Exhibitor", status: "Active",   joinedAt: "2026-10-08" },
 ];
 
-// ── Admin notifications & activity ───────────
-export const ADMIN_NOTIFICATIONS = [
-  { id: 1, type: "application", message: "SolarMax Pakistan submitted a new exhibitor application.", time: "2 hours ago", read: false },
-  { id: 2, type: "application", message: "Engro Fertilizers submitted a new exhibitor application.", time: "4 hours ago", read: false },
-  { id: 3, type: "expo",        message: "Textile & Fashion Expo Pakistan has been drafted.",        time: "Yesterday",   read: false },
-  { id: 4, type: "attendee",    message: "42 new attendees registered for Karachi Tech Expo.",       time: "2 days ago",  read: true  },
-  { id: 5, type: "booth",       message: "Booth A-05 is pending assignment confirmation.",           time: "3 days ago",  read: true  },
-];
-
+// ── Admin activity ─────────────────────────────
 export const ADMIN_ACTIVITY = [
   { id: 1, action: "Approved application from K-Electric",          user: "Admin", time: "1 hour ago",  type: "success" },
   { id: 2, action: "Rejected application from HealthTech Solutions", user: "Admin", time: "3 hours ago", type: "error"   },

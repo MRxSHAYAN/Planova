@@ -52,8 +52,8 @@ export default function App() {
         <Route path="/login"         element={<Login />} />
         <Route path="/register"      element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/users/dashboard/attendee/"  element={<AttendeeDashboard />} />
-        <Route path="/users/dashboard/exhibitor/" element={<ExhibitorDashboard />} />
+        <Route path="/users/dashboard/attendee/*"  element={<AttendeeDashboard />} />
+        <Route path="/users/dashboard/exhibitor/*" element={<ExhibitorDashboard />} />
         <Route path="/admin/login"   element={<AdminLogin />} />
         <Route path="/admin/*"       element={<AdminDashboard />} />
         <Route path="*"              element={<NotFound />} />

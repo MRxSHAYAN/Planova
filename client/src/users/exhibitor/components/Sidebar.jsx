@@ -6,12 +6,11 @@ import {
   MapPin,
   Building2,
   Package,
-  Bell,
   Settings,
   LogOut,
 } from "lucide-react";
 import iconImg from "../../../assets/Icon.png";
-import { CURRENT_COMPANY, NOTIFICATIONS } from "../data/mockData";
+import { CURRENT_COMPANY } from "../data/mockData";
 
 const BASE = "/users/dashboard/exhibitor";
 
@@ -40,7 +39,6 @@ const NAV_GROUPS = [
   {
     group: "Account",
     items: [
-      { label: "Notifications",     path: `${BASE}/notifications`,      icon: Bell,          badge: "notifications" },
       { label: "Settings",          path: `${BASE}/settings`,           icon: Settings },
     ],
   },
@@ -48,7 +46,6 @@ const NAV_GROUPS = [
 
 export default function Sidebar({ onClose }) {
   const navigate  = useNavigate();
-  const unreadN   = NOTIFICATIONS.filter((n) => !n.read).length;
 
   return (
     <aside
@@ -107,14 +104,6 @@ export default function Sidebar({ onClose }) {
                           style={{ color: isActive ? "#3478F6" : "inherit" }}
                         />
                         <span className="flex-1">{label}</span>
-                        {badge === "notifications" && unreadN > 0 && (
-                          <span
-                            className="h-4 min-w-4 px-1 rounded-full text-white font-black flex items-center justify-center"
-                            style={{ background: "#3478F6", fontSize: "9px" }}
-                          >
-                            {unreadN}
-                          </span>
-                        )}
                       </>
                     )}
                   </NavLink>

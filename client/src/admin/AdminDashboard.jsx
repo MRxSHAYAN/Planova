@@ -8,7 +8,6 @@ import Attendees       from "./pages/Attendees";
 import Schedule        from "./pages/Schedule";
 import Users           from "./pages/Users";
 import Reports         from "./pages/Reports";
-import Notifications   from "./pages/Notifications";
 import Settings        from "./pages/Settings";
 
 export default function AdminDashboard() {
@@ -23,7 +22,6 @@ export default function AdminDashboard() {
         <Route path="schedule"         element={<Schedule />} />
         <Route path="users"            element={<Users />} />
         <Route path="reports"          element={<Reports />} />
-        <Route path="notifications"    element={<Notifications />} />
         <Route path="settings"         element={<Settings />} />
         <Route path="*"                element={<Navigate to="/admin" replace />} />
       </Routes>

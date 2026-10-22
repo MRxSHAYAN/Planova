@@ -1,20 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, MapPin, CalendarDays, Clock, Bookmark, Bell, CheckCircle2 } from "lucide-react";
-import { CURRENT_USER, EVENTS, SESSIONS, NOTIFICATIONS, CATEGORY_COLORS } from "../data/mockData";
+import { ArrowRight, MapPin, CalendarDays, Clock, Bookmark, CheckCircle2 } from "lucide-react";
+import { CURRENT_USER, EVENTS, SESSIONS, CATEGORY_COLORS } from "../data/mockData";
 
 const BASE = "/users/dashboard/attendee";
 
 const NEXT_EVENT      = EVENTS.find((e) => e.upcoming && e.registrationStatus === "Confirmed");
 const NEXT_SESSIONS   = SESSIONS.filter((s) => s.eventId === "evt_001").slice(0, 3);
 const RECOMMENDATIONS = EVENTS.filter((e) => !e.registrationStatus).slice(0, 3);
-const RECENT_NOTIFS   = NOTIFICATIONS.filter((n) => !n.read).slice(0, 3);
-
-const NOTIF_DOTS = {
-  confirmation: "#12875A",
-  update:       "#D97706",
-  reminder:     "#3478F6",
-  announcement: "#7C3AED",
-};
 
 function CategoryPill({ label }) {
   const c = CATEGORY_COLORS[label] || { bg: "#EEF1F8", text: "#3E506D" };
@@ -34,7 +26,6 @@ export default function Overview() {
   const registeredCount = EVENTS.filter((e) => ["Confirmed", "Pending"].includes(e.registrationStatus)).length;
   const sessionCount    = SESSIONS.filter((s) => s.eventId === "evt_001").length;
   const savedCount      = EVENTS.filter((e) => e.saved).length + SESSIONS.filter((s) => s.saved).length;
-  const unreadCount     = NOTIFICATIONS.filter((n) => !n.read).length;
 
   return (
     <div className="space-y-5">
@@ -47,7 +38,7 @@ export default function Overview() {
             {CURRENT_USER.name.split(" ")[0]} 👋
           </h2>
           <p className="text-[13px] mt-1" style={{ color: "#64748B" }}>
-            {registeredCount} event{registeredCount !== 1 ? "s" : ""} registered · {unreadCount} new notifications
+            {registeredCount} event{registeredCount !== 1 ? "s" : ""} registered
           </p>
         </div>
         <div className="flex gap-2 shrink-0">
@@ -186,49 +177,6 @@ export default function Overview() {
           </div>
         </div>
 
-        {/* Notifications column */}
-        <div className="lg:col-span-2">
-          <div className="rounded-xl" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
-            <div className="px-5 py-3.5 flex items-center justify-between"
-              style={{ borderBottom: "1px solid #F0F3FA" }}>
-              <p className="text-[13px] font-black" style={{ color: "#09152E" }}>Notifications</p>
-              <button onClick={() => navigate(`${BASE}/notifications`)}
-                className="flex items-center gap-1 text-[11.5px] font-semibold" style={{ color: "#3478F6" }}>
-                All <ArrowRight size={11} />
-              </button>
-            </div>
-            {RECENT_NOTIFS.length > 0 ? (
-              <div>
-                {RECENT_NOTIFS.map((n, i) => (
-                  <div key={n.id} className="px-5 py-4"
-                    style={{ borderBottom: i < RECENT_NOTIFS.length - 1 ? "1px solid #F5F7FB" : "none" }}>
-                    <div className="flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-[5px]"
-                        style={{ background: NOTIF_DOTS[n.type] || "#94A3B8" }} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-semibold leading-snug" style={{ color: "#09152E" }}>{n.title}</p>
-                        <p className="text-[12px] mt-0.5 leading-relaxed line-clamp-2" style={{ color: "#64748B" }}>{n.message}</p>
-                        <p className="text-[10.5px] mt-1.5" style={{ color: "#B0BCC8" }}>{n.timeLabel}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <div className="px-5 py-3">
-                  <button onClick={() => navigate(`${BASE}/notifications`)}
-                    className="w-full py-2 rounded-lg text-[12px] font-semibold transition-colors"
-                    style={{ background: "#F0F3FA", color: "#3E506D" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#E5EEFF")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F3FA")}>
-                    View all
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="px-5 py-10 text-center">
-                <p className="text-[13px]" style={{ color: "#94A3B8" }}>All caught up ✓</p>
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>

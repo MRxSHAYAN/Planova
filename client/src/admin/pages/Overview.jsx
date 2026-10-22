@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { CalendarRange, Users, ClipboardList, Map, TrendingUp, Activity } from "lucide-react";
-import { EXPOS, APPLICATIONS, BOOTHS, ATTENDEES, ACTIVITY, NOTIFICATIONS } from "../data/adminData";
+import { EXPOS, APPLICATIONS, BOOTHS, ATTENDEES, ACTIVITY } from "../data/adminData";
 import StatusBadge from "../components/StatusBadge";
 
 function MetricCard({ icon: Icon, label, value, sub, color, onClick }) {
@@ -32,7 +32,6 @@ export default function Overview() {
   const pendingApps    = APPLICATIONS.filter(a => a.status === "Pending").length;
   const totalBooths    = BOOTHS.length;
   const occupiedBooths = BOOTHS.filter(b => b.status === "Occupied").length;
-  const unread         = NOTIFICATIONS.filter(n => !n.read).length;
 
   const recentApps = [...APPLICATIONS].sort((a,b) => b.appliedAt.localeCompare(a.appliedAt)).slice(0,4);
   const recentAttendees = [...ATTENDEES].sort((a,b) => b.registeredAt.localeCompare(a.registeredAt)).slice(0,4);
@@ -48,15 +47,6 @@ export default function Overview() {
           <h1 className="text-[1.25rem] font-black text-slate-800">Good morning, Admin 👋</h1>
           <p className="text-slate-400 text-[13px] mt-0.5">Here's what's happening across Planova today.</p>
         </div>
-        {unread > 0 && (
-          <button
-            onClick={() => navigate("/admin/notifications")}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-600 text-[12.5px] font-semibold hover:bg-cyan-100 transition-colors"
-          >
-            <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
-            {unread} unread notification{unread !== 1 ? "s" : ""}
-          </button>
-        )}
       </div>
 
       {/* Metrics */}
