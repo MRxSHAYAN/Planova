@@ -5,10 +5,7 @@ const cached = global.mongooseConn || { conn: null, promise: null };
 export default async function connectDB() {
   if (cached.conn) return cached.conn;
 
-  const uri =
-    process.env.NODE_ENV === "production"
-      ? process.env.MONGO_URI_ATLAS
-      : process.env.MONGO_URI_LOCAL;
+  const uri = process.env.MONGO_URI;
 
   if (!uri) throw new Error("MongoDB URI not set in environment variables");
 

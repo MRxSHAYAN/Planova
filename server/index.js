@@ -16,8 +16,12 @@ app.use(async (_req, _res, next) => {
 });
 
 app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API" }));
-app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
-
+app.get("/api/health", (_req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Planova API is responding",
+  });
+});
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== "production") {
