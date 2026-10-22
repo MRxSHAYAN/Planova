@@ -2,7 +2,6 @@
   "name": "planova",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "client": "npm run dev --prefix client",

@@ -1,22 +1,9 @@
+import "dotenv/config";
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
-dotenv.config();
-
-const app = express();
-
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
-app.use(express.json());
-
-// Ensure DB connection before handling requests (works for both local and serverless)
-app.use(async (_req, _res, next) => {
-  await connectDB();
-  next();
-});
-
-// Routes
 import authRoutes from "./routes/authRoutes.js";
 import eventRoutes from "./routes/eventRoutes.js";
 import sessionRoutes from "./routes/sessionRoutes.js";
@@ -28,6 +15,27 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
+const app = express();
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || true,
+  })
+);
+
+app.use(express.json());
+
+// Ensure the database is connected before handling API requests.
+app.use(async (_req, _res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/sessions", sessionRoutes);
@@ -39,16 +47,34 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API running" }));
-app.get("/api/health", (_req, res) => res.json({ status: "ok" }));
+// Health checks
+app.get("/", (_req, res) => {
+  res.json({
+    status: "ok",
+    message: "Planova API running",
+  });
+});
 
-// Local dev only — Vercel serves via the exported app
-const PORT = process.env.PORT || 5000;
+app.get("/api/health", (_req, res) => {
+  res.json({ status: "ok" });
+});
 
+// Centralized error handling
+app.use((err, _req, res, _next) => {
+  console.error("Planova API error:", err.message);
+
+  res.status(500).json({
+    status: "error",
+    message: "Internal server error",
+  });
+});
+
+// Local development only
 if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+
   app.listen(PORT, () => {
-    console.log(`\n  Planova API → http://localhost:${PORT}`);
-    console.log(`  Health     → http://localhost:${PORT}/api/health\n`);
+    console.log(`Planova API running on port ${PORT}`);
   });
 }
 
