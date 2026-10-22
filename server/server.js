@@ -1,4 +1,4 @@
- import express from "express";
+import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
@@ -7,10 +7,14 @@ dotenv.config();
 
 const app = express();
 
-connectDB();
-
 app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
 app.use(express.json());
+
+// Ensure DB connection before handling requests (works for both local and serverless)
+app.use(async (_req, _res, next) => {
+  await connectDB();
+  next();
+});
 
 // Routes
 import authRoutes from "./routes/authRoutes.js";
