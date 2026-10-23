@@ -15,44 +15,31 @@ export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
   const abbr = getInitials(user?.name);
 
   return (
-    <header
-      className="h-[52px] shrink-0 flex items-center gap-3 px-5 sm:px-6"
-      style={{ background: "#fff", borderBottom: "1px solid #EEF1F8", zIndex: 10 }}
-    >
-      {/* Mobile hamburger */}
-      <button
-        className="lg:hidden -ml-1 p-1.5 rounded-md transition-colors"
-        style={{ color: "#94A3B8" }}
+    <header className="h-[52px] shrink-0 flex items-center gap-3 px-5 sm:px-6"
+      style={{ background: "#fff", borderBottom: "1px solid #EEF1F8", zIndex: 10 }}>
+      <button className="lg:hidden -ml-1 p-1.5 rounded-md transition-colors" style={{ color: "#94A3B8" }}
         onMouseEnter={(e) => { e.currentTarget.style.background = "#F5F7FA"; e.currentTarget.style.color = "#09152E"; }}
         onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "#94A3B8"; }}
-        onClick={onMenuToggle}
-        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-      >
+        onClick={onMenuToggle}>
         {mobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
       </button>
 
-      {/* Page title */}
-      <h1 className="flex-1 font-black text-[15px] truncate" style={{ color: "#09152E" }}>
-        {title}
-      </h1>
+      <h1 className="flex-1 font-black text-[15px] truncate" style={{ color: "#09152E" }}>{title}</h1>
 
-      {/* User chip — shows real name from auth */}
-      <button
-        className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-colors"
+      <button className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-colors"
         style={{ background: "#F5F7FA" }}
         onMouseEnter={(e) => (e.currentTarget.style.background = "#EEF1F8")}
         onMouseLeave={(e) => (e.currentTarget.style.background = "#F5F7FA")}
-        onClick={() => navigate("/users/dashboard/attendee/profile")}
-      >
-        <span
-          className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
-          style={{ background: "#09152E", color: "#3478F6" }}
-        >
-          {abbr}
-        </span>
-        <span className="hidden sm:block text-[12px] font-semibold" style={{ color: "#09152E" }}>
-          {firstName}
-        </span>
+        onClick={() => navigate("/users/dashboard/attendee/profile")}>
+        {user?.avatar ? (
+          <img src={user.avatar} alt={user.name} className="w-6 h-6 rounded-full object-cover shrink-0" />
+        ) : (
+          <span className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
+            style={{ background: "#09152E", color: "#3478F6" }}>
+            {abbr}
+          </span>
+        )}
+        <span className="hidden sm:block text-[12px] font-semibold" style={{ color: "#09152E" }}>{firstName}</span>
       </button>
     </header>
   );

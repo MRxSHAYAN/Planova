@@ -48,7 +48,14 @@ export default function Login() {
       });
       const data = await res.json();
 
-      if (!res.ok) return setError(data.message || "Login failed");
+      if (!res.ok) {
+        // If unverified, send them to OTP screen
+        if (data.needsVerification) {
+          navigate("/register?verify=" + encodeURIComponent(data.email));
+          return;
+        }
+        return setError(data.message || "Login failed");
+      }
 
       login(data);
 

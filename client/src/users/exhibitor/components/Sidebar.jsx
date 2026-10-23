@@ -123,12 +123,14 @@ export default function Sidebar({ onClose }) {
           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
           onClick={() => { navigate(`${BASE}/profile`); onClose?.(); }}
         >
-          <span
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black shrink-0"
-            style={{ background: "#3478F6", color: "#fff" }}
-          >
-            {initials(user?.company || user?.name)}
-          </span>
+          {user?.avatar ? (
+            <img src={user.avatar} alt={user?.company || user?.name} className="w-7 h-7 rounded-lg object-cover shrink-0" />
+          ) : (
+            <span className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black shrink-0"
+              style={{ background: "#3478F6", color: "#fff" }}>
+              {initials(user?.company || user?.name)}
+            </span>
+          )}
           <div className="flex-1 min-w-0">
             <p className="text-[12px] font-semibold text-white truncate leading-none">
               {user?.company || user?.name || "—"}

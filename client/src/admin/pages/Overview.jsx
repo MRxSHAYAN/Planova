@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarRange, Users, ClipboardList, Map, TrendingUp, Activity } from "lucide-react";
+import { CalendarRange, Users, ClipboardList, Map, TrendingUp, Activity, Loader2 } from "lucide-react";
 import { EXPOS, APPLICATIONS, BOOTHS, ATTENDEES, ACTIVITY } from "../data/adminData";
 import StatusBadge from "../components/StatusBadge";
 
@@ -24,20 +25,36 @@ function MetricCard({ icon: Icon, label, value, sub, color, onClick }) {
 
 export default function Overview() {
   const navigate = useNavigate();
+  const [stats, setStats] = useState({ total: 0, attendees: 0, exhibitors: 0, admins: 0, verified: 0, active: 0 });
+  const [loading, setLoading] = useState(true);
 
-  const totalExpos     = EXPOS.length;
-  const publishedExpos = EXPOS.filter(e => e.status === "Published").length;
-  const totalAttendees = ATTENDEES.length;
-  const totalExhibitors= APPLICATIONS.filter(a => a.status === "Approved").length;
-  const pendingApps    = APPLICATIONS.filter(a => a.status === "Pending").length;
-  const totalBooths    = BOOTHS.length;
-  const occupiedBooths = BOOTHS.filter(b => b.status === "Occupied").length;
+  useEffect(() => {
+    const token = localStorage.getItem("planova_token");
+    fetch("/api/auth/stats", { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => res.json())
+      .then((data) => setStats(data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
 
-  const recentApps = [...APPLICATIONS].sort((a,b) => b.appliedAt.localeCompare(a.appliedAt)).slice(0,4);
-  const recentAttendees = [...ATTENDEES].sort((a,b) => b.registeredAt.localeCompare(a.registeredAt)).slice(0,4);
-  const upcomingExpos = EXPOS.filter(e => e.status === "Published").slice(0,3);
+  const totalExpos = EXPOS.length;
+  const publishedExpos = EXPOS.filter((e) => e.status === "Published").length;
+  const totalAttendees = stats.attendees;
+  const totalExhibitors = stats.exhibitors;
+  const totalUsers = stats.total;
+  const verifiedUsers = stats.verified;
+
+  const recentApps = [...APPLICATIONS].sort((a, b) => b.appliedAt.localeCompare(a.appliedAt)).slice(0, 4);
+  const recentAttendees = [...ATTENDEES].sort((a, b) => b.registeredAt.localeCompare(a.registeredAt)).slice(0, 4);
+  const upcomingExpos = EXPOS.filter((e) => e.status === "Published").slice(0, 3);
 
   const activityColors = { success: "bg-green-400", error: "bg-red-400", info: "bg-blue-400", warning: "bg-amber-400" };
+
+  if (loading) return (
+    <div className="flex items-center justify-center py-20">
+      <Loader2 size={24} className="animate-spin text-cyan-500" />
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -51,12 +68,12 @@ export default function Overview() {
 
       {/* Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
-        <MetricCard icon={CalendarRange}  label="Total Expos"       value={totalExpos}     sub={`${publishedExpos} published`}       color="bg-blue-50 text-blue-600"    onClick={() => navigate("/admin/expos")} />
-        <MetricCard icon={Users}          label="Attendees"         value={totalAttendees} sub="registered"                          color="bg-green-50 text-green-600"  onClick={() => navigate("/admin/attendees")} />
-        <MetricCard icon={ClipboardList}  label="Exhibitors"        value={totalExhibitors}sub="approved"                            color="bg-violet-50 text-violet-600"onClick={() => navigate("/admin/applications")} />
-        <MetricCard icon={ClipboardList}  label="Pending Apps"      value={pendingApps}    sub="awaiting review"                     color="bg-cyan-50 text-cyan-500"    onClick={() => navigate("/admin/applications")} />
-        <MetricCard icon={Map}            label="Booths Occupied"   value={occupiedBooths} sub={`of ${totalBooths} total`}           color="bg-cyan-50 text-cyan-600"    onClick={() => navigate("/admin/booths")} />
-        <MetricCard icon={Activity}       label="Upcoming Expos"    value={publishedExpos} sub="published & active"                  color="bg-amber-50 text-amber-600"  onClick={() => navigate("/admin/expos")} />
+        <MetricCard icon={Users}          label="Total Users"        value={totalUsers}     sub={`${verifiedUsers} verified`}          color="bg-green-50 text-green-600"  onClick={() => navigate("/admin/users")} />
+        <MetricCard icon={Users}          label="Attendees"         value={totalAttendees} sub="registered"                          color="bg-blue-50 text-blue-600"    onClick={() => navigate("/admin/users")} />
+        <MetricCard icon={Users}          label="Exhibitors"        value={totalExhibitors}sub="verified"                            color="bg-violet-50 text-violet-600"onClick={() => navigate("/admin/users")} />
+        <MetricCard icon={CalendarRange}  label="Total Expos"       value={totalExpos}     sub={`${publishedExpos} published`}       color="bg-cyan-50 text-cyan-600"    onClick={() => navigate("/admin/expos")} />
+        <MetricCard icon={ClipboardList}  label="Pending Apps"      value={APPLICATIONS.filter(a => a.status === "Pending").length} sub="awaiting review" color="bg-amber-50 text-amber-600"  onClick={() => navigate("/admin/applications")} />
+        <MetricCard icon={Map}            label="Booths Occupied"   value={BOOTHS.filter(b => b.status === "Occupied").length} sub={`of ${BOOTHS.length} total`} color="bg-slate-50 text-slate-600"  onClick={() => navigate("/admin/booths")} />
       </div>
 
       {/* Main grid */}

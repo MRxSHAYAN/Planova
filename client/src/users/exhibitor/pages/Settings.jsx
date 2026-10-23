@@ -1,24 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Check, X, Lock, User, Loader2 } from "lucide-react";
 import { useProfile, updateProfile } from "../../../hooks/useProfile";
-
-function Toggle({ label, description, checked, onChange }) {
-  return (
-    <label className="flex items-start justify-between gap-4 py-3.5 cursor-pointer"
-      style={{ borderBottom: "1px solid #F5F7FB" }}>
-      <div>
-        <p className="text-[13.5px] font-semibold" style={{ color: "#09152E" }}>{label}</p>
-        {description && <p className="text-[12px] mt-0.5" style={{ color: "#94A3B8" }}>{description}</p>}
-      </div>
-      <div className="relative shrink-0 mt-0.5">
-        <input type="checkbox" className="sr-only" checked={checked} onChange={onChange} />
-        <div className="w-10 rounded-full transition-colors" style={{ height: "22px", background: checked ? "#3478F6" : "#DDE3ED" }} />
-        <div className="absolute top-[3px] rounded-full bg-white shadow-sm transition-all"
-          style={{ width: "16px", height: "16px", left: checked ? "21px" : "3px" }} />
-      </div>
-    </label>
-  );
-}
+import { useAuth } from "../../../context/AuthContext";
 
 function Section({ icon: Icon, title, children }) {
   return (
@@ -32,53 +15,105 @@ function Section({ icon: Icon, title, children }) {
   );
 }
 
+function OTPInput({ value, onChange }) {
+  const refs = useRef([]);
+  function handle(e, i) {
+    const c = e.target.value.replace(/\D/, "").slice(-1);
+    const arr = value.split("");
+    arr[i] = c;
+    onChange(arr.join("").slice(0, 6));
+    if (c && i < 5) refs.current[i + 1]?.focus();
+  }
+  function key(e, i) {
+    if (e.key === "Backspace" && !e.target.value && i > 0) refs.current[i - 1]?.focus();
+  }
+  function paste(e) {
+    const p = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (p) { onChange(p); refs.current[Math.min(p.length, 5)]?.focus(); }
+    e.preventDefault();
+  }
+  return (
+    <div className="flex gap-2">
+      {[0,1,2,3,4,5].map((i) => (
+        <input key={i} ref={(el) => (refs.current[i] = el)}
+          type="text" inputMode="numeric" maxLength={1} value={value[i] || ""}
+          onChange={(e) => handle(e, i)} onKeyDown={(e) => key(e, i)} onPaste={paste}
+          className="w-10 h-11 text-center text-[16px] font-black rounded-lg outline-none"
+          style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }}
+          onFocus={(e) => (e.target.style.borderColor = "#3478F6")}
+          onBlur={(e) => (e.target.style.borderColor = "#DCEAFF")} />
+      ))}
+    </div>
+  );
+}
+
+function authHeader() {
+  return { "Content-Type": "application/json", Authorization: `Bearer ${localStorage.getItem("planova_token")}` };
+}
+
 export default function Settings() {
   const { profile, loading, error, refresh } = useProfile();
-  const [toast,       setToast]       = useState(null);
-  const [saving,      setSaving]      = useState(false);
-  const [editAccount, setEditAccount] = useState(false);
-  const [showPwForm,  setShowPwForm]  = useState(false);
+  const { updateUser } = useAuth();
+  const [toast, setToast] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [editName, setEditName] = useState(false);
+  const [name, setName] = useState("");
 
-  const [account, setAccount] = useState({ name: "", email: "" });
-  const [pwForm,  setPwForm]  = useState({ password: "", confirm: "" });
+  const [pwStep, setPwStep] = useState("idle");
+  const [newPw, setNewPw] = useState("");
+  const [pwConfirm, setPwConfirm] = useState("");
+  const [pwOtp, setPwOtp] = useState("");
 
   useEffect(() => {
-    if (!profile) return;
-    setAccount({ name: profile.name || "", email: profile.email || "" });
+    if (profile) setName(profile.name || "");
   }, [profile]);
 
-  const showToast = (type, msg) => {
+  function showToast(type, msg) {
     setToast({ type, msg });
     setTimeout(() => setToast(null), 2500);
-  };
+  }
 
-  const saveAccount = async () => {
+  async function saveName() {
     try {
       setSaving(true);
-      await updateProfile({ name: account.name, email: account.email });
+      await updateProfile({ name });
+      updateUser({ name });
       refresh();
-      setEditAccount(false);
-      showToast("ok", "Settings saved");
-    } catch (e) {
-      showToast("err", e.message);
-    } finally { setSaving(false); }
-  };
+      setEditName(false);
+      showToast("ok", "Saved");
+    } catch (e) { showToast("err", e.message); }
+    finally { setSaving(false); }
+  }
 
-  const savePassword = async () => {
-    if (pwForm.password !== pwForm.confirm)
-      return showToast("err", "Passwords do not match");
-    if (pwForm.password.length < 6)
-      return showToast("err", "Password must be at least 6 characters");
+  async function sendPwOTP() {
+    if (!newPw) return showToast("err", "Enter a new password");
+    if (newPw !== pwConfirm) return showToast("err", "Passwords don't match");
+    if (newPw.length < 6) return showToast("err", "Password must be 6+ characters");
     try {
-      setSaving(true);
-      await updateProfile({ password: pwForm.password });
-      setShowPwForm(false);
-      setPwForm({ password: "", confirm: "" });
+      const res = await fetch("/api/auth/request-password-change", {
+        method: "POST", headers: authHeader(), body: JSON.stringify({ newPassword: newPw }),
+      });
+      const data = await res.json();
+      if (!res.ok) return showToast("err", data.message || "Failed");
+      setPwStep("otp");
+      showToast("ok", "OTP sent to " + profile.email);
+    } catch { showToast("err", "Something went wrong"); }
+  }
+
+  async function confirmPwOTP() {
+    if (pwOtp.length < 6) return showToast("err", "Enter the full code");
+    try {
+      const res = await fetch("/api/auth/confirm-password-change", {
+        method: "POST", headers: authHeader(), body: JSON.stringify({ otp: pwOtp }),
+      });
+      const data = await res.json();
+      if (!res.ok) return showToast("err", data.message || "Invalid OTP");
+      updateUser({ token: data.token });
+      localStorage.setItem("planova_token", data.token);
+      setPwStep("idle"); setNewPw(""); setPwConfirm(""); setPwOtp("");
       showToast("ok", "Password updated");
-    } catch (e) {
-      showToast("err", e.message);
-    } finally { setSaving(false); }
-  };
+    } catch { showToast("err", "Something went wrong"); }
+  }
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
@@ -96,7 +131,6 @@ export default function Settings() {
   return (
     <div className="max-w-2xl mx-auto space-y-4">
 
-      {/* Toast */}
       {toast && (
         <div className="fixed top-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-xl text-[13px] font-semibold shadow-lg"
           style={{
@@ -108,50 +142,35 @@ export default function Settings() {
         </div>
       )}
 
-      {/* Account info */}
       <Section icon={User} title="Account Information">
         <div className="py-3.5" style={{ borderBottom: "1px solid #F5F7FB" }}>
           <p className="text-[10.5px] font-bold uppercase tracking-wider mb-1" style={{ color: "#B0BCC8" }}>Name</p>
-          {editAccount ? (
-            <input value={account.name}
-              onChange={(e) => setAccount((p) => ({ ...p, name: e.target.value }))}
-              className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none transition-colors"
+          {editName ? (
+            <input value={name} onChange={(e) => setName(e.target.value)}
+              className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none"
               style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }} />
           ) : (
-            <p className="text-[13.5px] font-medium" style={{ color: "#09152E" }}>{account.name || "—"}</p>
+            <p className="text-[13.5px] font-medium" style={{ color: "#09152E" }}>{name || "—"}</p>
           )}
         </div>
         <div className="py-3.5" style={{ borderBottom: "1px solid #F5F7FB" }}>
-          <p className="text-[10.5px] font-bold uppercase tracking-wider mb-1" style={{ color: "#B0BCC8" }}>Account Email</p>
-          {editAccount ? (
-            <input type="email" value={account.email}
-              onChange={(e) => setAccount((p) => ({ ...p, email: e.target.value }))}
-              className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none transition-colors"
-              style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }} />
-          ) : (
-            <p className="text-[13.5px] font-medium" style={{ color: "#09152E" }}>{account.email || "—"}</p>
-          )}
+          <p className="text-[10.5px] font-bold uppercase tracking-wider mb-1" style={{ color: "#B0BCC8" }}>Email</p>
+          <p className="text-[13.5px] font-medium" style={{ color: "#09152E" }}>{profile.email}</p>
         </div>
         <div className="py-3.5 flex gap-2">
-          {!editAccount ? (
-            <button onClick={() => setEditAccount(true)}
-              className="text-[12.5px] font-bold px-4 py-2 rounded-lg transition-colors"
-              style={{ background: "#F0F3FA", color: "#3E506D", border: "1px solid #E8EEF8" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#3478F6"; e.currentTarget.style.color = "#3478F6"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E8EEF8"; e.currentTarget.style.color = "#3E506D"; }}>
-              Edit
-            </button>
+          {!editName ? (
+            <button onClick={() => setEditName(true)}
+              className="text-[12.5px] font-bold px-4 py-2 rounded-lg"
+              style={{ background: "#F0F3FA", color: "#3E506D", border: "1px solid #E8EEF8" }}>Edit</button>
           ) : (
             <>
-              <button onClick={saveAccount} disabled={saving}
-                className="flex items-center gap-1 text-[12px] font-bold px-3 py-2 rounded-lg text-white transition-colors"
-                style={{ background: "#3478F6", opacity: saving ? 0.7 : 1 }}
-                onMouseEnter={(e) => !saving && (e.currentTarget.style.background = "#1D5FE0")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "#3478F6")}>
+              <button onClick={saveName} disabled={saving}
+                className="flex items-center gap-1 text-[12px] font-bold px-3 py-2 rounded-lg text-white"
+                style={{ background: "#3478F6" }}>
                 {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Save
               </button>
-              <button onClick={() => setEditAccount(false)}
-                className="flex items-center gap-1 text-[12px] font-semibold px-3 py-2 rounded-lg transition-colors"
+              <button onClick={() => setEditName(false)}
+                className="flex items-center gap-1 text-[12px] font-semibold px-3 py-2 rounded-lg"
                 style={{ background: "#F0F3FA", color: "#64748B", border: "1px solid #E8EEF8" }}>
                 <X size={12} /> Cancel
               </button>
@@ -160,53 +179,58 @@ export default function Settings() {
         </div>
       </Section>
 
-      {/* Password */}
-      <Section icon={Lock} title="Password & Security">
-        {!showPwForm ? (
+      <Section icon={Lock} title="Password">
+        {pwStep === "idle" && (
           <div className="py-4 flex items-center justify-between">
             <div>
               <p className="text-[13.5px] font-semibold" style={{ color: "#09152E" }}>Password</p>
-              <p className="text-[12px]" style={{ color: "#94A3B8" }}>Change your account password</p>
+              <p className="text-[12px]" style={{ color: "#94A3B8" }}>OTP will be sent to your email</p>
             </div>
-            <button onClick={() => setShowPwForm(true)}
-              className="text-[12.5px] font-bold px-4 py-2 rounded-lg transition-colors"
-              style={{ background: "#F0F3FA", color: "#3E506D", border: "1px solid #E8EEF8" }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#3478F6"; e.currentTarget.style.color = "#3478F6"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#E8EEF8"; e.currentTarget.style.color = "#3E506D"; }}>
-              Change
-            </button>
+            <button onClick={() => setPwStep("enter")}
+              className="text-[12.5px] font-bold px-4 py-2 rounded-lg"
+              style={{ background: "#F0F3FA", color: "#3E506D", border: "1px solid #E8EEF8" }}>Change</button>
           </div>
-        ) : (
+        )}
+        {pwStep === "enter" && (
           <div className="py-4 space-y-3">
             <div>
               <p className="text-[10.5px] font-bold uppercase tracking-wider mb-1" style={{ color: "#B0BCC8" }}>New Password</p>
-              <input type="password" value={pwForm.password}
-                onChange={(e) => setPwForm((p) => ({ ...p, password: e.target.value }))}
-                className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none transition-colors"
+              <input type="password" value={newPw} onChange={(e) => setNewPw(e.target.value)}
+                className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none"
                 style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }} />
             </div>
             <div>
               <p className="text-[10.5px] font-bold uppercase tracking-wider mb-1" style={{ color: "#B0BCC8" }}>Confirm Password</p>
-              <input type="password" value={pwForm.confirm}
-                onChange={(e) => setPwForm((p) => ({ ...p, confirm: e.target.value }))}
-                className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none transition-colors"
+              <input type="password" value={pwConfirm} onChange={(e) => setPwConfirm(e.target.value)}
+                className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none"
                 style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }} />
             </div>
+            <p className="text-[12px]" style={{ color: "#94A3B8" }}>An OTP will be sent to {profile.email} to confirm.</p>
+            <div className="flex gap-2">
+              <button onClick={sendPwOTP} className="text-[12px] font-bold px-3 py-2 rounded-lg text-white" style={{ background: "#3478F6" }}>Send OTP</button>
+              <button onClick={() => setPwStep("idle")} className="text-[12px] font-semibold px-3 py-2 rounded-lg"
+                style={{ background: "#F0F3FA", color: "#64748B", border: "1px solid #E8EEF8" }}>Cancel</button>
+            </div>
+          </div>
+        )}
+        {pwStep === "otp" && (
+          <div className="py-4 space-y-3">
+            <p className="text-[13px]" style={{ color: "#64748B" }}>
+              Enter the code sent to <strong style={{ color: "#09152E" }}>{profile.email}</strong>
+            </p>
+            <OTPInput value={pwOtp} onChange={setPwOtp} />
             <div className="flex gap-2 pt-1">
-              <button onClick={savePassword} disabled={saving}
-                className="flex items-center gap-1 text-[12px] font-bold px-3 py-2 rounded-lg text-white transition-colors"
-                style={{ background: "#3478F6", opacity: saving ? 0.7 : 1 }}>
-                {saving ? <Loader2 size={12} className="animate-spin" /> : <Check size={12} />} Update Password
+              <button onClick={confirmPwOTP} disabled={pwOtp.length < 6}
+                className="flex items-center gap-1 text-[12px] font-bold px-3 py-2 rounded-lg text-white" style={{ background: "#3478F6" }}>
+                <Check size={12} /> Confirm & Update
               </button>
-              <button onClick={() => { setShowPwForm(false); setPwForm({ password: "", confirm: "" }); }}
-                className="flex items-center gap-1 text-[12px] font-semibold px-3 py-2 rounded-lg transition-colors"
-                style={{ background: "#F0F3FA", color: "#64748B", border: "1px solid #E8EEF8" }}>
-                <X size={12} /> Cancel
-              </button>
+              <button onClick={() => setPwStep("idle")} className="text-[12px] font-semibold px-3 py-2 rounded-lg"
+                style={{ background: "#F0F3FA", color: "#64748B", border: "1px solid #E8EEF8" }}>Cancel</button>
             </div>
           </div>
         )}
       </Section>
+
     </div>
   );
 }

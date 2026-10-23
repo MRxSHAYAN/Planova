@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Pencil, Check, X, Loader2 } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Pencil, Check, X, Camera, Loader2 } from "lucide-react";
 import { useProfile, updateProfile, initials } from "../../../hooks/useProfile";
 import { useAuth } from "../../../context/AuthContext";
 
@@ -65,6 +65,9 @@ export default function CompanyProfile() {
   const [editCompany, setEditCompany] = useState(false);
   const [editContact, setEditContact] = useState(false);
 
+  const fileRef = useRef(null);
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+
   // Company-level fields (stored on User model)
   const [company, setCompany] = useState({
     company:     "",
@@ -101,6 +104,28 @@ export default function CompanyProfile() {
   function showToast(type, msg) {
     setToast({ type, msg });
     setTimeout(() => setToast(null), 2500);
+  }
+
+  async function handleAvatarChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) return showToast("err", "Image too large (max 2MB)");
+
+    setUploadingAvatar(true);
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      try {
+        await updateProfile({ avatar: reader.result });
+        updateUser({ avatar: reader.result });
+        refresh();
+        showToast("ok", "Logo updated");
+      } catch (err) {
+        showToast("err", err.message);
+      } finally {
+        setUploadingAvatar(false);
+      }
+    };
+    reader.readAsDataURL(file);
   }
 
   async function saveCompany() {
@@ -198,11 +223,23 @@ export default function CompanyProfile() {
 
       {/* Profile header */}
       <div className="rounded-xl p-5 flex items-center gap-4" style={{ background: "#09152E" }}>
-        <div
-          className="w-14 h-14 rounded-xl flex items-center justify-center text-[18px] font-black shrink-0 text-white"
-          style={{ background: "#3478F6" }}
-        >
-          {abbr}
+        <div className="relative shrink-0 cursor-pointer" onClick={() => fileRef.current?.click()}>
+          {profile.avatar ? (
+            <img src={profile.avatar} alt={profile.company || profile.name}
+              className="w-14 h-14 rounded-xl object-cover" style={{ background: "#3478F6" }} />
+          ) : (
+            <div className="w-14 h-14 rounded-xl flex items-center justify-center text-[18px] font-black text-white"
+              style={{ background: "#3478F6" }}>
+              {abbr}
+            </div>
+          )}
+          <div className="absolute inset-0 rounded-xl flex items-center justify-center transition-opacity"
+            style={{ background: "rgba(0,0,0,0.4)", opacity: uploadingAvatar ? 1 : 0 }}
+            onMouseEnter={(e) => { if (!uploadingAvatar) e.currentTarget.style.opacity = 1; }}
+            onMouseLeave={(e) => { if (!uploadingAvatar) e.currentTarget.style.opacity = 0; }}>
+            {uploadingAvatar ? <Loader2 size={16} className="animate-spin text-white" /> : <Camera size={16} className="text-white" />}
+          </div>
+          <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-[18px] font-black text-white">
