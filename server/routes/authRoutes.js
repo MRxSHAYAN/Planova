@@ -5,7 +5,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-// POST /api/auth/register
+// Register a new user
 router.post("/register", async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -21,12 +21,15 @@ router.post("/register", async (req, res) => {
   const user = await User.create({ name, email, password, role: role || "attendee" });
 
   res.status(201).json({
-    _id: user._id, name: user.name, email: user.email, role: user.role,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
     token: generateToken(user._id, user.role),
   });
 });
 
-// POST /api/auth/login
+// Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -38,12 +41,18 @@ router.post("/login", async (req, res) => {
     return res.status(403).json({ message: "Account is deactivated" });
 
   res.json({
-    _id: user._id, name: user.name, email: user.email, role: user.role,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    company: user.company,
+    phone: user.phone,
+    city: user.city,
     token: generateToken(user._id, user.role),
   });
 });
 
-// POST /api/auth/admin/login
+// Admin login
 router.post("/admin/login", async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
@@ -55,34 +64,45 @@ router.post("/admin/login", async (req, res) => {
     return res.status(403).json({ message: "Not an admin account" });
 
   res.json({
-    _id: user._id, name: user.name, email: user.email, role: user.role,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
     token: generateToken(user._id, user.role),
   });
 });
 
-// GET /api/auth/profile  — fetch current user's profile
+// Get my profile
 router.get("/profile", protect, async (req, res) => {
-  const user = await User.findById(req.user.userId).select("-password -resetToken -resetTokenExpiry");
+  const user = await User.findById(req.user.userId).select("-password");
   if (!user) return res.status(404).json({ message: "User not found" });
   res.json(user);
 });
 
-// PUT /api/auth/profile  — update own name, email, or password
+// Update my profile (name, email, password, phone, city, company)
 router.put("/profile", protect, async (req, res) => {
   const user = await User.findById(req.user.userId);
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  if (req.body.name)     user.name     = req.body.name;
-  if (req.body.email)    user.email    = req.body.email;
-  if (req.body.password) user.password = req.body.password;
-  if (req.body.phone     !== undefined) user.phone   = req.body.phone;
-  if (req.body.city      !== undefined) user.city    = req.body.city;
-  if (req.body.company   !== undefined) user.company = req.body.company;
+  const { name, email, password, phone, city, company } = req.body;
+
+  if (name)     user.name     = name;
+  if (email)    user.email    = email;
+  if (password) user.password = password;
+  if (phone  !== undefined) user.phone   = phone;
+  if (city   !== undefined) user.city    = city;
+  if (company !== undefined) user.company = company;
 
   await user.save();
 
   res.json({
-    _id: user._id, name: user.name, email: user.email, role: user.role,
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    company: user.company,
+    phone: user.phone,
+    city: user.city,
     token: generateToken(user._id, user.role),
   });
 });

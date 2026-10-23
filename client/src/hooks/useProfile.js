@@ -1,42 +1,35 @@
-/**
- * useProfile — fetch the logged-in user's profile from the API.
- * Returns { profile, loading, error, refresh }
- * profile fields: _id, name, email, role, phone, city, company, avatar
- */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+// Fetch the logged-in user's profile from the server
 export function useProfile() {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState(null);
+  const [error, setError] = useState(null);
+  const [reload, setReload] = useState(0);
 
-  const fetch_ = useCallback(async () => {
+  useEffect(() => {
     const token = localStorage.getItem("planova_token");
     if (!token) { setLoading(false); return; }
 
-    try {
-      setLoading(true);
-      const res = await fetch(`${API}/api/auth/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error("Failed to load profile");
-      setProfile(await res.json());
-      setError(null);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    setLoading(true);
+    fetch(`${API}/api/auth/profile`, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => { setProfile(data); setError(null); })
+      .catch(() => setError("Could not load profile"))
+      .finally(() => setLoading(false));
+  }, [reload]);
 
-  useEffect(() => { fetch_(); }, [fetch_]);
+  // Call refresh() to re-fetch after a save
+  const refresh = () => setReload((n) => n + 1);
 
-  return { profile, loading, error, refresh: fetch_ };
+  return { profile, loading, error, refresh };
 }
 
-/** Update name/email/password. Returns updated user or throws. */
+// Save profile changes to the server
 export async function updateProfile(data) {
   const token = localStorage.getItem("planova_token");
   const res = await fetch(`${API}/api/auth/profile`, {
@@ -47,14 +40,12 @@ export async function updateProfile(data) {
     },
     body: JSON.stringify(data),
   });
-  if (!res.ok) {
-    const body = await res.json().catch(() => ({}));
-    throw new Error(body.message || "Update failed");
-  }
-  return res.json();
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.message || "Update failed");
+  return body;
 }
 
-/** Derive initials from a name string */
+// Get initials from a name, e.g. "Ali Hassan" → "AH"
 export function initials(name = "") {
   return name
     .split(" ")
