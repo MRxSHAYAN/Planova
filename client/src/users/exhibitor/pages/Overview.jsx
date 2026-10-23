@@ -1,19 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, FileText, CheckCircle2, Clock, AlertCircle } from "lucide-react";
-import { CURRENT_COMPANY, APPLICATIONS, BOOTHS, EXPOS } from "../data/mockData";
+import { APPLICATIONS, BOOTHS, EXPOS } from "../data/mockData";
 import { StatusBadge } from "../components/StatusBadge";
+import { useAuth } from "../../../context/AuthContext";
 
 const BASE = "/users/dashboard/exhibitor";
 
 export default function Overview() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const displayName = user?.company || user?.name || "Exhibitor";
   const approved = APPLICATIONS.filter((a) => a.status === "approved").length;
   const pending = APPLICATIONS.filter((a) => a.status === "pending").length;
   const rejected = APPLICATIONS.filter((a) => a.status === "rejected").length;
   const latestApp = APPLICATIONS[0];
   const assignedBooth = BOOTHS[0] || null;
   const upcomingExpo = EXPOS.find((e) => e.applicationOpen && e.featured);
-  const profilePct = CURRENT_COMPANY.profileComplete;
+  const profilePct = 70; // will be dynamic when exhibitor profile endpoint is added
 
   return (
     <div className="space-y-5">
@@ -23,7 +26,7 @@ export default function Overview() {
         <div>
           <p className="text-[12px] font-medium" style={{ color: "#3478F6" }}>Welcome back,</p>
           <h2 className="text-[22px] font-black leading-tight mt-0.5" style={{ color: "#09152E" }}>
-            {CURRENT_COMPANY.name}
+            {displayName}
           </h2>
           <p className="text-[13px] mt-1" style={{ color: "#64748B" }}>
             {approved} approved · {pending} pending · {rejected} not accepted

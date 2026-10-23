@@ -10,8 +10,8 @@ import {
   LogOut,
 } from "lucide-react";
 import iconImg from "../../../assets/Icon.png";
-import { CURRENT_USER } from "../data/mockData";
 import { useAuth } from "../../../context/AuthContext";
+import { initials } from "../../../hooks/useProfile";
 
 const BASE = "/users/dashboard/attendee";
 
@@ -127,17 +127,16 @@ export default function Sidebar({ onClose }) {
           onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
           onClick={() => { navigate(`${BASE}/profile`); onClose?.(); }}
         >
-          {/* Initials avatar */}
           <span
             className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black shrink-0"
             style={{ background: "#1a2d4d", color: "#3478F6" }}
           >
-            {CURRENT_USER.initials}
+            {initials(user?.name)}
           </span>
           <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-semibold text-white truncate leading-none">{CURRENT_USER.name}</p>
+            <p className="text-[12px] font-semibold text-white truncate leading-none">{user?.name || "—"}</p>
             <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.3)" }}>
-              {CURRENT_USER.email}
+              {user?.email || ""}
             </p>
           </div>
         </button>

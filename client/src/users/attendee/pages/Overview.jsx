@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, MapPin, CalendarDays, Clock, Bookmark, CheckCircle2 } from "lucide-react";
-import { CURRENT_USER, EVENTS, SESSIONS, CATEGORY_COLORS } from "../data/mockData";
+import { EVENTS, SESSIONS, CATEGORY_COLORS } from "../data/mockData";
+import { useAuth } from "../../../context/AuthContext";
 
 const BASE = "/users/dashboard/attendee";
 
@@ -20,6 +21,7 @@ function CategoryPill({ label }) {
 
 export default function Overview() {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const h = new Date().getHours();
   const greeting = h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
 
@@ -35,7 +37,7 @@ export default function Overview() {
         <div>
           <p className="text-[12px] font-medium" style={{ color: "#3478F6" }}>{greeting}</p>
           <h2 className="text-[22px] font-black leading-tight mt-0.5" style={{ color: "#09152E" }}>
-            {CURRENT_USER.name.split(" ")[0]} 👋
+            {(user?.name || "").split(" ")[0]} 👋
           </h2>
           <p className="text-[13px] mt-1" style={{ color: "#64748B" }}>
             {registeredCount} event{registeredCount !== 1 ? "s" : ""} registered

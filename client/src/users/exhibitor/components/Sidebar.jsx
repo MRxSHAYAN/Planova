@@ -10,8 +10,8 @@ import {
   LogOut,
 } from "lucide-react";
 import iconImg from "../../../assets/Icon.png";
-import { CURRENT_COMPANY } from "../data/mockData";
 import { useAuth } from "../../../context/AuthContext";
+import { initials } from "../../../hooks/useProfile";
 
 const BASE = "/users/dashboard/exhibitor";
 
@@ -47,7 +47,7 @@ const NAV_GROUPS = [
 
 export default function Sidebar({ onClose }) {
   const navigate  = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <aside
       className="flex flex-col h-full w-full overflow-y-auto"
@@ -125,16 +125,16 @@ export default function Sidebar({ onClose }) {
         >
           <span
             className="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-black shrink-0"
-            style={{ background: CURRENT_COMPANY.logoColor, color: "#fff" }}
+            style={{ background: "#3478F6", color: "#fff" }}
           >
-            {CURRENT_COMPANY.initials}
+            {initials(user?.company || user?.name)}
           </span>
           <div className="flex-1 min-w-0">
             <p className="text-[12px] font-semibold text-white truncate leading-none">
-              {CURRENT_COMPANY.name}
+              {user?.company || user?.name || "—"}
             </p>
             <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.3)" }}>
-              {CURRENT_COMPANY.email}
+              {user?.email || ""}
             </p>
           </div>
         </button>

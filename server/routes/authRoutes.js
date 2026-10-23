@@ -60,14 +60,24 @@ router.post("/admin/login", async (req, res) => {
   });
 });
 
+// GET /api/auth/profile  — fetch current user's profile
+router.get("/profile", protect, async (req, res) => {
+  const user = await User.findById(req.user.userId).select("-password -resetToken -resetTokenExpiry");
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json(user);
+});
+
 // PUT /api/auth/profile  — update own name, email, or password
 router.put("/profile", protect, async (req, res) => {
   const user = await User.findById(req.user.userId);
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  if (req.body.name)  user.name  = req.body.name;
-  if (req.body.email) user.email = req.body.email;
+  if (req.body.name)     user.name     = req.body.name;
+  if (req.body.email)    user.email    = req.body.email;
   if (req.body.password) user.password = req.body.password;
+  if (req.body.phone     !== undefined) user.phone   = req.body.phone;
+  if (req.body.city      !== undefined) user.city    = req.body.city;
+  if (req.body.company   !== undefined) user.company = req.body.company;
 
   await user.save();
 
