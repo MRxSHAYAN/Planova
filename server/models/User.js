@@ -18,10 +18,12 @@ const userSchema = new mongoose.Schema({
   // Email verification
   isVerified:  { type: Boolean, default: false },
 
-  // OTP — used for registration verify and email change
-  otp:         { type: String },
-  otpExpiry:   { type: Date },
-  pendingEmail: { type: String }, // stores new email while waiting for OTP confirm
+  // OTP
+  otp:             { type: String },
+  otpExpiry:       { type: Date },
+  otpPurpose:      { type: String },
+  pendingEmail:    { type: String },
+  pendingPassword: { type: String },
 }, { timestamps: true });
 
 userSchema.pre("save", async function (next) {

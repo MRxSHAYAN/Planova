@@ -79,10 +79,7 @@ export default function AdminLogin() {
 
         {/* Card */}
         <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-8 shadow-2xl">
-          <h2 className="text-white font-bold text-[1.1rem] mb-1">Sign in to Admin Panel</h2>
-          <p className="text-slate-400 text-[13px] mb-6">
-            Demo credentials: <span className="text-cyan-400 font-mono">admin@planova.com</span> / <span className="text-cyan-400 font-mono">admin123</span>
-          </p>
+          <h2 className="text-white font-bold text-[1.1rem] mb-6">Sign in to Admin Panel</h2>
 
           {error && (
             <div className="mb-4 px-4 py-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-[13px] flex items-center gap-2">

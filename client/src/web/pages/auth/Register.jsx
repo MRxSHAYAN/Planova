@@ -79,6 +79,15 @@ function OTPInput({ value, onChange }) {
   );
 }
 
+// Password requirement checker — same rules as server
+function pwCheck(pw) {
+  return {
+    length:  pw.length >= 7,
+    letter:  /[a-zA-Z]/.test(pw),
+    special: /[!@#$%^&*()\-_=+\[\]{};':"\\|,.<>\/?~`]/.test(pw),
+  };
+}
+
 // ── Main component ───────────────────────────────
 export default function Register() {
   const navigate   = useNavigate();
@@ -92,6 +101,8 @@ export default function Register() {
   const [error,    setError]    = useState("");
   const [loading,  setLoading]  = useState(false);
 
+  const checks = pwCheck(form.password);
+
   function handleChange(e) {
     setForm(p => ({ ...p, [e.target.name]: e.target.value }));
     setError("");
@@ -101,7 +112,8 @@ export default function Register() {
   async function handleFormSubmit(e) {
     e.preventDefault();
     if (!form.name || !form.email || !form.password) return setError("Please fill in all fields.");
-    if (form.password.length < 8) return setError("Password must be at least 8 characters.");
+    if (!checks.length || !checks.letter || !checks.special)
+      return setError("Password must be 7+ characters with at least one letter and one special character");
 
     setLoading(true);
     try {
@@ -238,13 +250,27 @@ export default function Register() {
                 <div>
                   <label className="block text-[12.5px] font-semibold text-dark mb-1.5">Password</label>
                   <div className="relative">
-                    <input type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange} placeholder="Min. 8 characters"
+                    <input type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange} placeholder="Min. 7 chars, one special character"
                       className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent transition-all" />
                     <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-body transition-colors">
                       {showPass ? <EyeOffIcon /> : <EyeIcon />}
                     </button>
                   </div>
+                  {form.password.length > 0 && (
+                    <div className="mt-2 space-y-1">
+                      {[
+                        [checks.length,  "At least 7 characters"],
+                        [checks.letter,  "At least one letter"],
+                        [checks.special, "At least one special character (!@#$%^&* etc.)"],
+                      ].map(([ok, label]) => (
+                        <p key={label} className="text-[11.5px] flex items-center gap-1.5"
+                          style={{ color: ok ? "#12875A" : "#94A3B8" }}>
+                          <span>{ok ? "✓" : "·"}</span> {label}
+                        </p>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <button type="submit" disabled={loading}
                   className="w-full py-2.5 rounded-lg bg-accent text-white font-bold text-[14px] hover:bg-accent-hover disabled:opacity-60 transition-colors mt-1 flex items-center justify-center gap-2">

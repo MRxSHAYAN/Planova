@@ -15,7 +15,6 @@ const categoryColor = {
   Food:        { bg: "bg-[#FEF3C7]",      text: "text-[#92620A]" },
 };
 
-// ── Hero ─────────────────────────────────────────────────────────────────────
 function Hero() {
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
@@ -31,15 +30,12 @@ function Hero() {
           <p className="text-accent text-[11px] font-bold tracking-[0.22em] uppercase mb-4">
             Expo Management Platform
           </p>
-
           <h1 className="text-[2.2rem] sm:text-[2.7rem] lg:text-[3rem] font-black text-white leading-[1.08] mb-4">
             Pakistan's expos,<br />one platform.
           </h1>
-
           <p className="text-white/55 text-[14.5px] leading-relaxed mb-8 max-w-[400px]">
             Organizers publish events. Exhibitors claim booths. Attendees register and show up. Everything tracked in one place.
           </p>
-
           <div className="flex flex-wrap gap-3 mb-12">
             <Link to="/explore-expos"
               className="px-6 py-3 rounded-xl bg-accent text-white font-bold text-[13.5px] hover:bg-accent-hover transition-colors">
@@ -50,7 +46,6 @@ function Hero() {
               Create account
             </Link>
           </div>
-
           <div className="flex gap-8 pt-5 border-t border-white/10">
             {[["120+", "Expos hosted"], ["3,400+", "Exhibitors"], ["85,000+", "Attendees"]].map(([n, l]) => (
               <div key={l}>
@@ -65,7 +60,6 @@ function Hero() {
   );
 }
 
-// ── Expo card ─────────────────────────────────────────────────────────────────
 function ExpoCard({ expo }) {
   const c = categoryColor[expo.category] || categoryColor.Technology;
   return (
@@ -76,7 +70,7 @@ function ExpoCard({ expo }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#09152E]/55 to-transparent" />
         <div className="absolute top-3 right-3">
           {expo.status === "Published"
-            ? <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/95 text-status-open">● Open</span>
+            ? <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/95 text-status-open">Open</span>
             : <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/15 text-white border border-white/25 backdrop-blur-sm">Coming soon</span>
           }
         </div>
@@ -84,15 +78,14 @@ function ExpoCard({ expo }) {
           <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${c.bg} ${c.text}`}>{expo.category}</span>
         </div>
       </div>
-
       <div className="p-4 flex flex-col flex-1">
         <h3 className="text-dark font-bold text-[14.5px] leading-snug mb-2.5 group-hover:text-accent transition-colors">{expo.title}</h3>
         <p className="text-[12px] text-muted mb-1">{expo.date}</p>
         <p className="text-[12px] text-muted mb-4 truncate">{expo.venue}</p>
-
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
           <div className="text-[11.5px] text-muted">
-            <span className="text-dark font-semibold">{expo.exhibitors}</span> exhibitors &nbsp;·&nbsp; <span className="text-dark font-semibold">{expo.attendees.toLocaleString()}</span> attending
+            <span className="text-dark font-semibold">{expo.exhibitors}</span> exhibitors &nbsp;·&nbsp;
+            <span className="text-dark font-semibold">{expo.attendees.toLocaleString()}</span> attending
           </div>
           <Link to="/explore-expos" className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors shrink-0 ml-2">
             View →
@@ -103,7 +96,6 @@ function ExpoCard({ expo }) {
   );
 }
 
-// ── Featured expos ────────────────────────────────────────────────────────────
 function FeaturedExpos() {
   const [active, setActive] = useState("All");
   const filtered = active === "All" ? EXPOS : EXPOS.filter(e => e.category === active);
@@ -122,7 +114,6 @@ function FeaturedExpos() {
           </Link>
         </div>
 
-        {/* Category filters */}
         <div className="flex gap-2 mb-7 flex-wrap">
           {FILTERS.map(f => (
             <button key={f} onClick={() => setActive(f)}
@@ -136,11 +127,10 @@ function FeaturedExpos() {
           ))}
         </div>
 
-        {/* Grid */}
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map(e => <ExpoCard key={e.id} expo={e} />)}
         </div>
-        {/* Mobile scroll */}
+
         <div className="md:hidden -mx-5 px-5 overflow-x-auto scroll-smooth scrollbar-hide">
           <div className="flex gap-4 pb-2" style={{ width: "max-content" }}>
             {filtered.map(e => (
@@ -161,13 +151,11 @@ function FeaturedExpos() {
   );
 }
 
-// ── How it works ──────────────────────────────────────────────────────────────
 function HowItWorks() {
   return (
     <section className="bg-surface py-18">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-
           <div className="order-2 lg:order-1 relative rounded-2xl overflow-hidden border border-border shadow-lg aspect-[4/3]">
             <img
               src="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=800&q=75"
@@ -183,14 +171,13 @@ function HowItWorks() {
           <div className="order-1 lg:order-2">
             <h2 className="text-[1.65rem] font-black text-dark mb-2">From first post to final session</h2>
             <p className="text-body text-[14px] mb-9 max-w-sm">
-              Four steps that take an expo from an idea in a spreadsheet to a venue full of people.
+              Four steps that take an expo from an idea to a venue full of people.
             </p>
-
             <div className="space-y-6">
               {[
-                { n: "01", title: "Publish the expo", desc: "Set dates, venue, categories, and booth capacity. Looks live on the platform in minutes." },
-                { n: "02", title: "Review applications", desc: "Companies apply to exhibit. You approve, reject, or request more info — all from one screen." },
-                { n: "03", title: "Assign booths", desc: "Drag approved exhibitors onto the floor plan. The platform prevents double-booking automatically." },
+                { n: "01", title: "Publish the expo", desc: "Set dates, venue, categories, and booth capacity. Live on the platform in minutes." },
+                { n: "02", title: "Review applications", desc: "Companies apply to exhibit. You approve, reject, or request more info from one screen." },
+                { n: "03", title: "Assign booths", desc: "Approved exhibitors get placed on the floor plan. The platform prevents double-booking." },
                 { n: "04", title: "Everyone shows up ready", desc: "Attendees have their schedule. Exhibitors know their booth. Organizers track it live." },
               ].map(s => (
                 <div key={s.n} className="flex gap-5">
@@ -211,7 +198,6 @@ function HowItWorks() {
   );
 }
 
-// ── Who it's for ──────────────────────────────────────────────────────────────
 function ForWho() {
   return (
     <section className="bg-page py-18">
@@ -222,7 +208,6 @@ function ForWho() {
         </p>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          {/* Organizer — dark */}
           <div className="bg-navy rounded-2xl p-7 flex flex-col">
             <div className="w-9 h-9 rounded-lg bg-white/8 flex items-center justify-center mb-5">
               <svg className="w-4.5 h-4.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -230,7 +215,7 @@ function ForWho() {
               </svg>
             </div>
             <p className="text-accent text-[11px] font-bold tracking-[0.15em] uppercase mb-2">Organizers</p>
-            <h3 className="text-white font-black text-[18px] mb-3 leading-tight">Run the whole show from a single dashboard</h3>
+            <h3 className="text-white font-black text-[18px] mb-3 leading-tight">Run the whole show from one dashboard</h3>
             <p className="text-white/40 text-[13px] leading-relaxed flex-1">
               Publish expos, review exhibitor applications, fill the floor plan, manage sessions, watch live analytics.
             </p>
@@ -239,7 +224,6 @@ function ForWho() {
             </Link>
           </div>
 
-          {/* Exhibitor + Attendee */}
           <div className="lg:col-span-2 grid sm:grid-cols-2 gap-4">
             {[
               {
@@ -271,10 +255,30 @@ function ForWho() {
   );
 }
 
-// ── Newsletter ────────────────────────────────────────────────────────────────
 function Newsletter() {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState("idle");
+  const [msg, setMsg] = useState("");
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/newsletter/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setMsg(data.message || "Something went wrong"); setStatus("error"); return; }
+      setStatus("done");
+    } catch {
+      setMsg("Something went wrong");
+      setStatus("error");
+    }
+  }
+
   return (
     <section className="bg-navy-mid border-t border-white/[0.04] py-14">
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-7">
@@ -282,28 +286,32 @@ function Newsletter() {
           <h3 className="text-[1.05rem] font-black text-white mb-1">Get expo alerts for your city</h3>
           <p className="text-white/35 text-[13px]">New expos in Karachi, Lahore, or Islamabad — straight to your inbox.</p>
         </div>
-        {sent ? (
+        {status === "done" ? (
           <div className="shrink-0 text-[13px] font-semibold text-status-open bg-status-open-bg px-5 py-3 rounded-xl">
-            ✓ You're in!
+            Subscribed
           </div>
         ) : (
-          <form onSubmit={e => { e.preventDefault(); if (email.trim()) setSent(true); }}
-            className="flex gap-2 w-full sm:w-auto shrink-0">
-            <input type="email" required value={email} onChange={e => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="flex-1 sm:w-[220px] px-4 py-2.5 rounded-xl border border-white/15 bg-white/8 text-[13px] text-white placeholder-white/30 outline-none focus:border-accent/50 transition-colors" />
-            <button type="submit"
-              className="px-5 py-2.5 rounded-xl bg-accent text-navy text-[13px] font-bold hover:bg-accent-hover hover:text-white transition-colors shrink-0">
-              Notify me
-            </button>
-          </form>
+          <div className="flex flex-col gap-2 w-full sm:w-auto shrink-0">
+            <form onSubmit={handleSubmit} className="flex gap-2">
+              <input type="email" required value={email}
+                onChange={e => { setEmail(e.target.value); setStatus("idle"); }}
+                placeholder="your@email.com"
+                className="flex-1 sm:w-[220px] px-4 py-2.5 rounded-xl border border-white/15 bg-white/8 text-[13px] text-white placeholder-white/30 outline-none focus:border-accent/50 transition-colors" />
+              <button type="submit" disabled={status === "loading"}
+                className="px-5 py-2.5 rounded-xl bg-accent text-navy text-[13px] font-bold hover:bg-accent-hover hover:text-white transition-colors shrink-0 disabled:opacity-60">
+                {status === "loading" ? "..." : "Notify me"}
+              </button>
+            </form>
+            {status === "error" && (
+              <p className="text-[12px]" style={{ color: "#FCA5A5" }}>{msg}</p>
+            )}
+          </div>
         )}
       </div>
     </section>
   );
 }
 
-// ── CTA ───────────────────────────────────────────────────────────────────────
 function CTA() {
   return (
     <section className="bg-navy py-18">
@@ -329,7 +337,6 @@ function CTA() {
   );
 }
 
-// ── Mobile bottom bar ─────────────────────────────────────────────────────────
 function MobileBar() {
   return (
     <div className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-navy/97 backdrop-blur-md border-t border-white/10 px-4 py-3 flex gap-2.5">

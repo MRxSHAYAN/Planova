@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { CalendarRange, Users, ClipboardList, Map, TrendingUp, Activity, Loader2 } from "lucide-react";
+import { CalendarRange, Users, ClipboardList, Map, TrendingUp, Mail, Loader2 } from "lucide-react";
 import { EXPOS, APPLICATIONS, BOOTHS, ATTENDEES, ACTIVITY } from "../data/adminData";
 import StatusBadge from "../components/StatusBadge";
 
@@ -26,13 +26,21 @@ function MetricCard({ icon: Icon, label, value, sub, color, onClick }) {
 export default function Overview() {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ total: 0, attendees: 0, exhibitors: 0, admins: 0, verified: 0, active: 0 });
+  const [subscribers, setSubscribers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("planova_token");
-    fetch("/api/auth/stats", { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => res.json())
-      .then((data) => setStats(data))
+    const headers = { Authorization: `Bearer ${token}` };
+
+    Promise.all([
+      fetch("/api/auth/stats", { headers }).then(r => r.json()),
+      fetch("/api/newsletter/subscribers", { headers }).then(r => r.json()),
+    ])
+      .then(([statsData, subsData]) => {
+        setStats(statsData);
+        setSubscribers(Array.isArray(subsData) ? subsData : []);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -61,19 +69,19 @@ export default function Overview() {
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[1.25rem] font-black text-slate-800">Good morning, Admin 👋</h1>
+          <h1 className="text-[1.25rem] font-black text-slate-800">Overview</h1>
           <p className="text-slate-400 text-[13px] mt-0.5">Here's what's happening across Planova today.</p>
         </div>
       </div>
 
       {/* Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
-        <MetricCard icon={Users}          label="Total Users"        value={totalUsers}     sub={`${verifiedUsers} verified`}          color="bg-green-50 text-green-600"  onClick={() => navigate("/admin/users")} />
-        <MetricCard icon={Users}          label="Attendees"         value={totalAttendees} sub="registered"                          color="bg-blue-50 text-blue-600"    onClick={() => navigate("/admin/users")} />
-        <MetricCard icon={Users}          label="Exhibitors"        value={totalExhibitors}sub="verified"                            color="bg-violet-50 text-violet-600"onClick={() => navigate("/admin/users")} />
-        <MetricCard icon={CalendarRange}  label="Total Expos"       value={totalExpos}     sub={`${publishedExpos} published`}       color="bg-cyan-50 text-cyan-600"    onClick={() => navigate("/admin/expos")} />
-        <MetricCard icon={ClipboardList}  label="Pending Apps"      value={APPLICATIONS.filter(a => a.status === "Pending").length} sub="awaiting review" color="bg-amber-50 text-amber-600"  onClick={() => navigate("/admin/applications")} />
-        <MetricCard icon={Map}            label="Booths Occupied"   value={BOOTHS.filter(b => b.status === "Occupied").length} sub={`of ${BOOTHS.length} total`} color="bg-slate-50 text-slate-600"  onClick={() => navigate("/admin/booths")} />
+        <MetricCard icon={Users}         label="Total Users"    value={totalUsers}     sub={`${verifiedUsers} verified`}              color="bg-green-50 text-green-600"   onClick={() => navigate("/admin/users")} />
+        <MetricCard icon={Users}         label="Attendees"      value={totalAttendees} sub="registered"                               color="bg-blue-50 text-blue-600"     onClick={() => navigate("/admin/users")} />
+        <MetricCard icon={Users}         label="Exhibitors"     value={totalExhibitors}sub="verified"                                 color="bg-violet-50 text-violet-600" onClick={() => navigate("/admin/users")} />
+        <MetricCard icon={CalendarRange} label="Total Expos"    value={totalExpos}     sub={`${publishedExpos} published`}            color="bg-cyan-50 text-cyan-600"     onClick={() => navigate("/admin/expos")} />
+        <MetricCard icon={ClipboardList} label="Pending Apps"   value={APPLICATIONS.filter(a => a.status === "Pending").length} sub="awaiting review" color="bg-amber-50 text-amber-600" onClick={() => navigate("/admin/applications")} />
+        <MetricCard icon={Mail}          label="Subscribers"    value={subscribers.length} sub="newsletter"                          color="bg-pink-50 text-pink-600"     onClick={() => {}} />
       </div>
 
       {/* Main grid */}
@@ -207,6 +215,39 @@ export default function Overview() {
           })}
         </div>
       </div>
+
+      {/* Newsletter Subscribers */}
+      <div className="bg-white rounded-xl border border-slate-200">
+        <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Mail size={14} className="text-pink-500" />
+            <h2 className="font-bold text-[13.5px] text-slate-700">Newsletter Subscribers</h2>
+          </div>
+          <span className="text-[12px] font-semibold text-slate-400">{subscribers.length} total</span>
+        </div>
+        {subscribers.length === 0 ? (
+          <div className="px-5 py-8 text-center">
+            <p className="text-[13px] text-slate-400">No subscribers yet.</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-slate-50 max-h-[320px] overflow-y-auto">
+            {subscribers.map(s => (
+              <div key={s._id} className="flex items-center justify-between px-5 py-3">
+                <div className="flex items-center gap-3">
+                  <div className="w-7 h-7 rounded-full bg-pink-50 flex items-center justify-center shrink-0">
+                    <Mail size={12} className="text-pink-400" />
+                  </div>
+                  <span className="text-[13px] text-slate-700">{s.email}</span>
+                </div>
+                <span className="text-[11px] text-slate-400 shrink-0">
+                  {new Date(s.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
     </div>
   );
 }

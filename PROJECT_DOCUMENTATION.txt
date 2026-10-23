@@ -1,626 +1,487 @@
 ================================================================================
-  PLANOVA — COMPLETE PROJECT DOCUMENTATION
+  PLANOVA — PROJECT DOCUMENTATION
   Expo Management Platform for Pakistan
 ================================================================================
 
 Last updated: October 2026
-Project type: MERN Stack Web Application
-Repository: github.com/MRxSHAYAN/Planova
+Stack: MongoDB + Express + React + Node.js (MERN)
+Repo: github.com/MRxSHAYAN/Planova
 
---------------------------------------------------------------------------------
+
 TABLE OF CONTENTS
---------------------------------------------------------------------------------
+-----------------
+1.  What is Planova
+2.  Tech Stack
+3.  Project Structure
+4.  How to Run (step by step)
+5.  Environment Variables
+6.  Database Models
+7.  API Routes
+8.  Frontend Pages
+9.  Auth & OTP System
+10. Password Requirements
+11. Email System
+12. Newsletter
+13. Profile Pictures
+14. User Roles
+15. Seeded Demo Users
+16. Admin Panel
+17. What is Dynamic vs Mock
+18. Deployment (Vercel)
+19. Test Credentials
 
-  1.  What is Planova?
-  2.  Tech Stack
-  3.  Project Structure
-  4.  How to Run the Project
-  5.  Environment Variables
-  6.  Database & Models
-  7.  Backend API Routes
-  8.  Frontend — Pages & Features
-  9.  Authentication System
-  10. OTP Email Verification
-  11. User Roles
-  12. Seeded Demo Users
-  13. Deployment (Vercel)
-  14. What is Still Mock Data
-  15. Known Credentials for Testing
 
 ================================================================================
-1. WHAT IS PLANOVA?
+1. WHAT IS PLANOVA
 ================================================================================
 
-Planova is a web platform for managing expos (exhibitions) in Pakistan.
-It has three types of users:
+A web platform for managing expos, trade shows, and conferences in Pakistan.
 
-  - ATTENDEE   — browses expos, registers for sessions, views schedules
-  - EXHIBITOR  — applies to expos, manages booths, builds a company profile
-  - ADMIN      — manages the whole platform (users, expos, applications, booths)
+Three user types:
+  ATTENDEE  — browse expos, register for sessions, manage profile
+  EXHIBITOR — apply to expos, manage booth, build company profile
+  ADMIN     — manage the whole platform (users, expos, applications)
 
-The public website shows upcoming expos, schedules, and general information.
-Each role has its own private dashboard after login.
+The public website shows upcoming expos and info. Each role has a private
+dashboard after login.
+
 
 ================================================================================
 2. TECH STACK
 ================================================================================
 
-FRONTEND (client/)
-------------------
-  React 19            — UI library
-  Vite 8              — build tool and dev server
-  React Router v7     — client-side routing (SPA)
-  Tailwind CSS v4     — utility-first styling
-  Lucide React        — icon library
-  GSAP                — animations (used on splash/landing)
-  Context API         — global auth state (no Redux)
+Frontend:  React 19, Vite 8, React Router 7, Tailwind CSS v4, Lucide React
+Backend:   Node.js, Express, MongoDB, Mongoose, bcryptjs, jsonwebtoken, nodemailer
+Tools:     dotenv, cors, nodemon
 
-BACKEND (server/)
------------------
-  Node.js + Express   — web server
-  MongoDB             — database (via MongoDB Atlas or local)
-  Mongoose            — MongoDB schema & query library
-  bcryptjs            — password hashing
-  jsonwebtoken (JWT)  — authentication tokens
-  nodemailer          — sending OTP emails via Gmail
-  dotenv              — environment variable loader
-  cors                — cross-origin requests
-
-TOOLS
------
-  nodemon             — auto-restarts server in development
-  oxlint              — fast JavaScript linter
 
 ================================================================================
 3. PROJECT STRUCTURE
 ================================================================================
 
 E-Project plainova/
-├── client/                         ← Frontend (React + Vite)
-│   ├── public/
-│   │   ├── favicon.svg
-│   │   └── icons.svg
-│   ├── src/
-│   │   ├── main.jsx                ← React entry point
-│   │   ├── App.jsx                 ← All routes defined here
-│   │   ├── index.css               ← Global CSS + Tailwind + CSS variables
-│   │   ├── data.js                 ← Shared mock expo/session data
-│   │   ├── ScrollToTop.jsx         ← Resets scroll on route change
-│   │   │
-│   │   ├── assets/                 ← Images (Icon.png)
-│   │   │
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx     ← Global auth state (user, login, logout, updateUser)
-│   │   │
-│   │   ├── hooks/
-│   │   │   └── useProfile.js       ← Fetch & update user profile from API
-│   │   │
-│   │   ├── web/                    ← Public website (no login needed)
-│   │   │   ├── Splash.jsx          ← Animated intro screen
-│   │   │   ├── assets/             ← Hero/login images
-│   │   │   ├── components/
-│   │   │   │   ├── Navbar.jsx
-│   │   │   │   ├── Footer.jsx
-│   │   │   │   └── AuthNavbar.jsx  ← Navbar for login/register pages
-│   │   │   └── pages/
-│   │   │       ├── Home.jsx
-│   │   │       ├── About.jsx
-│   │   │       ├── ExploreExpos.jsx
-│   │   │       ├── Exhibitors.jsx
-│   │   │       ├── Schedule.jsx
-│   │   │       ├── Contact.jsx
-│   │   │       └── auth/
-│   │   │           ├── login.jsx
-│   │   │           └── Register.jsx  ← Two-step: form → OTP verify
-│   │   │
-│   │   ├── users/
-│   │   │   ├── attendee/
-│   │   │   │   ├── AttendeeDashboard.jsx
-│   │   │   │   ├── components/
-│   │   │   │   │   ├── DashboardLayout.jsx
-│   │   │   │   │   ├── TopHeader.jsx   ← Shows real user name from auth
-│   │   │   │   │   ├── Sidebar.jsx     ← Shows real user name from auth
-│   │   │   │   │   └── ...other UI components
-│   │   │   │   ├── data/
-│   │   │   │   │   └── mockData.js     ← Events, sessions (still mock)
-│   │   │   │   └── pages/
-│   │   │   │       ├── Overview.jsx    ← Welcome name from real auth
-│   │   │   │       ├── MyProfile.jsx   ← Fully dynamic — fetches DB, saves, OTP email change
-│   │   │   │       ├── MyEvents.jsx
-│   │   │   │       ├── MySchedule.jsx
-│   │   │   │       ├── ExploreEvents.jsx
-│   │   │   │       ├── Exhibitors.jsx
-│   │   │   │       └── SavedItems.jsx
-│   │   │   │
-│   │   │   └── exhibitor/
-│   │   │       ├── ExhibitorDashboard.jsx
-│   │   │       ├── components/
-│   │   │       │   ├── DashboardLayout.jsx
-│   │   │       │   ├── TopHeader.jsx   ← Shows real company/user name
-│   │   │       │   ├── Sidebar.jsx     ← Shows real company/user name
-│   │   │       │   └── ...other UI components
-│   │   │       ├── data/
-│   │   │       │   └── mockData.js     ← Applications, booths (still mock)
-│   │   │       └── pages/
-│   │   │           ├── Overview.jsx        ← Welcome name from real auth
-│   │   │           ├── CompanyProfile.jsx  ← Fully dynamic — fetch & save from DB
-│   │   │           ├── Settings.jsx        ← Fully dynamic — fetch & save from DB
-│   │   │           ├── MyApplications.jsx
-│   │   │           ├── MyBooths.jsx
-│   │   │           ├── ExploreExpos.jsx
-│   │   │           └── ProductsServices.jsx
-│   │   │
-│   │   └── admin/
-│   │       ├── AdminDashboard.jsx
-│   │       ├── layouts/
-│   │       │   └── AdminLayout.jsx
-│   │       ├── components/
-│   │       │   ├── AdminSidebar.jsx
-│   │       │   ├── AdminTopbar.jsx
-│   │       │   └── StatusBadge.jsx
-│   │       ├── data/
-│   │       │   └── adminData.js        ← Admin mock data (still mock)
-│   │       └── pages/
-│   │           ├── AdminLogin.jsx
-│   │           ├── Overview.jsx
-│   │           ├── Users.jsx
-│   │           ├── Applications.jsx
-│   │           ├── Booths.jsx
-│   │           ├── ExpoManagement.jsx
-│   │           ├── Attendees.jsx
-│   │           ├── Schedule.jsx
-│   │           ├── Notifications.jsx
-│   │           ├── Reports.jsx
-│   │           └── Settings.jsx        ← Fully dynamic — fetch & save from DB
-│   │
-│   ├── index.html
-│   ├── vite.config.js
-│   └── package.json
-│
-├── server/                         ← Backend (Node.js + Express)
-│   ├── index.js                    ← App entry, routes, CORS, MongoDB connect
-│   ├── seed.js                     ← Script to create demo users in DB
-│   ├── .env                        ← Environment variables (NOT committed to git)
-│   ├── config/
-│   │   └── db.js                   ← Mongoose connection
-│   ├── middleware/
-│   │   └── authMiddleware.js       ← JWT protect() and requireRole() functions
-│   ├── models/
-│   │   ├── User.js                 ← Main user model (all roles share it)
-│   │   ├── Exhibitor.js            ← Exhibitor application model
-│   │   ├── Event.js                ← Expo/event model
-│   │   ├── Session.js              ← Session/talk model
-│   │   ├── Registration.js         ← Attendee registration model
-│   │   ├── Booth.js                ← Booth assignment model
-│   │   └── Bookmark.js             ← Saved items model
-│   ├── routes/
-│   │   └── authRoutes.js           ← All auth endpoints (see Section 7)
-│   └── utils/
-│       ├── generateToken.js        ← Creates a JWT token
-│       └── sendEmail.js            ← Sends OTP emails via Gmail/nodemailer
-│
-├── package.json                    ← Root (concurrent dev scripts)
-├── vercel.json                     ← Deployment config for Vercel
-├── .gitignore
-└── PROJECT_DOCUMENTATION.txt       ← This file
+  client/
+    src/
+      context/AuthContext.jsx       auth state (user, login, logout, updateUser)
+      hooks/useProfile.js           fetch and update profile from API
+      web/
+        pages/
+          Home.jsx                  public home page with newsletter
+          auth/login.jsx            login form
+          auth/Register.jsx         2-step registration with OTP
+          auth/ForgotPassword.jsx   forgot password with OTP flow
+        components/                 Navbar, Footer, AuthNavbar
+      users/
+        attendee/
+          pages/MyProfile.jsx       name, photo, email change (OTP), password (OTP)
+          data/mockData.js          events, sessions (mock data)
+        exhibitor/
+          pages/CompanyProfile.jsx  company info, contact details
+          pages/Settings.jsx        name, email (OTP), password (OTP)
+          data/mockData.js          applications, booths (mock data)
+      admin/
+        pages/Overview.jsx          user counts + newsletter subscribers (live)
+        pages/Users.jsx             all users from database
+        pages/Settings.jsx          photo, name, email (OTP), password (OTP)
+        data/adminData.js           expo/booth stats (mock)
+
+  server/
+    index.js                        Express app entry
+    seed.js                         creates demo users in DB
+    .env                            environment variables (not in git)
+    config/db.js                    MongoDB connection
+    middleware/authMiddleware.js    JWT protect + requireRole
+    models/
+      User.js                       main model (all roles)
+      Subscriber.js                 newsletter subscribers
+      Exhibitor.js                  exhibitor applications
+      Event.js, Session.js          expo/session models
+      Registration.js, Booth.js     registration and booth models
+      Bookmark.js                   saved items
+    routes/
+      authRoutes.js                 all auth + profile + OTP + admin user routes
+      newsletterRoutes.js           subscribe, list, delete subscribers
+    utils/
+      generateToken.js              creates a JWT
+      sendEmail.js                  nodemailer OTP and welcome emails with logo
+
 
 ================================================================================
-4. HOW TO RUN THE PROJECT
+4. HOW TO RUN
 ================================================================================
 
-REQUIREMENTS
-  - Node.js v18 or higher
-  - MongoDB running locally OR a MongoDB Atlas connection string
+Requirements: Node.js v18+, MongoDB (local or Atlas)
 
-STEP 1 — Install all dependencies
+STEP 1 — Install MongoDB
+  Local: download from mongodb.com/try/download/community
+  Atlas:  create free cluster at mongodb.com/cloud/atlas
 
-  From the root folder run:
-    npm install
+STEP 2 — Install dependencies
+  cd server && npm install
+  cd client && npm install
 
-  This installs root + client + server dependencies together (if configured).
-  If not, run separately:
-    cd server && npm install
-    cd client && npm install
+STEP 3 — Create server/.env
+  See Section 5 below for all required values.
 
-STEP 2 — Set up environment variables
+STEP 4 — Get Gmail App Password for SMTP
+  Google Account > Security > 2-Step Verification > App Passwords
+  Create one, copy the 16-char password, remove all spaces, put in SMTP_PASS
 
-  Copy or edit server/.env (see Section 5 below).
-  At minimum you need MONGO_URI and JWT_SECRET.
-
-STEP 3 — Seed the database (creates demo users)
-
+STEP 5 — Seed the database
   cd server
   node seed.js
+  Creates admin, exhibitor, and attendee demo users.
 
-  This creates:
-    admin@planova.com        / admin123      (admin)
-    raza.ahmed@techbridge.pk / exhibitor123  (exhibitor)
-    ayesha.siddiqui@email.com / attendee123  (attendee)
+STEP 6 — Start both servers
+  Terminal 1:  cd server && npm run dev     (port 5000)
+  Terminal 2:  cd client && npm run dev     (port 5173)
 
-STEP 4 — Start both servers
-
-  From the root folder:
-    npm run dev
-
-  OR start them separately:
-    cd server && npm run dev     ← runs on http://localhost:5000
-    cd client && npm run dev     ← runs on http://localhost:5173
-
-  The Vite dev server proxies /api/* to http://localhost:5000 automatically
-  (configured in client/vite.config.js). This means the frontend just calls
-  fetch("/api/auth/login") and it reaches the backend without any CORS issues.
-
-STEP 5 — Open the app
-
+STEP 7 — Open the app
   http://localhost:5173
+
+Vite proxies /api/* to localhost:5000 automatically (vite.config.js).
+
 
 ================================================================================
 5. ENVIRONMENT VARIABLES (server/.env)
 ================================================================================
 
-  PORT=5000
-  NODE_ENV=development
-  CLIENT_URL=http://localhost:5173
+PORT=5000
+NODE_ENV=development
+CLIENT_URL=http://localhost:5173
 
-  # MongoDB connection
-  MONGO_URI=mongodb://localhost:27017/planovaDBTesting
-  # For Atlas use: mongodb+srv://user:pass@cluster.mongodb.net/planova
+MONGO_URI=mongodb://localhost:27017/planovaDBTesting
+(Atlas: mongodb+srv://user:pass@cluster.mongodb.net/planova)
 
-  # JWT secret — any long random string
-  JWT_SECRET=your_long_random_secret_here
+JWT_SECRET=any_long_random_string
 
-  # Gmail credentials for OTP emails
-  # Use a Gmail App Password, not your real Gmail password.
-  # Enable it at: Google Account → Security → 2-Step Verification → App Passwords
-  EMAIL_USER=your_gmail@gmail.com
-  EMAIL_PASS=your_16_char_app_password
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your16charapppassword   (no spaces)
 
-NOTE: .env is in .gitignore — it is never committed to git.
+Notes:
+  - .env is in .gitignore and never committed to git
+  - SMTP_PASS is a Gmail App Password, NOT your real password
+  - Port 587 = TLS, port 465 = SSL
 
-================================================================================
-6. DATABASE & MODELS
-================================================================================
-
-All data lives in MongoDB. The main model used so far is User.
-
-USER MODEL (server/models/User.js)
-  name          String   — full name
-  email         String   — unique, lowercase
-  password      String   — hashed with bcrypt (never stored plain)
-  role          String   — "attendee" | "exhibitor" | "admin"
-  phone         String   — optional
-  city          String   — optional
-  company       String   — company name (mainly for exhibitors)
-  category      String   — industry/category (exhibitors)
-  description   String   — about the company (exhibitors)
-  website       String   — company website (exhibitors)
-  avatar        String   — profile picture URL (future use)
-  isActive      Boolean  — false = account deactivated by admin
-  isVerified    Boolean  — false until email OTP is confirmed
-  otp           String   — temporary 6-digit OTP code
-  otpExpiry     Date     — OTP expires 10 minutes after creation
-  pendingEmail  String   — stores new email while waiting for OTP (email change)
-  createdAt     Date     — auto from Mongoose timestamps
-  updatedAt     Date     — auto from Mongoose timestamps
-
-OTHER MODELS (schema defined but not yet wired to live API routes)
-  Event.js         — expo events
-  Session.js       — talks/sessions within an event
-  Exhibitor.js     — exhibitor application to an event
-  Registration.js  — attendee registration for an event
-  Booth.js         — booth assignment
-  Bookmark.js      — saved items (events, sessions)
-
-PASSWORD HASHING
-  Passwords are hashed automatically in a Mongoose pre-save hook using bcrypt
-  with a salt round of 10. Plain passwords are NEVER saved to the database.
 
 ================================================================================
-7. BACKEND API ROUTES
+6. DATABASE MODELS
 ================================================================================
 
-Base URL in development: http://localhost:5000
-All routes are under: /api/auth/
+User (server/models/User.js)
+  name, email, password (bcrypt hashed), role (attendee/exhibitor/admin)
+  phone, city, company, category, description, website, avatar (base64)
+  isActive, isVerified
+  otp, otpExpiry, otpPurpose           temporary OTP fields
+  pendingEmail, pendingPassword        stores new values while OTP is pending
+  createdAt, updatedAt
 
-─── REGISTRATION ────────────────────────────────────────────────────────────
+Subscriber (server/models/Subscriber.js)
+  email, createdAt
 
-POST /api/auth/register
-  Body: { name, email, password, role }
-  - Validates fields
-  - Checks email not already taken
-  - Creates user with isVerified: false
-  - Generates 6-digit OTP, saves to user, sends email via nodemailer
-  - Returns: { message: "OTP sent to email" }
+Other models (defined, not yet wired to live API):
+  Event, Session, Exhibitor, Registration, Booth, Bookmark
 
-POST /api/auth/verify-otp
-  Body: { email, otp }
-  - Checks OTP matches and is not expired
-  - Sets isVerified: true, clears OTP fields
-  - Returns: full user object + JWT token
-
-POST /api/auth/resend-otp
-  Body: { email }
-  - Generates a fresh OTP, resends the email
-  - Returns: { message: "OTP resent" }
-
-─── LOGIN ────────────────────────────────────────────────────────────────────
-
-POST /api/auth/login
-  Body: { email, password }
-  - Finds user, verifies password with bcrypt
-  - Blocks if isActive is false
-  - Blocks if isVerified is false (returns needsVerification: true)
-  - Returns: full user object + JWT token
-
-POST /api/auth/admin/login
-  Body: { email, password }
-  - Same as login but also checks role === "admin"
-  - Admin accounts skip the isVerified check
-
-─── PROFILE (protected — needs Authorization: Bearer <token>) ───────────────
-
-GET /api/auth/profile
-  - Returns the current user's data (no password, no OTP)
-
-PUT /api/auth/profile
-  Body: any of { name, password, phone, city, company, description, website, category }
-  - NOTE: email is NOT changed here — use the email-change routes below
-  - Updates only the fields that are sent
-  - Returns: updated user object + new JWT token
-
-─── EMAIL CHANGE (protected) ────────────────────────────────────────────────
-
-POST /api/auth/request-email-change
-  Body: { newEmail }
-  - Checks new email is not already taken
-  - Generates OTP, saves as pendingEmail on the user
-  - Sends OTP email to the NEW email address
-  - Returns: { message: "OTP sent to newEmail" }
-
-POST /api/auth/confirm-email-change
-  Body: { otp }
-  - Verifies OTP matches and is not expired
-  - Swaps user.email with user.pendingEmail
-  - Clears OTP fields
-  - Returns: updated user object + new JWT token
-
-─── HOW JWT WORKS ───────────────────────────────────────────────────────────
-
-  On login/register, server returns a token.
-  Client stores it in localStorage as "planova_token".
-  Every protected API call sends:  Authorization: Bearer <token>
-  Server middleware (authMiddleware.js) decodes it and puts user info on req.user.
-  Token payload: { userId, role }
 
 ================================================================================
-8. FRONTEND — PAGES & FEATURES
+7. API ROUTES
 ================================================================================
 
-PUBLIC WEBSITE (no login required)
-  /                → Home — hero, expo cards, how it works, newsletter
-  /about           → About page
-  /expos           → Explore Expos listing
-  /exhibitors      → Exhibitors listing
-  /schedule        → Event schedule
-  /contact         → Contact page
-  /login           → Login form
-  /register        → Register form (2-step: details → OTP)
+Base: http://localhost:5000
 
-ATTENDEE DASHBOARD (/users/dashboard/attendee/...)
-  /                → Overview — greeting with real user name, quick stats
-  /explore         → Browse events
-  /my-events       → Registered events
-  /schedule        → Personal session schedule
-  /exhibitors      → View exhibitors at an event
-  /saved           → Saved/bookmarked items
-  /profile         → MyProfile — fully dynamic, edits name/company/city/phone,
-                     OTP-based email change, password change
+--- PUBLIC ---
 
-EXHIBITOR DASHBOARD (/users/dashboard/exhibitor/...)
-  /                → Overview — greeting with real company name
-  /explore         → Explore expos to apply to
-  /applications    → View all expo applications
-  /booths          → Booth assignments
-  /profile         → CompanyProfile — fully dynamic, add/edit company info
-  /products        → Products & services showcase
-  /settings        → Settings — edit name/email/password (live from DB)
+POST /api/auth/register                 create account, send OTP email
+POST /api/auth/verify-otp               verify OTP, activate account, get token
+POST /api/auth/resend-otp               resend registration OTP
+POST /api/auth/login                    login, returns token
+POST /api/auth/admin/login              admin-only login
+POST /api/auth/forgot-password          send OTP to email for password reset
+POST /api/auth/reset-password           verify OTP, set new password
+POST /api/newsletter/subscribe          add email to newsletter list
 
-ADMIN DASHBOARD (/admin/...)
-  /                → Overview — stats, recent activity
-  /users           → User management
-  /applications    → Exhibitor applications review
-  /booths          → Booth management
-  /expo-management → Manage expos
-  /attendees       → Attendee list
-  /schedule        → Event schedule management
-  /notifications   → Send notifications
-  /reports         → Reports
-  /settings        → Settings — live from DB (name, email, password)
+--- PROTECTED (requires Authorization: Bearer token) ---
+
+GET  /api/auth/profile                  get current user
+PUT  /api/auth/profile                  update name, phone, city, company, avatar, etc.
+POST /api/auth/request-email-change     send OTP to new email
+POST /api/auth/confirm-email-change     verify OTP, swap email in DB
+POST /api/auth/request-password-change  send OTP to current email
+POST /api/auth/confirm-password-change  verify OTP, save new password
+
+--- ADMIN ONLY ---
+
+GET  /api/auth/stats                    user count stats
+GET  /api/auth/users                    all users from DB
+PUT  /api/auth/users/:id/status         toggle user active/inactive
+GET  /api/newsletter/subscribers        all newsletter subscribers
+DELETE /api/newsletter/subscribers/:id  remove subscriber
+
+GET  /api/health                        server + DB status
+
 
 ================================================================================
-9. AUTHENTICATION SYSTEM
+8. FRONTEND PAGES
 ================================================================================
 
-HOW IT WORKS
+Public (no login)
+  /                   Home — expos, how it works, roles, newsletter
+  /about              About
+  /explore-expos      Browse expos
+  /exhibitors         Exhibitor directory
+  /schedule           Session schedule
+  /contact            Contact
+  /login              Login
+  /register           Register (2-step: form then OTP)
+  /forgot-password    Forgot password (email then OTP then new password)
 
-  1. User registers (form) → POST /api/auth/register
-  2. Server sends OTP to email
-  3. User enters OTP on the OTP screen → POST /api/auth/verify-otp
-  4. Server verifies OTP → returns user object + token
-  5. Client calls login(data) from AuthContext
-  6. AuthContext stores token in localStorage as "planova_token"
-             and stores user object as "planova_user"
-  7. On every page load, AuthContext reads localStorage to restore session
-  8. Protected API calls include: Authorization: Bearer <token> header
-  9. On logout: localStorage is cleared, user is set to null
+Attendee (/users/dashboard/attendee/)
+  /                   Overview with real user name
+  /explore            Browse events
+  /my-events          Registered events
+  /schedule           Personal schedule
+  /exhibitors         View exhibitors
+  /saved              Saved items
+  /profile            Edit name, photo, email (OTP), password (OTP)
 
-AUTH CONTEXT (client/src/context/AuthContext.jsx)
-  Provides:
-    user        — the logged-in user object (name, email, role, company, etc.)
-    login(data) — called after successful login/register, saves to localStorage
-    updateUser(fields) — call after profile save to update sidebar/navbar live
-    logout()    — clears everything, user becomes null
+Exhibitor (/users/dashboard/exhibitor/)
+  /                   Overview with real company name
+  /explore            Explore expos
+  /applications       View applications
+  /booths             Booth assignments
+  /profile            Company info, contact details
+  /products           Products and services
+  /settings           Name, email (OTP), password (OTP)
 
-useProfile HOOK (client/src/hooks/useProfile.js)
-  Used by profile pages to fetch fresh data from the DB.
-  Separate from useAuth — AuthContext holds what the user logged in with,
-  useProfile always fetches the latest from the server.
+Admin (/admin/)
+  /                   Overview — user counts, subscribers, recent data
+  /users              All users from DB with search, filter, activate/deactivate
+  /applications       Exhibitor applications
+  /booths             Booth management
+  /expos              Expo management
+  /attendees          Attendee list
+  /schedule           Schedule management
+  /reports            Reports
+  /settings           Photo, name, email (OTP), password (OTP)
 
-  Returns: { profile, loading, error, refresh }
+
+================================================================================
+9. AUTH & OTP SYSTEM
+================================================================================
+
+HOW LOGIN/REGISTER WORKS:
+  1. Register > OTP sent to email
+  2. Enter OTP > account verified > token returned
+  3. Token stored in localStorage as "planova_token"
+  4. Every API call sends: Authorization: Bearer token
+  5. Logout clears localStorage
+
+AUTHCONTEXT (client/src/context/AuthContext.jsx)
+  user           logged-in user object
+  login(data)    stores token + user in localStorage
+  updateUser(f)  updates stored user so sidebar refreshes immediately
+  logout()       clears localStorage
+
+USEPROFILE HOOK (client/src/hooks/useProfile.js)
+  Fetches fresh data from GET /api/auth/profile
+  Returns { profile, loading, error, refresh }
   Also exports: updateProfile(data), initials(name)
 
-ROUTE PROTECTION (client-side)
-  App.jsx wraps dashboard routes inside role checks.
-  If user is not logged in, they get redirected to /login.
-  Admin routes are only accessible to role === "admin".
+OTP USES:
+  Registration verify   POST /register > OTP > POST /verify-otp
+  Email change          POST /request-email-change > OTP > POST /confirm-email-change
+  Password change       POST /request-password-change > OTP > POST /confirm-password-change
+  Forgot password       POST /forgot-password > OTP > POST /reset-password
+
 
 ================================================================================
-10. OTP EMAIL VERIFICATION
+10. PASSWORD REQUIREMENTS
 ================================================================================
 
-HOW THE OTP IS GENERATED
-  Math.floor(100000 + Math.random() * 900000)
-  → always a 6-digit number, e.g. "438291"
-  → stored hashed? No — stored as plain string in User.otp
-  → expires 10 minutes after creation (User.otpExpiry)
+  At least 7 characters
+  At least one letter (a-z or A-Z)
+  At least one special character (!@#$%^&* etc.)
 
-REGISTRATION FLOW
-  Step 1: User fills form → POST /register → OTP emailed → show OTP screen
-  Step 2: User enters OTP → POST /verify-otp → account activated → redirect to dashboard
-  Resend:  POST /resend-otp → new OTP generated and emailed
+Enforced on:
+  - Register
+  - Forgot password / reset password
+  - Password change from profile
 
-EMAIL CHANGE FLOW
-  Step 1: User clicks "Change Email" in profile → enters new email
-       → POST /request-email-change → OTP sent to NEW email
-  Step 2: User enters OTP → POST /confirm-email-change → email swapped in DB
-       → new token issued (email changed so old token would be stale)
+The Register page and ForgotPassword page show live hints as you type.
 
-OTP EMAIL TEMPLATE
-  Sent via nodemailer using Gmail SMTP
-  HTML email with Planova branding, large OTP digits, 10-minute expiry notice
-
-TO SET UP REAL EMAILS
-  1. Go to your Google Account → Security → 2-Step Verification
-  2. At the bottom: App Passwords → Create one for "Mail"
-  3. Copy the 16-character password
-  4. In server/.env set:
-       EMAIL_USER=youremail@gmail.com
-       EMAIL_PASS=your16charapppassword
 
 ================================================================================
-11. USER ROLES
+11. EMAIL SYSTEM
 ================================================================================
 
-  ATTENDEE
-    - Can register and log in
-    - Has access to attendee dashboard
-    - Can view profile, edit name/company/city/phone/email/password
-    - Events, sessions — currently displayed from mock data
+All emails sent via nodemailer using SMTP (works with any provider).
+Transporter created fresh on each send so env var changes take effect immediately.
 
-  EXHIBITOR
-    - Can register (by selecting Exhibitor on register page) and log in
-    - Has access to exhibitor dashboard
-    - Can set up company profile (company name, category, description, website, city)
-    - Can manage contact details
-    - Applications and booths — currently displayed from mock data
+The Planova logo (client/src/assets/Icon.png) is attached as a CID inline image
+and shown in the email header. If the file is missing, emails still send without it.
 
-  ADMIN
-    - Created only via seed.js (cannot register as admin from the UI)
-    - Has access to admin dashboard at /admin
-    - Admin login is at /admin (separate login page)
-    - Skips OTP verification (pre-verified)
-    - Can see users, applications, booths, expos, reports
+Email types:
+  verify            registration OTP
+  email-change      OTP sent to new email address
+  password-change   OTP for password change
+  forgot-password   OTP for password reset
+  welcome           sent on newsletter subscription (no OTP, just confirmation)
+
+To set up emails, fill in SMTP_* values in server/.env (see Section 5).
+
 
 ================================================================================
-12. SEEDED DEMO USERS
+12. NEWSLETTER
 ================================================================================
 
-  Run: cd server && node seed.js
+Users subscribe from the bottom of the Home page.
+Email is saved to the Subscriber model in MongoDB.
+A welcome email is sent immediately after subscribing.
 
-  This creates (or re-creates) these users:
+Admin can see all subscribers on the Overview page (with subscribe date).
 
-  Role       Email                           Password        isVerified
-  ─────────  ──────────────────────────────  ──────────────  ──────────
-  admin      admin@planova.com               admin123        true
-  exhibitor  raza.ahmed@techbridge.pk        exhibitor123    true
-  attendee   ayesha.siddiqui@email.com       attendee123     true
+Routes:
+  POST /api/newsletter/subscribe            save email, send welcome email
+  GET  /api/newsletter/subscribers          admin only, all subscribers
+  DELETE /api/newsletter/subscribers/:id    admin only, remove one
 
-  All seeded users have isVerified: true so they can log in without OTP.
-  New users who register through the UI will go through OTP verification.
-
-================================================================================
-13. DEPLOYMENT (VERCEL)
-================================================================================
-
-  The project is configured for Vercel deployment via vercel.json.
-
-  FRONTEND
-    Vite builds to client/dist/
-    Vercel serves this as a static site
-
-  BACKEND
-    Express server deployed as serverless functions on Vercel
-    vercel.json routes all /api/* requests to the Express server
-
-  FOR PRODUCTION
-    Set these environment variables in the Vercel dashboard:
-      MONGO_URI         → your Atlas connection string
-      JWT_SECRET        → a long random string
-      EMAIL_USER        → your Gmail address
-      EMAIL_PASS        → your Gmail App Password
-      NODE_ENV          → production
-      CLIENT_URL        → https://your-vercel-domain.vercel.app
 
 ================================================================================
-14. WHAT IS STILL MOCK DATA
+13. PROFILE PICTURES
 ================================================================================
 
-These parts of the app use local JavaScript arrays, not the database.
-They are clearly marked as "mock" and will need API endpoints when ready.
+Users pick an image file (JPG or PNG, max 2MB).
+The file is read as a base64 data URL in the browser.
+The base64 string is sent to PUT /api/auth/profile as the avatar field.
+It is stored directly in MongoDB on the User document.
+It is displayed everywhere the user appears: profile pages, sidebar, navbar, admin.
 
-  client/src/data.js
-    — shared expo, session, exhibitor data used across the public site
+No file storage service is needed — everything stays in MongoDB.
 
-  client/src/users/attendee/data/mockData.js
-    — attendee events, sessions, exhibitors list, category colors
-
-  client/src/users/exhibitor/data/mockData.js
-    — exhibitor applications, booths, expos, products
-
-  client/src/admin/data/adminData.js
-    — admin overview stats, applications, attendees, activity feed
-
-  WHAT IS FULLY DYNAMIC (from database)
-    - User profile (name, email, phone, city, company, etc.)
-    - Login / logout / register
-    - Email OTP verification
-    - Password change
-    - Email change with OTP
-    - Admin/exhibitor/attendee settings pages
-    - Sidebar and topbar name display (from auth context)
 
 ================================================================================
-15. KNOWN CREDENTIALS FOR TESTING
+14. USER ROLES
 ================================================================================
 
-  ADMIN DASHBOARD
-    URL:       http://localhost:5173/admin
-    Email:     admin@planova.com
-    Password:  admin123
+ATTENDEE
+  Registers through the normal signup flow
+  Access to attendee dashboard
+  Can edit profile, upload photo, change email (OTP), change password (OTP)
+  Events/sessions still from mock data
 
-  EXHIBITOR DASHBOARD
-    URL:       http://localhost:5173/login
-    Email:     raza.ahmed@techbridge.pk
-    Password:  exhibitor123
+EXHIBITOR
+  Registers by selecting Exhibitor on signup
+  Access to exhibitor dashboard
+  Can set up company profile and contact details
+  Change password via OTP on settings page
+  Applications and booths still from mock data
 
-  ATTENDEE DASHBOARD
-    URL:       http://localhost:5173/login
-    Email:     ayesha.siddiqui@email.com
-    Password:  attendee123
+ADMIN
+  Created only via node seed.js (cannot self-register)
+  Access to admin panel at /admin
+  Admin login at /admin/login (separate from public login)
+  Skips OTP verification (pre-verified)
+  Can view all users, activate/deactivate accounts, see newsletter subscribers
 
-  NOTE: These users are pre-verified so they skip OTP on login.
-        New users registered through the UI will need to verify their email.
 
 ================================================================================
-END OF DOCUMENTATION
+15. SEEDED DEMO USERS
+================================================================================
+
+Run: cd server && node seed.js
+
+Role       Email                            Password        Verified
+--------   -------------------------------- --------------- --------
+admin      admin@planova.com                admin123        yes
+exhibitor  raza.ahmed@techbridge.pk          exhibitor123    yes
+attendee   ayesha.siddiqui@email.com         attendee123     yes
+
+All pre-verified. New registrations through the UI require email OTP.
+
+
+================================================================================
+16. ADMIN PANEL
+================================================================================
+
+Overview page shows:
+  - Real user counts (total, attendees, exhibitors) from DB
+  - Newsletter subscriber count and full list from DB
+  - Recent applications, upcoming expos (mock data)
+
+Users page shows:
+  - All users from database
+  - Search by name or email
+  - Filter by role and status
+  - Shows avatar, name, email, role, verified status, join date
+  - Activate/deactivate button for non-admin users
+
+Settings page:
+  - Upload profile photo (click the avatar)
+  - Edit display name
+  - Change email with OTP
+  - Change password with OTP
+  - No fake platform settings
+
+
+================================================================================
+17. WHAT IS DYNAMIC VS MOCK
+================================================================================
+
+DYNAMIC (from database):
+  User registration, login, logout
+  OTP flows for registration, email change, password change, forgot password
+  User profiles: name, email, phone, city, company, category, description, website
+  Profile picture (avatar)
+  Sidebar and navbar show real logged-in name and photo
+  Admin: user list, counts, activate/deactivate
+  Admin: newsletter subscribers
+  Admin settings, exhibitor settings, attendee and exhibitor profile pages
+
+MOCK (local JS arrays, not from DB):
+  client/src/data.js                   public site expos, sessions, exhibitors
+  client/src/users/attendee/data/      attendee events, sessions
+  client/src/users/exhibitor/data/     applications, booths
+  client/src/admin/data/adminData.js   expo/booth stats, recent activity
+
+
+================================================================================
+18. DEPLOYMENT (VERCEL)
+================================================================================
+
+Project includes vercel.json. Set these in Vercel project settings:
+
+  NODE_ENV=production
+  MONGO_URI=<Atlas connection string>
+  JWT_SECRET=<your secret>
+  SMTP_HOST=smtp.gmail.com
+  SMTP_PORT=587
+  SMTP_USER=<your Gmail>
+  SMTP_PASS=<App Password, no spaces>
+  CLIENT_URL=https://your-domain.vercel.app
+
+
+================================================================================
+19. TEST CREDENTIALS
+================================================================================
+
+Admin panel:       http://localhost:5173/admin
+  Email:           admin@planova.com
+  Password:        admin123
+
+Exhibitor dashboard: http://localhost:5173/login
+  Email:           raza.ahmed@techbridge.pk
+  Password:        exhibitor123
+
+Attendee dashboard: http://localhost:5173/login
+  Email:           ayesha.siddiqui@email.com
+  Password:        attendee123
+
+These are pre-verified and skip the OTP step on login.
+New registrations through the UI require OTP verification.
+
+
+================================================================================
+END
 ================================================================================

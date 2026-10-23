@@ -17,7 +17,9 @@ app.use(async (_req, _res, next) => {
 });
 
 import authRoutes from "./routes/authRoutes.js";
+import newsletterRoutes from "./routes/newsletterRoutes.js";
 app.use("/api/auth", authRoutes);
+app.use("/api/newsletter", newsletterRoutes);
 
 app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API" }));
 

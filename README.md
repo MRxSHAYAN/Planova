@@ -1,6 +1,6 @@
 # Planova — Expo Management Platform
 
-A full-stack MERN platform for managing expos, trade shows, and conferences in Pakistan. Built with React, Express, MongoDB, JWT auth, and OTP email verification.
+A full-stack MERN platform for managing expos, trade shows, and conferences in Pakistan.
 
 ## Tech Stack
 
@@ -12,17 +12,20 @@ A full-stack MERN platform for managing expos, trade shows, and conferences in P
 | Backend | Node.js + Express |
 | Database | MongoDB + Mongoose |
 | Auth | JWT + bcryptjs |
-| Email | Nodemailer (G SMTP) |
-| Deployment | Vercel |
+| Email | Nodemailer (SMTP) |
 
 ## Features
 
-- **Public website** — Home, Explore Expos, Exhibitors, Schedule, About, Contact
-- **Attendee dashboard** — overview, explore events, my schedule, saved items, profile
-- **Exhibitor dashboard** — overview, applications, booths, company profile, products, settings
-- **Admin panel** — users, applications, booths, expo management, reports, settings
-- **Auth** — JWT login, role-based routing, OTP email verification on register, OTP for email change
-- **Dynamic profiles** — all profile pages fetch from the database, sidebar and navbar show the real logged-in user name
+- Public website — Home, Explore Expos, Exhibitors, Schedule, About, Contact
+- Attendee dashboard — overview, explore events, schedule, saved items, profile
+- Exhibitor dashboard — overview, applications, booths, company profile, settings
+- Admin panel — users (live from DB), overview stats, subscribers, settings
+- Auth — JWT login, OTP email verification on register, OTP for email change, OTP for password change
+- Forgot password — OTP sent to email, reset password flow
+- Password requirements — 7+ characters, one letter, one special character
+- Profile picture upload — stored as base64 in MongoDB
+- Newsletter subscription — saves to DB, sends welcome email, visible in admin
+- Demo credentials removed from all login pages
 
 ## Getting Started
 
@@ -47,11 +50,13 @@ NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 MONGO_URI=mongodb://localhost:27017/planovaDBTesting
 JWT_SECRET=your_long_random_secret_here
-EMAIL_USER=your_gmail@gmail.com
-EMAIL_PASS=your_gmail_app_password
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_gmail@gmail.com
+SMTP_PASS=your_gmail_app_password
 ```
 
-For Gmail, use an App Password (Google Account → Security → 2-Step Verification → App Passwords).
+For Gmail App Password: Google Account > Security > 2-Step Verification > App Passwords. Remove all spaces from the 16-character password.
 
 ### Seed Demo Users
 
@@ -74,8 +79,6 @@ cd server && npm run dev    # http://localhost:5000
 cd client && npm run dev    # http://localhost:5173
 ```
 
-The Vite dev server proxies `/api/*` to `http://localhost:5000` automatically.
-
 ## API Endpoints
 
 | Method | Route | Auth | Description |
@@ -83,91 +86,85 @@ The Vite dev server proxies `/api/*` to `http://localhost:5000` automatically.
 | POST | `/api/auth/register` | Public | Create account, send OTP |
 | POST | `/api/auth/verify-otp` | Public | Verify OTP, activate account |
 | POST | `/api/auth/resend-otp` | Public | Resend registration OTP |
-| POST | `/api/auth/login` | Public | Login (blocks unverified) |
-| POST | `/api/auth/admin/login` | Public | Admin-only login |
-| GET | `/api/auth/profile` | Bearer token | Fetch current user |
-| PUT | `/api/auth/profile` | Bearer token | Update name, phone, city, company, etc. |
+| POST | `/api/auth/login` | Public | Login |
+| POST | `/api/auth/admin/login` | Public | Admin login |
+| POST | `/api/auth/forgot-password` | Public | Send reset OTP to email |
+| POST | `/api/auth/reset-password` | Public | Verify OTP, set new password |
+| GET | `/api/auth/profile` | Bearer token | Get current user |
+| PUT | `/api/auth/profile` | Bearer token | Update name, phone, city, company, avatar, etc. |
 | POST | `/api/auth/request-email-change` | Bearer token | Send OTP to new email |
-| POST | `/api/auth/confirm-email-change` | Bearer token | Verify OTP, swap email |
-| GET | `/api/health` | Public | Server + DB health check |
-
-## Frontend Routes
-
-| Route | Page |
-|-------|------|
-| `/` | Home |
-| `/explore-expos` | Browse expos |
-| `/exhibitors` | Exhibitor directory |
-| `/schedule` | Session schedule |
-| `/about` `/contact` | Info pages |
-| `/login` `/register` | Auth pages |
-| `/users/dashboard/attendee/*` | Attendee dashboard (protected) |
-| `/users/dashboard/exhibitor/*` | Exhibitor dashboard (protected) |
-| `/admin/login` | Admin login |
-| `/admin/*` | Admin panel (admin role only) |
+| POST | `/api/auth/confirm-email-change` | Bearer token | Verify OTP, update email |
+| POST | `/api/auth/request-password-change` | Bearer token | Send OTP to current email |
+| POST | `/api/auth/confirm-password-change` | Bearer token | Verify OTP, update password |
+| GET | `/api/auth/stats` | Admin | User count stats |
+| GET | `/api/auth/users` | Admin | All users from database |
+| PUT | `/api/auth/users/:id/status` | Admin | Activate/deactivate user |
+| POST | `/api/newsletter/subscribe` | Public | Subscribe to expo alerts |
+| GET | `/api/newsletter/subscribers` | Admin | List all subscribers |
+| DELETE | `/api/newsletter/subscribers/:id` | Admin | Remove subscriber |
+| GET | `/api/health` | Public | Server + DB status |
 
 ## Project Structure
 
 ```
 client/src/
 ├── context/AuthContext.jsx       # Auth state: user, login, logout, updateUser
-├── hooks/useProfile.js            # Fetch & update profile from API
-├── web/                           # Public website
-│   ├── pages/                     # Home, About, ExploreExpos, etc.
-│   │   └── auth/                  # Login, Register (with OTP step)
+├── hooks/useProfile.js           # Fetch and update profile from API
+├── web/                          # Public website
+│   ├── pages/                    # Home, About, ExploreExpos, etc.
+│   │   └── auth/                 # Login, Register (2-step OTP), ForgotPassword
 │   └── components/               # Navbar, Footer, AuthNavbar
 ├── users/
-│   ├── attendee/                  # Attendee dashboard
-│   │   ├── pages/MyProfile.jsx    # Dynamic — fetch & save from DB
-│   │   └── data/mockData.js       # Events, sessions (still mock)
-│   └── exhibitor/                 # Exhibitor dashboard
-│       ├── pages/CompanyProfile.jsx  # Dynamic — fetch & save from DB
-│       ├── pages/Settings.jsx        # Dynamic — fetch & save from DB
-│       └── data/mockData.js          # Applications, booths (still mock)
-└── admin/                        # Admin panel
-    ├── pages/Settings.jsx        # Dynamic — fetch & save from DB
-    └── data/adminData.js         # Admin stats (still mock)
+│   ├── attendee/
+│   │   ├── pages/MyProfile.jsx   # Dynamic — name, photo, email (OTP), password (OTP)
+│   │   └── data/mockData.js      # Events, sessions (mock)
+│   └── exhibitor/
+│       ├── pages/CompanyProfile.jsx  # Dynamic — company info
+│       ├── pages/Settings.jsx        # Dynamic — name, email (OTP), password (OTP)
+│       └── data/mockData.js          # Applications, booths (mock)
+└── admin/
+    ├── pages/Settings.jsx        # Dynamic — photo, name, email (OTP), password (OTP)
+    ├── pages/Users.jsx           # Dynamic — real users from DB
+    ├── pages/Overview.jsx        # Dynamic — user counts + newsletter subscribers
+    └── data/adminData.js         # Expo/booth stats (mock)
 
 server/
-├── index.js                      # Express app entry
-├── seed.js                       # Creates demo users
-├── config/db.js                  # MongoDB connection
-├── middleware/authMiddleware.js  # JWT protect + requireRole
-├── models/                       # User, Event, Session, Exhibitor, etc.
-├── routes/authRoutes.js          # All auth + profile + OTP endpoints
-└── utils/
-    ├── generateToken.js          # JWT token creation
-    └── sendEmail.js              # Nodemailer OTP email sender
+├── routes/authRoutes.js          # All auth + profile + OTP + admin endpoints
+├── routes/newsletterRoutes.js    # Subscribe, list, delete subscribers
+├── models/User.js                # User model with OTP fields
+├── models/Subscriber.js          # Newsletter subscriber model
+├── utils/sendEmail.js            # Nodemailer with logo in emails
+├── utils/generateToken.js        # JWT token creation
+└── seed.js                       # Creates demo users
 ```
 
-## What's Dynamic vs Mock
+## What is Dynamic vs Mock
 
-**Dynamic (live from database):**
-- User profiles (name, email, phone, city, company, category, description, website)
-- Login, register, logout
-- OTP email verification
-- Password change
-- Email change with OTP
-- Sidebar and navbar display real user name
+**Dynamic (from database):**
+- User profiles, avatars, names, emails
+- OTP flows (register, email change, password change, forgot password)
+- Admin user list, counts, activate/deactivate
+- Admin overview user stats
+- Newsletter subscribers
+- Admin settings (photo, name, email, password)
 
-**Still mock data (local arrays, not from DB):**
-- Events, sessions, exhibitors (public site + dashboards)
+**Still mock (local arrays, not from DB):**
+- Expos, sessions, exhibitors on public site
+- Attendee events and schedule
 - Exhibitor applications and booths
-- Admin overview stats and reports
+- Admin expo/booth/application stats
 
 ## Deployment (Vercel)
 
-Set these environment variables in the Vercel dashboard:
+Set these in Vercel dashboard:
 
 ```
 NODE_ENV=production
-MONGO_URI=<your Atlas connection string>
+MONGO_URI=<Atlas connection string>
 JWT_SECRET=<your secret>
-EMAIL_USER=<your Gmail>
-EMAIL_PASS=<your Gmail App Password>
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=<your Gmail>
+SMTP_PASS=<your App Password>
 CLIENT_URL=https://your-domain.vercel.app
 ```
-
-## License
-
-This project is for educational/demo purposes.
