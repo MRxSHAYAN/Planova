@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Menu, ChevronDown, LogOut, Settings } from "lucide-react";
 import { ADMIN_USER } from "../data/adminData";
+import { useAuth } from "../../context/AuthContext";
 
 export default function AdminTopbar({ title, onMenuToggle }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const [dropOpen, setDropOpen] = useState(false);
 
   return (
@@ -48,10 +50,10 @@ export default function AdminTopbar({ title, onMenuToggle }) {
               </div>
               {[
                 { label: "Settings", icon: Settings, path: "/admin/settings" },
-                { label: "Sign out", icon: LogOut, path: "/admin/login", danger: true },
-              ].map(({ label, icon: Icon, path, danger }) => (
+                { label: "Sign out", icon: LogOut, path: "/admin/login", danger: true, action: () => logout() },
+              ].map(({ label, icon: Icon, path, danger, action }) => (
                 <button key={label}
-                  onClick={() => { navigate(path); setDropOpen(false); }}
+                  onClick={() => { if (action) action(); navigate(path); setDropOpen(false); }}
                   className={`w-full flex items-center gap-2.5 px-4 py-2.5 text-[13px] hover:bg-slate-50 transition-colors ${danger ? "text-red-500" : "text-slate-700"}`}>
                   <Icon size={14} />
                   {label}

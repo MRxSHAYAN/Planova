@@ -2,8 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LoginImg from "../../assets/Login_Booth.jpg";
 import AuthNavbar from "../../components/AuthNavbar";
+import { useAuth } from "../../../context/AuthContext";
 
-// Show password icon
 function EyeIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -12,8 +12,6 @@ function EyeIcon() {
     </svg>
   );
 }
-
-// Hide password icon
 function EyeOffIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -26,20 +24,43 @@ function EyeOffIcon() {
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm]         = useState({ email: "", password: "" });
   const [showPass, setShowPass] = useState(false);
   const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
 
   const handleChange = (e) => {
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    setForm(p => ({ ...p, [e.target.name]: e.target.value }));
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email || !form.password) return setError("Please fill in all fields.");
-    // Redirect to attendee dashboard after login (backend will handle real auth)
-    navigate("/users/dashboard/attendee");
+
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+
+      if (!res.ok) return setError(data.message || "Login failed");
+
+      login(data);
+
+      if (data.role === "attendee")  navigate("/users/dashboard/attendee");
+      else if (data.role === "exhibitor") navigate("/users/dashboard/exhibitor");
+      else if (data.role === "admin") navigate("/admin");
+
+    } catch {
+      setError("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,10 +70,8 @@ export default function Login() {
       <div className="hidden lg:block w-[50%] h-full relative">
         <img src={LoginImg} alt="Exhibition" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--color-navy) 72%, transparent) 0%, color-mix(in srgb, var(--color-navy) 45%, transparent) 100%)" }} />
-
         <div className="absolute inset-0 flex flex-col justify-between p-10">
-          <div></div>
-
+          <div />
           <div>
             <span className="text-accent text-[11px] font-semibold tracking-[0.18em] uppercase">Expo Management Platform</span>
             <h2 className="text-white text-[1.6rem] font-black leading-tight mt-2 max-w-[300px]">
@@ -75,13 +94,10 @@ export default function Login() {
 
       {/* Right — form */}
       <div className="flex-1 h-full flex flex-col bg-surface">
-
         <AuthNavbar />
 
-        {/* Form */}
         <div className="flex-1 flex items-center justify-center px-8">
           <div className="w-full max-w-[360px]">
-
             <h1 className="text-[1.65rem] font-black text-dark leading-tight">Welcome back</h1>
             <p className="text-body text-[14px] mt-1 mb-7">Log in to your Planova account.</p>
 
@@ -94,11 +110,9 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div>
                 <label className="block text-[12.5px] font-semibold text-dark mb-1.5">Email</label>
-                <input
-                  type="email" name="email" value={form.email} onChange={handleChange}
+                <input type="email" name="email" value={form.email} onChange={handleChange}
                   placeholder="you@example.com"
-                  className="w-full px-4 py-2.5 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all"
-                />
+                  className="w-full px-4 py-2.5 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all" />
               </div>
 
               <div>
@@ -109,11 +123,9 @@ export default function Login() {
                   </Link>
                 </div>
                 <div className="relative">
-                  <input
-                    type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
+                  <input type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
                     placeholder="••••••••"
-                    className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all"
-                  />
+                    className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all" />
                   <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-body transition-colors">
                     {showPass ? <EyeOffIcon /> : <EyeIcon />}
@@ -121,9 +133,17 @@ export default function Login() {
                 </div>
               </div>
 
-              <button type="submit"
-                className="w-full py-2.5 rounded-lg bg-accent text-white font-bold text-[14px] hover:bg-accent-hover transition-colors mt-1">
-                Log in
+              <button type="submit" disabled={loading}
+                className="w-full py-2.5 rounded-lg bg-accent text-white font-bold text-[14px] hover:bg-accent-hover disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1 flex items-center justify-center gap-2">
+                {loading ? (
+                  <>
+                    <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                    </svg>
+                    Signing in…
+                  </>
+                ) : "Log in"}
               </button>
             </form>
 
@@ -133,7 +153,6 @@ export default function Login() {
                 Sign up free
               </Link>
             </p>
-
           </div>
         </div>
 

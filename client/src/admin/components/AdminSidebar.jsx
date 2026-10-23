@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { ADMIN_USER } from "../data/adminData";
 import logo from "../../assets/Icon.png";
+import { useAuth } from "../../context/AuthContext";
 
 const BASE = "/admin";
 
@@ -43,6 +44,7 @@ const NAV_GROUPS = [
 
 export default function AdminSidebar({ onClose }) {
   const navigate = useNavigate();
+  const { logout } = useAuth();
   const pendingApps = 3;
 
   const getBadge = (key) => {
@@ -146,7 +148,7 @@ export default function AdminSidebar({ onClose }) {
           style={{ color: "rgba(255,255,255,0.28)" }}
           onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.28)"; }}
-          onClick={() => navigate("/admin/login")}
+          onClick={() => { logout(); navigate("/admin/login"); }}
         >
           <LogOut size={13} className="shrink-0" />
           <span>Sign out</span>

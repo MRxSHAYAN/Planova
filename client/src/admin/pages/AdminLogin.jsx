@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ADMIN_CREDENTIALS } from "../data/adminData";
 import logo from "../../assets/Icon.png";
+import { useAuth } from "../../context/AuthContext";
 
 function EyeIcon() {
   return (
@@ -23,6 +23,7 @@ function EyeOffIcon() {
 
 export default function AdminLogin() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPass, setShowPass] = useState(false);
   const [error, setError] = useState("");
@@ -33,21 +34,27 @@ export default function AdminLogin() {
     setError("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email || !form.password) return setError("Please fill in all fields.");
     setLoading(true);
-    setTimeout(() => {
-      if (
-        form.email.toLowerCase() === ADMIN_CREDENTIALS.email &&
-        form.password === ADMIN_CREDENTIALS.password
-      ) {
-        navigate("/admin");
-      } else {
-        setError("Invalid credentials. Use admin@planova.com / admin123");
-        setLoading(false);
-      }
-    }, 600);
+    try {
+      const res = await fetch("/api/auth/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+
+      if (!res.ok) return setError(data.message || "Login failed");
+
+      login(data);
+      navigate("/admin");
+    } catch {
+      setError("Something went wrong. Try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -74,7 +81,7 @@ export default function AdminLogin() {
         <div className="bg-[#1E293B] rounded-2xl border border-slate-700/50 p-8 shadow-2xl">
           <h2 className="text-white font-bold text-[1.1rem] mb-1">Sign in to Admin Panel</h2>
           <p className="text-slate-400 text-[13px] mb-6">
-            Demo credentials: <span className="text-cyan-400 font-mono">admin@planova.com</span> / <span className="text-cyan-400 font-mono">admin123</span>
+            Sign in with your admin account credentials.
           </p>
 
           {error && (

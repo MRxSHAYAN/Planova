@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import iconImg from "../../../assets/Icon.png";
 import { CURRENT_COMPANY } from "../data/mockData";
+import { useAuth } from "../../../context/AuthContext";
 
 const BASE = "/users/dashboard/exhibitor";
 
@@ -46,7 +47,7 @@ const NAV_GROUPS = [
 
 export default function Sidebar({ onClose }) {
   const navigate  = useNavigate();
-
+  const { logout } = useAuth();
   return (
     <aside
       className="flex flex-col h-full w-full overflow-y-auto"
@@ -149,7 +150,7 @@ export default function Sidebar({ onClose }) {
             e.currentTarget.style.background = "transparent";
             e.currentTarget.style.color = "rgba(255,255,255,0.3)";
           }}
-          onClick={() => navigate("/login")}
+          onClick={() => { logout(); navigate("/login"); }}
         >
           <LogOut size={13} className="shrink-0" />
           <span>Sign out</span>

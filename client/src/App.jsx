@@ -1,22 +1,23 @@
 import { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
-import ScrollToTop         from "./ScrollToTop";
-import Splash              from "./web/Splash";
-import Home                from "./web/pages/Home";
-import ExploreExpos        from "./web/pages/ExploreExpos";
-import Exhibitors          from "./web/pages/Exhibitors";
-import Schedule            from "./web/pages/Schedule";
-import About               from "./web/pages/About";
-import Contact             from "./web/pages/Contact";
-import Support             from "./web/pages/Support";
-import Privacy             from "./web/pages/Privacy";
-import Login               from "./web/pages/auth/Login";
-import Register            from "./web/pages/auth/Register";
-import ForgotPassword      from "./web/pages/auth/ForgotPassword";
-import AttendeeDashboard   from "./users/attendee/AttendeeDashboard";
-import ExhibitorDashboard  from "./users/exhibitor/ExhibitorDashboard";
-import AdminLogin          from "./admin/pages/AdminLogin";
-import AdminDashboard      from "./admin/AdminDashboard";
+import ScrollToTop        from "./ScrollToTop";
+import Splash             from "./web/Splash";
+import Home               from "./web/pages/Home";
+import ExploreExpos       from "./web/pages/ExploreExpos";
+import Exhibitors         from "./web/pages/Exhibitors";
+import Schedule           from "./web/pages/Schedule";
+import About              from "./web/pages/About";
+import Contact            from "./web/pages/Contact";
+import Support            from "./web/pages/Support";
+import Privacy            from "./web/pages/Privacy";
+import Login              from "./web/pages/auth/Login";
+import Register           from "./web/pages/auth/Register";
+import ForgotPassword     from "./web/pages/auth/ForgotPassword";
+import AttendeeDashboard  from "./users/attendee/AttendeeDashboard";
+import ExhibitorDashboard from "./users/exhibitor/ExhibitorDashboard";
+import AdminLogin         from "./admin/pages/AdminLogin";
+import AdminDashboard     from "./admin/AdminDashboard";
+import { PrivateRoute, AdminRoute } from "./components/PrivateRoute";
 
 function NotFound() {
   return (
@@ -41,22 +42,42 @@ export default function App() {
       <ScrollToTop />
 
       <Routes>
-        <Route path="/"              element={<Home />} />
-        <Route path="/explore-expos" element={<ExploreExpos />} />
-        <Route path="/exhibitors"    element={<Exhibitors />} />
-        <Route path="/schedule"      element={<Schedule />} />
-        <Route path="/about"         element={<About />} />
-        <Route path="/contact"       element={<Contact />} />
-        <Route path="/support"       element={<Support />} />
-        <Route path="/privacy"       element={<Privacy />} />
-        <Route path="/login"         element={<Login />} />
-        <Route path="/register"      element={<Register />} />
+        {/* Public website */}
+        <Route path="/"                element={<Home />} />
+        <Route path="/explore-expos"   element={<ExploreExpos />} />
+        <Route path="/exhibitors"      element={<Exhibitors />} />
+        <Route path="/schedule"        element={<Schedule />} />
+        <Route path="/about"           element={<About />} />
+        <Route path="/contact"         element={<Contact />} />
+        <Route path="/support"         element={<Support />} />
+        <Route path="/privacy"         element={<Privacy />} />
+
+        {/* Auth */}
+        <Route path="/login"           element={<Login />} />
+        <Route path="/register"        element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/users/dashboard/attendee/*"  element={<AttendeeDashboard />} />
-        <Route path="/users/dashboard/exhibitor/*" element={<ExhibitorDashboard />} />
-        <Route path="/admin/login"   element={<AdminLogin />} />
-        <Route path="/admin/*"       element={<AdminDashboard />} />
-        <Route path="*"              element={<NotFound />} />
+
+        {/* Protected dashboards */}
+        <Route path="/users/dashboard/attendee/*" element={
+          <PrivateRoute role="attendee">
+            <AttendeeDashboard />
+          </PrivateRoute>
+        } />
+        <Route path="/users/dashboard/exhibitor/*" element={
+          <PrivateRoute role="exhibitor">
+            <ExhibitorDashboard />
+          </PrivateRoute>
+        } />
+
+        {/* Admin */}
+        <Route path="/admin/login"     element={<AdminLogin />} />
+        <Route path="/admin/*"         element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+        } />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
