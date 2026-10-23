@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
-  name:     { type: String, required: true },
-  email:    { type: String, required: true, unique: true, lowercase: true },
-  password: { type: String, required: true },
-  role:     { type: String, enum: ["attendee", "exhibitor", "admin"], default: "attendee" },
+  name:        { type: String, required: true },
+  email:       { type: String, required: true, unique: true, lowercase: true },
+  password:    { type: String, required: true },
+  role:        { type: String, enum: ["attendee", "exhibitor", "admin"], default: "attendee" },
   phone:       { type: String },
   city:        { type: String },
   company:     { type: String },
@@ -13,9 +13,15 @@ const userSchema = new mongoose.Schema({
   description: { type: String },
   website:     { type: String },
   avatar:      { type: String },
-    isActive:         { type: Boolean, default: true },
-  resetToken:       { type: String },
-  resetTokenExpiry: { type: Date },
+  isActive:    { type: Boolean, default: true },
+
+  // Email verification
+  isVerified:  { type: Boolean, default: false },
+
+  // OTP — used for registration verify and email change
+  otp:         { type: String },
+  otpExpiry:   { type: Date },
+  pendingEmail: { type: String }, // stores new email while waiting for OTP confirm
 }, { timestamps: true });
 
 userSchema.pre("save", async function (next) {

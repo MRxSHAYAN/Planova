@@ -10,8 +10,9 @@ const SEED_USERS = [
     email: "admin@planova.com",
     password: "admin123",
     role: "admin",
+    isVerified: true,
   },
-  // Fake exhibitor user — used for exhibitor dashboard demo
+  // Fake exhibitor — pre-verified so it works without OTP
   {
     name: "Raza Ahmed",
     email: "raza.ahmed@techbridge.pk",
@@ -20,8 +21,9 @@ const SEED_USERS = [
     phone: "+92 321 456 7890",
     city: "Karachi",
     company: "TechBridge Solutions",
+    isVerified: true,
   },
-  // Fake attendee user — used for attendee dashboard demo
+  // Fake attendee — pre-verified so it works without OTP
   {
     name: "Ayesha Siddiqui",
     email: "ayesha.siddiqui@email.com",
@@ -30,6 +32,7 @@ const SEED_USERS = [
     phone: "+92 300 123 4567",
     city: "Karachi",
     company: "TechVentures PK",
+    isVerified: true,
   },
 ];
 
