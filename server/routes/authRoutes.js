@@ -21,14 +21,14 @@ router.post("/register", async (req, res) => {
   const user = await User.create({ name, email, password, role: role || "attendee" });
 
   res.status(201).json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
+    _id:     user._id,
+    name:    user.name,
+    email:   user.email,
+    role:    user.role,
     company: user.company || null,
-    phone: user.phone || null,
-    city: user.city || null,
-    token: generateToken(user._id, user.role),
+    phone:   user.phone   || null,
+    city:    user.city    || null,
+    token:   generateToken(user._id, user.role),
   });
 });
 
@@ -44,14 +44,17 @@ router.post("/login", async (req, res) => {
     return res.status(403).json({ message: "Account is deactivated" });
 
   res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    company: user.company,
-    phone: user.phone,
-    city: user.city,
-    token: generateToken(user._id, user.role),
+    _id:         user._id,
+    name:        user.name,
+    email:       user.email,
+    role:        user.role,
+    company:     user.company     || null,
+    phone:       user.phone       || null,
+    city:        user.city        || null,
+    description: user.description || null,
+    website:     user.website     || null,
+    category:    user.category    || null,
+    token:       generateToken(user._id, user.role),
   });
 });
 
@@ -67,10 +70,10 @@ router.post("/admin/login", async (req, res) => {
     return res.status(403).json({ message: "Not an admin account" });
 
   res.json({
-    _id: user._id,
-    name: user.name,
+    _id:   user._id,
+    name:  user.name,
     email: user.email,
-    role: user.role,
+    role:  user.role,
     token: generateToken(user._id, user.role),
   });
 });
@@ -82,31 +85,37 @@ router.get("/profile", protect, async (req, res) => {
   res.json(user);
 });
 
-// Update my profile (name, email, password, phone, city, company)
+// Update my profile
 router.put("/profile", protect, async (req, res) => {
   const user = await User.findById(req.user.userId);
   if (!user) return res.status(404).json({ message: "User not found" });
 
-  const { name, email, password, phone, city, company } = req.body;
+  const { name, email, password, phone, city, company, description, website, category } = req.body;
 
-  if (name)     user.name     = name;
-  if (email)    user.email    = email;
-  if (password) user.password = password;
-  if (phone  !== undefined) user.phone   = phone;
-  if (city   !== undefined) user.city    = city;
-  if (company !== undefined) user.company = company;
+  if (name)                       user.name        = name;
+  if (email)                      user.email       = email;
+  if (password)                   user.password    = password;
+  if (phone       !== undefined)  user.phone       = phone;
+  if (city        !== undefined)  user.city        = city;
+  if (company     !== undefined)  user.company     = company;
+  if (description !== undefined)  user.description = description;
+  if (website     !== undefined)  user.website     = website;
+  if (category    !== undefined)  user.category    = category;
 
   await user.save();
 
   res.json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    role: user.role,
-    company: user.company,
-    phone: user.phone,
-    city: user.city,
-    token: generateToken(user._id, user.role),
+    _id:         user._id,
+    name:        user.name,
+    email:       user.email,
+    role:        user.role,
+    company:     user.company     || null,
+    phone:       user.phone       || null,
+    city:        user.city        || null,
+    description: user.description || null,
+    website:     user.website     || null,
+    category:    user.category    || null,
+    token:       generateToken(user._id, user.role),
   });
 });
 

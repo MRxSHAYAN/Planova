@@ -1,18 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { CURRENT_USER } from "../data/mockData";
+import { useAuth } from "../../../context/AuthContext";
+
+function getInitials(name) {
+  if (!name) return "?";
+  return name.split(" ").slice(0, 2).map(w => w[0].toUpperCase()).join("");
+}
 
 export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const firstName = user?.name ? user.name.split(" ")[0] : "User";
+  const abbr = getInitials(user?.name);
 
   return (
     <header
       className="h-[52px] shrink-0 flex items-center gap-3 px-5 sm:px-6"
-      style={{
-        background: "#fff",
-        borderBottom: "1px solid #EEF1F8",
-        zIndex: 10,
-      }}
+      style={{ background: "#fff", borderBottom: "1px solid #EEF1F8", zIndex: 10 }}
     >
       {/* Mobile hamburger */}
       <button
@@ -26,31 +31,27 @@ export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
         {mobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
       </button>
 
-      {/* Title */}
-      <h1
-        className="flex-1 font-black text-[15px] truncate"
-        style={{ color: "#09152E", letterSpacing: "-0.01em" }}
-      >
+      {/* Page title */}
+      <h1 className="flex-1 font-black text-[15px] truncate" style={{ color: "#09152E" }}>
         {title}
       </h1>
 
-      {/* User chip */}
+      {/* User chip — shows real name from auth */}
       <button
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-colors"
         style={{ background: "#F5F7FA" }}
-        onMouseEnter={(e) => e.currentTarget.style.background = "#EEF1F8"}
-        onMouseLeave={(e) => e.currentTarget.style.background = "#F5F7FA"}
+        onMouseEnter={(e) => (e.currentTarget.style.background = "#EEF1F8")}
+        onMouseLeave={(e) => (e.currentTarget.style.background = "#F5F7FA")}
         onClick={() => navigate("/users/dashboard/attendee/profile")}
-        aria-label="Go to profile"
       >
         <span
           className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-black shrink-0"
           style={{ background: "#09152E", color: "#3478F6" }}
         >
-          {CURRENT_USER.initials}
+          {abbr}
         </span>
         <span className="hidden sm:block text-[12px] font-semibold" style={{ color: "#09152E" }}>
-          {CURRENT_USER.name.split(" ")[0]}
+          {firstName}
         </span>
       </button>
     </header>

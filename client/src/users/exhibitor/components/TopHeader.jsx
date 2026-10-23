@@ -1,9 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { CURRENT_COMPANY } from "../data/mockData";
+import { useAuth } from "../../../context/AuthContext";
+
+function getInitials(name) {
+  if (!name) return "?";
+  return name.split(" ").slice(0, 2).map(w => w[0].toUpperCase()).join("");
+}
 
 export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // For exhibitor, show company name if set, otherwise full name
+  const displayName = user?.company || user?.name || "Exhibitor";
+  const firstName = displayName.split(" ")[0];
+  const abbr = getInitials(user?.company || user?.name);
 
   return (
     <header
@@ -22,28 +33,27 @@ export default function TopHeader({ title, onMenuToggle, mobileMenuOpen }) {
         {mobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
       </button>
 
-      {/* Title */}
-      <h1 className="flex-1 font-black text-[15px] truncate" style={{ color: "#09152E", letterSpacing: "-0.01em" }}>
+      {/* Page title */}
+      <h1 className="flex-1 font-black text-[15px] truncate" style={{ color: "#09152E" }}>
         {title}
       </h1>
 
-      {/* Company chip */}
+      {/* Company chip — shows real company/name from auth */}
       <button
         className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full transition-colors"
         style={{ background: "#F5F7FA" }}
         onMouseEnter={(e) => (e.currentTarget.style.background = "#EEF1F8")}
         onMouseLeave={(e) => (e.currentTarget.style.background = "#F5F7FA")}
         onClick={() => navigate("/users/dashboard/exhibitor/profile")}
-        aria-label="Company profile"
       >
         <span
           className="w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-black shrink-0 text-white"
-          style={{ background: CURRENT_COMPANY.logoColor }}
+          style={{ background: "#3478F6" }}
         >
-          {CURRENT_COMPANY.initials}
+          {abbr}
         </span>
         <span className="hidden sm:block text-[12px] font-semibold" style={{ color: "#09152E" }}>
-          {CURRENT_COMPANY.name.split(" ")[0]}
+          {firstName}
         </span>
       </button>
     </header>
