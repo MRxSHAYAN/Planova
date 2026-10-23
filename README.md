@@ -7,8 +7,7 @@ A full-stack MERN platform for managing expos, trade shows, and conferences in P
 ### Public Website
 - Home, Explore Expos, Exhibitors directory, Session Schedule
 - About, Contact, Support, Privacy
-- Login, Register, Forgot Password
-- Splash screen animation
+- Login, Register, Forgot Password, Splash screen
 
 ### Attendee Dashboard (`/users/dashboard/attendee/*`)
 - Overview, Explore Events, My Events, My Schedule
@@ -19,16 +18,26 @@ A full-stack MERN platform for managing expos, trade shows, and conferences in P
 - Company Profile, Products & Services, Settings
 
 ### Admin Panel (`/admin/*`)
-- Admin Login (separate page — `admin@planova.com` / `admin123`)
+- Admin Login — credentials stored in DB, seeded via `server/seed.js`
 - Overview, Expo Management, Exhibitor Applications, Booth & Floor Plan
 - Attendees, Schedule & Sessions, Users & Roles, Reports & Analytics, Settings
+- Settings page lets admin update their own name, email, and password live via API
 
-### Backend (`/server`)
-- Express server, CORS, MongoDB connection (local in dev, Atlas in prod)
-- JWT auth middleware + role-based access control
+### Auth System (complete)
+- JWT-based login and registration
+- Role-based route protection (attendee, exhibitor, admin)
+- `AuthContext` — stores user + token in localStorage, provides `login` / `logout`
+- `PrivateRoute` — redirects to `/login` if not authenticated
+- `AdminRoute` — redirects to `/admin/login` if not admin
+- Admin name/email/password editable from Settings → saved to DB via `PUT /api/auth/profile`
+
+### Backend
+- Express server with CORS, JSON middleware
+- MongoDB connection — local in dev (`MONGO_URI`), Atlas in prod (`MONGO_URI_ATLAS`)
+- `GET /api/health` — returns server + DB status
+- JWT auth middleware (`protect`, `requireRole`)
 - 7 Mongoose models: User, Event, Session, Exhibitor, Booth, Registration, Bookmark
-- Route folders scaffolded and ready for implementation
-- `GET /api/health` — shows DB connection state + server info
+- Auth routes: register, login, admin/login, profile update
 
 ## Tech Stack
 
@@ -52,64 +61,44 @@ A full-stack MERN platform for managing expos, trade shows, and conferences in P
 | `/exhibitors` | Exhibitor directory |
 | `/schedule` | Session schedule |
 | `/about` `/contact` `/support` `/privacy` | Info pages |
-| `/login` | Login |
-| `/register` | Register |
-| `/forgot-password` | Forgot password |
-| `/users/dashboard/attendee/*` | Attendee dashboard |
-| `/users/dashboard/exhibitor/*` | Exhibitor dashboard |
+| `/login` `/register` `/forgot-password` | Auth pages |
+| `/users/dashboard/attendee/*` | Attendee dashboard (protected) |
+| `/users/dashboard/exhibitor/*` | Exhibitor dashboard (protected) |
 | `/admin/login` | Admin login |
-| `/admin/*` | Admin panel |
+| `/admin/*` | Admin panel (protected — admin role only) |
 
-## Project Structure
+## API Endpoints
 
-```
-E-Project plainova/
-├── client/
-│   └── src/
-│       ├── data.js              # Shared mock data (replace with API calls)
-│       ├── App.jsx              # All routes
-│       ├── index.css            # Global styles + Tailwind + CSS variables
-│       ├── web/                 # Public website
-│       │   ├── components/      # Navbar, Footer, Layout, AuthNavbar
-│       │   ├── pages/           # All website pages + auth/
-│       │   └── assets/          # Images
-│       ├── users/
-│       │   ├── attendee/        # Attendee dashboard
-│       │   └── exhibitor/       # Exhibitor dashboard
-│       └── admin/               # Admin panel
-│           ├── components/      # AdminSidebar, AdminTopbar, StatusBadge
-│           ├── layouts/         # AdminLayout
-│           ├── pages/           # All admin pages
-│           └── data/            # Admin credentials + data re-exports
-├── server/
-│   ├── config/db.js             # MongoDB connection
-│   ├── middleware/authMiddleware.js
-│   ├── models/                  # 7 Mongoose models
-│   ├── routes/                  # Empty, ready for implementation
-│   ├── utils/generateToken.js
-│   ├── index.js                 # Entry point
-│   └── .env                     # Environment variables (gitignored)
-├── vercel.json
-└── README.md
-```
+| Method | Route | Access |
+|--------|-------|--------|
+| POST | `/api/auth/register` | Public |
+| POST | `/api/auth/login` | Public |
+| POST | `/api/auth/admin/login` | Public |
+| PUT | `/api/auth/profile` | Authenticated |
+| GET | `/api/health` | Public |
 
 ## Getting Started
 
 ```bash
-# Install everything
-npm run install:all
+npm run install:all   # install client + server deps
+npm run dev           # start both concurrently
+```
 
-# Run both client + server
-npm run dev
+Client → `http://localhost:5173`  
+Server → `http://localhost:5000`
 
-# Client only → http://localhost:5173
-# Server only → http://localhost:5000
+## Seed Admin User
+
+Run this once to create the admin account in your local MongoDB:
+
+```bash
+cd server && npm run seed
+# Creates: admin@planova.com / admin123
 ```
 
 ## Environment Variables
 
-Create `server/.env` (already done locally, gitignored):
-
+`server/.env` (gitignored):
 ```
 PORT=5000
 NODE_ENV=development
@@ -118,8 +107,7 @@ MONGO_URI=mongodb://localhost:27017/planovaDBTesting
 JWT_SECRET=your_secret_here
 ```
 
-On Vercel, add these in Project Settings → Environment Variables:
-
+Vercel dashboard (Project Settings → Environment Variables):
 ```
 NODE_ENV=production
 MONGO_URI_ATLAS=mongodb+srv://...
@@ -127,18 +115,22 @@ JWT_SECRET=your_secret_here
 CLIENT_URL=https://your-vercel-url.vercel.app
 ```
 
-## API Health Check
+## Project Structure
 
 ```
-GET http://localhost:5000/api/health
+client/src/
+├── context/AuthContext.jsx     # Login, logout, user state
+├── components/PrivateRoute.jsx # Route protection
+├── web/pages/auth/             # Login, Register, ForgotPassword
+├── admin/
+│   ├── data/adminData.js       # Re-exports shared data for admin pages
+│   └── pages/Settings.jsx      # Admin can edit name/email/password
+├── users/attendee/
+└── users/exhibitor/
+
+server/
+├── routes/authRoutes.js        # Auth API routes
+├── models/                     # 7 Mongoose models
+├── seed.js                     # Creates admin user in DB
+└── index.js                    # Entry point
 ```
-
-Returns server status and DB connection info.
-
-## What's Next (Backend)
-
-1. Build auth routes: register, login, admin login
-2. Build event/session/exhibitor/booth API routes
-3. Connect frontend — create `src/lib/api.js` helper
-4. Replace `src/data.js` static arrays with API calls
-5. Add React auth context for protected routes

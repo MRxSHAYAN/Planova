@@ -4,7 +4,6 @@ import {
   Users, CalendarClock, ShieldCheck, BarChart2,
   Settings, LogOut,
 } from "lucide-react";
-import { ADMIN_USER } from "../data/adminData";
 import logo from "../../assets/Icon.png";
 import { useAuth } from "../../context/AuthContext";
 
@@ -44,7 +43,7 @@ const NAV_GROUPS = [
 
 export default function AdminSidebar({ onClose }) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const pendingApps = 3;
 
   const getBadge = (key) => {
@@ -135,11 +134,11 @@ export default function AdminSidebar({ onClose }) {
           onClick={() => { navigate(`${BASE}/settings`); onClose?.(); }}
         >
           <span className="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-black shrink-0 bg-cyan-500/20 text-cyan-400">
-            {ADMIN_USER.initials}
+            {user?.name?.charAt(0).toUpperCase() || "A"}
           </span>
           <div className="flex-1 min-w-0">
-            <p className="text-[12px] font-semibold text-white truncate leading-none">{ADMIN_USER.name}</p>
-            <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.28)" }}>{ADMIN_USER.role}</p>
+            <p className="text-[12px] font-semibold text-white truncate leading-none">{user?.name || "Admin"}</p>
+            <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.28)" }}>{user?.email || ""}</p>
           </div>
         </button>
 

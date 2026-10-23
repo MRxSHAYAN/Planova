@@ -66,7 +66,6 @@ export default function Overview() {
           { icon: CalendarDays, label: "Registered",        value: registeredCount, color: "#3478F6" },
           { icon: Clock,        label: "Sessions lined up", value: sessionCount,    color: "#09152E" },
           { icon: Bookmark,     label: "Saved items",       value: savedCount,      color: "#09152E" },
-          { icon: Bell,         label: "Unread",            value: unreadCount,     color: unreadCount > 0 ? "#D97706" : "#09152E" },
         ].map(({ icon: Icon, label, value, color }) => (
           <div key={label} className="flex items-center gap-2.5">
             <Icon size={15} style={{ color, flexShrink: 0 }} />

@@ -7,13 +7,13 @@ const BASE = "/users/dashboard/exhibitor";
 
 export default function Overview() {
   const navigate = useNavigate();
-  const approved      = APPLICATIONS.filter((a) => a.status === "approved").length;
-  const pending       = APPLICATIONS.filter((a) => a.status === "pending").length;
-  const rejected      = APPLICATIONS.filter((a) => a.status === "rejected").length;
-  const latestApp     = APPLICATIONS[0];
+  const approved = APPLICATIONS.filter((a) => a.status === "approved").length;
+  const pending = APPLICATIONS.filter((a) => a.status === "pending").length;
+  const rejected = APPLICATIONS.filter((a) => a.status === "rejected").length;
+  const latestApp = APPLICATIONS[0];
   const assignedBooth = BOOTHS[0] || null;
-  const upcomingExpo  = EXPOS.find((e) => e.applicationOpen && e.featured);
-  const profilePct    = CURRENT_COMPANY.profileComplete;
+  const upcomingExpo = EXPOS.find((e) => e.applicationOpen && e.featured);
+  const profilePct = CURRENT_COMPANY.profileComplete;
 
   return (
     <div className="space-y-5">
@@ -74,10 +74,9 @@ export default function Overview() {
       <div className="rounded-xl px-5 py-4 flex flex-wrap gap-x-8 gap-y-3"
         style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
         {[
-          { icon: FileText,     label: "Applications", value: APPLICATIONS.length, color: "#3478F6" },
-          { icon: CheckCircle2, label: "Approved",      value: approved,           color: "#12875A" },
-          { icon: Clock,        label: "Pending",       value: pending,            color: "#D97706" },
-          { icon: Bell,         label: "Unread",        value: unread,             color: unread > 0 ? "#D97706" : "#09152E" },
+          { icon: FileText, label: "Applications", value: APPLICATIONS.length, color: "#3478F6" },
+          { icon: CheckCircle2, label: "Approved", value: approved, color: "#12875A" },
+          { icon: Clock, label: "Pending", value: pending, color: "#D97706" },
         ].map(({ icon: Icon, label, value, color }) => (
           <div key={label} className="flex items-center gap-2.5">
             <Icon size={15} style={{ color, flexShrink: 0 }} />
@@ -199,48 +198,29 @@ export default function Overview() {
           )}
         </div>
 
-        {/* Notifications panel */}
+        {/* Recent activity placeholder */}
         <div className="lg:col-span-2">
           <div className="rounded-xl" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
-            <div className="px-5 py-3.5 flex items-center justify-between"
-              style={{ borderBottom: "1px solid #F0F3FA" }}>
-              <p className="text-[13px] font-black" style={{ color: "#09152E" }}>Recent alerts</p>
-              <button onClick={() => navigate(`${BASE}/notifications`)}
-                className="flex items-center gap-1 text-[11.5px] font-semibold" style={{ color: "#3478F6" }}>
-                All <ArrowRight size={11} />
-              </button>
+            <div className="px-5 py-3.5" style={{ borderBottom: "1px solid #F0F3FA" }}>
+              <p className="text-[13px] font-black" style={{ color: "#09152E" }}>Quick links</p>
             </div>
-            {recentNotifs.length > 0 ? (
-              <>
-                {recentNotifs.map((n, i) => (
-                  <div key={n.id} className="px-5 py-4"
-                    style={{ borderBottom: i < recentNotifs.length - 1 ? "1px solid #F5F7FB" : "none" }}>
-                    <div className="flex items-start gap-2.5">
-                      <span className="w-1.5 h-1.5 rounded-full shrink-0 mt-[5px]"
-                        style={{ background: NOTIF_DOTS[n.type] || "#94A3B8" }} />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[13px] font-semibold leading-snug" style={{ color: "#09152E" }}>{n.title}</p>
-                        <p className="text-[12px] mt-0.5 line-clamp-2" style={{ color: "#64748B" }}>{n.message}</p>
-                        <p className="text-[10.5px] mt-1.5" style={{ color: "#B0BCC8" }}>{n.timeLabel}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                <div className="px-5 py-3">
-                  <button onClick={() => navigate(`${BASE}/notifications`)}
-                    className="w-full py-2 rounded-lg text-[12px] font-semibold transition-colors"
-                    style={{ background: "#F0F3FA", color: "#3E506D" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = "#E5EEFF")}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = "#F0F3FA")}>
-                    View all
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="px-5 py-10 text-center">
-                <p className="text-[13px]" style={{ color: "#94A3B8" }}>No unread alerts</p>
-              </div>
-            )}
+            <div className="divide-y" style={{ borderColor: "#F0F3FA" }}>
+              {[
+                { label: "View my applications", path: `${BASE}/applications` },
+                { label: "Explore upcoming expos", path: `${BASE}/explore` },
+                { label: "Manage my booths", path: `${BASE}/booths` },
+                { label: "Update company profile", path: `${BASE}/profile` },
+              ].map(({ label, path }) => (
+                <button key={path} onClick={() => navigate(path)}
+                  className="w-full flex items-center justify-between px-5 py-3.5 text-left transition-colors"
+                  style={{ color: "#09152E" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#FAFBFF"}
+                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                  <span className="text-[13px] font-medium">{label}</span>
+                  <ArrowRight size={13} style={{ color: "#94A3B8" }} />
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

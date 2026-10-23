@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Check, X, Lock, Bell, User } from "lucide-react";
+import { Check, X, Lock, User } from "lucide-react";
 import { CURRENT_COMPANY } from "../data/mockData";
 
 function Toggle({ label, description, checked, onChange }) {

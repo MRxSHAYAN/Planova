@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Pencil, Check, X, Lock, Bell } from "lucide-react";
+import { Pencil, Check, X, Lock } from "lucide-react";
 import { CURRENT_USER } from "../data/mockData";
 
 function Field({ label, name, value, type = "text", editing, onChange }) {
