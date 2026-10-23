@@ -25,6 +25,9 @@ router.post("/register", async (req, res) => {
     name: user.name,
     email: user.email,
     role: user.role,
+    company: user.company || null,
+    phone: user.phone || null,
+    city: user.city || null,
     token: generateToken(user._id, user.role),
   });
 });

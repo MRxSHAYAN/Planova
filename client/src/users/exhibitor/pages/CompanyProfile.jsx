@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Pencil, Check, X, Loader2 } from "lucide-react";
 import { useProfile, updateProfile, initials } from "../../../hooks/useProfile";
+import { useAuth } from "../../../context/AuthContext";
 
 function Field({ label, name, value, type = "text", editing, onChange, multiline }) {
   return (
@@ -43,6 +44,7 @@ function Section({ title, children, action }) {
 
 export default function CompanyProfile() {
   const { profile, loading, error, refresh } = useProfile();
+  const { updateUser } = useAuth();
   const [toast,       setToast]       = useState(null);
   const [saving,      setSaving]      = useState(false);
   const [editInfo,    setEditInfo]    = useState(false);
@@ -67,6 +69,7 @@ export default function CompanyProfile() {
     try {
       setSaving(true);
       await updateProfile({ company: info.company, city: info.city });
+      updateUser({ company: info.company, city: info.city });
       refresh();
       setEditInfo(false);
       showToast("ok", "Company info saved");
@@ -78,6 +81,7 @@ export default function CompanyProfile() {
     try {
       setSaving(true);
       await updateProfile({ name: contact.name, email: contact.email, phone: contact.phone });
+      updateUser({ name: contact.name, email: contact.email, phone: contact.phone });
       refresh();
       setEditContact(false);
       showToast("ok", "Contact details saved");

@@ -12,10 +12,18 @@ export function AuthProvider({ children }) {
     }
   });
 
+  // Called after login or register — stores token + user in localStorage
   function login(userData) {
     localStorage.setItem("planova_token", userData.token);
     localStorage.setItem("planova_user", JSON.stringify(userData));
     setUser(userData);
+  }
+
+  // Called after profile update — refreshes the stored user so sidebar stays in sync
+  function updateUser(updatedFields) {
+    const merged = { ...user, ...updatedFields };
+    localStorage.setItem("planova_user", JSON.stringify(merged));
+    setUser(merged);
   }
 
   function logout() {
@@ -25,7 +33,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, updateUser, logout }}>
       {children}
     </AuthContext.Provider>
   );
