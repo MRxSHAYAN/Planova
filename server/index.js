@@ -18,8 +18,18 @@ app.use(async (_req, _res, next) => {
 
 import authRoutes from "./routes/authRoutes.js";
 import newsletterRoutes from "./routes/newsletterRoutes.js";
+import expoRoutes from "./routes/expoRoutes.js";
+import exhibitorRoutes from "./routes/exhibitorRoutes.js";
+import boothRoutes from "./routes/boothRoutes.js";
+import sessionRoutes from "./routes/sessionRoutes.js";
+import registrationRoutes from "./routes/registrationRoutes.js";
 app.use("/api/auth", authRoutes);
 app.use("/api/newsletter", newsletterRoutes);
+app.use("/api/expos", expoRoutes);
+app.use("/api/applications", exhibitorRoutes);
+app.use("/api/booths", boothRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/registrations", registrationRoutes);
 
 app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API" }));
 

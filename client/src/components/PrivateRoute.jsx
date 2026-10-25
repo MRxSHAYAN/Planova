@@ -1,21 +1,33 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-// Protects user dashboard routes — redirects to /login if not logged in
 export function PrivateRoute({ children, role }) {
   const { user } = useAuth();
 
-  if (!user) return <Navigate to="/login" replace />;
-  if (role && user.role !== role) return <Navigate to="/login" replace />;
+  // Also check localStorage directly so navigation after login
+  // doesn't bounce before React state has re-rendered
+  const stored = (() => {
+    try { return JSON.parse(localStorage.getItem("planova_user")); } catch { return null; }
+  })();
+
+  const activeUser = user || stored;
+
+  if (!activeUser) return <Navigate to="/login" replace />;
+  if (role && activeUser.role !== role) return <Navigate to="/login" replace />;
 
   return children;
 }
 
-// Protects admin routes — redirects to /admin/login if not admin
 export function AdminRoute({ children }) {
   const { user } = useAuth();
 
-  if (!user || user.role !== "admin") return <Navigate to="/admin/login" replace />;
+  const stored = (() => {
+    try { return JSON.parse(localStorage.getItem("planova_user")); } catch { return null; }
+  })();
+
+  const activeUser = user || stored;
+
+  if (!activeUser || activeUser.role !== "admin") return <Navigate to="/admin/login" replace />;
 
   return children;
 }

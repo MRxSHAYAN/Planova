@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 import heroImg from "./../assets/Hero.jpg";
-import { EXPOS } from "../../data.js";
 
 const FILTERS = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 
@@ -97,8 +96,31 @@ function ExpoCard({ expo }) {
 }
 
 function FeaturedExpos() {
+  const [expos, setExpos] = useState([]);
   const [active, setActive] = useState("All");
-  const filtered = active === "All" ? EXPOS : EXPOS.filter(e => e.category === active);
+
+  useEffect(() => {
+    fetch("/api/expos")
+      .then(r => r.json())
+      .then(data => setExpos(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
+
+  // Shape DB expo for ExpoCard
+  function shape(e) {
+    return {
+      ...e,
+      id:         e._id,
+      date:       e.dateStart ? new Date(e.dateStart).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "",
+      venue:      e.venue || e.city,
+      exhibitors: 0,
+      attendees:  0,
+      status:     e.status === "published" ? "Published" : "Draft",
+    };
+  }
+
+  const shaped = expos.map(shape);
+  const filtered = active === "All" ? shaped : shaped.filter(e => e.category === active);
 
   return (
     <section className="bg-page py-18">
@@ -128,13 +150,13 @@ function FeaturedExpos() {
         </div>
 
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map(e => <ExpoCard key={e.id} expo={e} />)}
+          {filtered.map(e => <ExpoCard key={e._id || e.id} expo={e} />)}
         </div>
 
         <div className="md:hidden -mx-5 px-5 overflow-x-auto scroll-smooth scrollbar-hide">
           <div className="flex gap-4 pb-2" style={{ width: "max-content" }}>
             {filtered.map(e => (
-              <div key={e.id} className="w-[82vw] max-w-[310px]">
+              <div key={e._id || e.id} className="w-[82vw] max-w-[310px]">
                 <ExpoCard expo={e} />
               </div>
             ))}

@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Layout from "../components/Layout";
-import { EXPOS } from "../../data.js";
 
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
-const STATUSES = ["All", "Published", "Draft"];
+const STATUSES = ["All", "Published"];
 
 const categoryColor = {
   Technology:  { bg: "bg-accent-light",    text: "text-navy" },
@@ -160,19 +159,37 @@ function ExpoCard({ expo, onView }) {
 
 // Page
 export default function ExploreExpos() {
-  const [search, setSearch] = useState("");
+  const [expos, setExpos]       = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const [search, setSearch]     = useState("");
   const [category, setCategory] = useState("All");
-  const [status, setStatus] = useState("All");
   const [selectedExpo, setSelectedExpo] = useState(null);
 
-  const filtered = EXPOS.filter((e) => {
-    const matchSearch =
-      e.title.toLowerCase().includes(search.toLowerCase()) ||
-      e.venue.toLowerCase().includes(search.toLowerCase());
+  useEffect(() => {
+    fetch("/api/expos")
+      .then(r => r.json())
+      .then(data => setExpos(Array.isArray(data) ? data : []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const filtered = expos.filter((e) => {
+    const matchSearch = e.title.toLowerCase().includes(search.toLowerCase()) || e.city?.toLowerCase().includes(search.toLowerCase());
     const matchCategory = category === "All" || e.category === category;
-    const matchStatus = status === "All" || e.status === status;
-    return matchSearch && matchCategory && matchStatus;
+    return matchSearch && matchCategory;
   });
+
+  function toExpoShape(e) {
+    return {
+      ...e,
+      id:         e._id,
+      date:       e.dateStart ? new Date(e.dateStart).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "",
+      venue:      e.venue,
+      exhibitors: 0,
+      attendees:  0,
+      status:     e.status === "published" ? "Published" : e.status,
+    };
+  }
 
   return (
     <Layout>
@@ -225,38 +242,27 @@ export default function ExploreExpos() {
                 </button>
               ))}
             </div>
-            <div className="ml-auto flex gap-2">
-              {STATUSES.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setStatus(s)}
-                  className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold border transition-colors ${
-                    status === s
-                      ? "bg-accent text-navy border-accent"
-                      : "bg-surface text-body border-border hover:border-accent hover:text-accent"
-                  }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
           </div>
 
           <p className="text-[12.5px] text-body mb-6">
             {filtered.length} expo{filtered.length !== 1 ? "s" : ""} found
           </p>
 
-          {filtered.length > 0 ? (
+          {loading ? (
+            <div className="flex justify-center py-20">
+              <div className="w-6 h-6 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+            </div>
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {filtered.map((e) => (
-                <ExpoCard key={e.id} expo={e} onView={setSelectedExpo} />
+                <ExpoCard key={e._id} expo={toExpoShape(e)} onView={v => setSelectedExpo(v)} />
               ))}
             </div>
           ) : (
             <div className="text-center py-20">
               <p className="text-body text-[14px]">No expos match your filters.</p>
               <button
-                onClick={() => { setCategory("All"); setStatus("All"); setSearch(""); }}
+                onClick={() => { setCategory("All"); setSearch(""); }}
                 className="mt-4 text-[13px] font-semibold text-accent hover:underline"
               >
                 Clear filters

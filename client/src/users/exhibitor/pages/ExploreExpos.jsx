@@ -1,11 +1,18 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Search, X, SlidersHorizontal, MapPin, CalendarDays, Users, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { EXPOS, CATEGORY_COLORS } from "../data/mockData";
 
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Agriculture"];
 const CITIES     = ["All Cities", "Karachi", "Lahore", "Islamabad"];
-const FEATURED   = EXPOS.find((e) => e.featured);
+
+const CATEGORY_COLORS = {
+  Technology:  { bg: "#DCE8FF", text: "#09152E" },
+  Healthcare:  { bg: "#DDF7E7", text: "#16804A" },
+  Energy:      { bg: "#FEF3C7", text: "#92620A" },
+  Agriculture: { bg: "#ECFDF5", text: "#065F46" },
+  Fashion:     { bg: "#FCE7F3", text: "#9D174D" },
+  Food:        { bg: "#FEF3C7", text: "#92620A" },
+};
 
 function Pill({ label, active, onClick }) {
   return (
@@ -84,21 +91,48 @@ function ExpoCard({ expo }) {
 }
 
 export default function ExploreExpos() {
-  const [query, setQuery]     = useState("");
-  const [cat,   setCat]       = useState("All");
-  const [city,  setCity]      = useState("All Cities");
-  const [showF, setShowF]     = useState(false);
+  const [expos,  setExpos]  = useState([]);
+  const [query,  setQuery]  = useState("");
+  const [cat,    setCat]    = useState("All");
+  const [city,   setCity]   = useState("All Cities");
+  const [showF,  setShowF]  = useState(false);
+
+  useEffect(() => {
+    fetch("/api/expos")
+      .then(r => r.json())
+      .then(data => setExpos(Array.isArray(data) ? data : []))
+      .catch(() => {});
+  }, []);
+
+  // shape DB expo to what ExpoCard expects
+  function shape(e) {
+    return {
+      ...e,
+      id:               e._id,
+      location:         e.city,
+      date:             e.dateStart ? new Date(e.dateStart).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "",
+      availableBooths:  e.totalBooths || 0,
+      boothPriceFrom:   0,
+      applicationOpen:  e.status === "published",
+      applicationDeadline: e.dateStart ? new Date(e.dateStart).toLocaleDateString() : "",
+      attendees:        0,
+      featured:         false,
+    };
+  }
+
+  const shaped = expos.map(shape);
+  const FEATURED = shaped[0] || null;
 
   const filtered = useMemo(() => {
-    let list = EXPOS;
+    let list = shaped;
     if (query.trim()) {
       const q = query.toLowerCase();
-      list = list.filter((e) => e.title.toLowerCase().includes(q) || e.location.toLowerCase().includes(q) || e.category.toLowerCase().includes(q));
+      list = list.filter((e) => e.title.toLowerCase().includes(q) || e.city?.toLowerCase().includes(q));
     }
     if (cat  !== "All")        list = list.filter((e) => e.category === cat);
     if (city !== "All Cities") list = list.filter((e) => e.city === city);
     return list;
-  }, [query, cat, city]);
+  }, [shaped, query, cat, city]);
 
   const hasFilters = cat !== "All" || city !== "All Cities";
 

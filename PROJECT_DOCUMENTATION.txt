@@ -3,7 +3,6 @@
   Expo Management Platform for Pakistan
 ================================================================================
 
-Last updated: October 2026
 Stack: MongoDB + Express + React + Node.js (MERN)
 Repo: github.com/MRxSHAYAN/Planova
 
@@ -13,7 +12,7 @@ TABLE OF CONTENTS
 1.  What is Planova
 2.  Tech Stack
 3.  Project Structure
-4.  How to Run (step by step)
+4.  How to Run
 5.  Environment Variables
 6.  Database Models
 7.  API Routes
@@ -23,12 +22,15 @@ TABLE OF CONTENTS
 11. Email System
 12. Newsletter
 13. Profile Pictures
-14. User Roles
-15. Seeded Demo Users
-16. Admin Panel
-17. What is Dynamic vs Mock
-18. Deployment (Vercel)
-19. Test Credentials
+14. Expos & Sessions
+15. Exhibitor Applications & Booths
+16. Attendee Registration
+17. User Roles
+18. Seeded Demo Data
+19. Admin Panel
+20. What is Dynamic vs Mock
+21. Deployment
+22. Test Credentials
 
 
 ================================================================================
@@ -38,12 +40,9 @@ TABLE OF CONTENTS
 A web platform for managing expos, trade shows, and conferences in Pakistan.
 
 Three user types:
-  ATTENDEE  — browse expos, register for sessions, manage profile
+  ATTENDEE  — browse expos, register, view schedule, see exhibitors
   EXHIBITOR — apply to expos, manage booth, build company profile
-  ADMIN     — manage the whole platform (users, expos, applications)
-
-The public website shows upcoming expos and info. Each role has a private
-dashboard after login.
+  ADMIN     — manage the whole platform (users, expos, applications, booths, schedule)
 
 
 ================================================================================
@@ -62,48 +61,74 @@ Tools:     dotenv, cors, nodemon
 E-Project plainova/
   client/
     src/
-      context/AuthContext.jsx       auth state (user, login, logout, updateUser)
-      hooks/useProfile.js           fetch and update profile from API
+      context/AuthContext.jsx       auth state
+      hooks/useProfile.js           fetch and update profile
+      components/PrivateRoute.jsx   route protection
       web/
         pages/
-          Home.jsx                  public home page with newsletter
-          auth/login.jsx            login form
+          Home.jsx                  public home with newsletter
+          ExploreExpos.jsx          public expo listing from DB
+          Schedule.jsx              public session schedule from DB
+          auth/login.jsx            login
           auth/Register.jsx         2-step registration with OTP
-          auth/ForgotPassword.jsx   forgot password with OTP flow
-        components/                 Navbar, Footer, AuthNavbar
+          auth/ForgotPassword.jsx   forgot password with OTP
+        components/                  Navbar, Footer, AuthNavbar
       users/
         attendee/
-          pages/MyProfile.jsx       name, photo, email change (OTP), password (OTP)
-          data/mockData.js          events, sessions (mock data)
+          AttendeeDashboard.jsx      routes
+          components/                Sidebar, TopHeader, DashboardLayout
+          pages/
+            Overview.jsx             greeting with real name
+            ExploreEvents.jsx        browse + register for expos from DB
+            MyEvents.jsx             registered events from DB (upcoming/past)
+            MySchedule.jsx           sessions from DB with date picker
+            Exhibitors.jsx           approved exhibitor profiles from DB
+            MyProfile.jsx           edit name, photo, email (OTP), password (OTP)
         exhibitor/
-          pages/CompanyProfile.jsx  company info, contact details
-          pages/Settings.jsx        name, email (OTP), password (OTP)
-          data/mockData.js          applications, booths (mock data)
+          ExhibitorDashboard.jsx
+          components/
+          pages/
+            Overview.jsx
+            ExploreExpos.jsx         published expos from DB
+            MyApplications.jsx       own applications from DB
+            MyBooths.jsx
+            CompanyProfile.jsx       company info
+            Settings.jsx             name, email (OTP), password (OTP)
       admin/
-        pages/Overview.jsx          user counts + newsletter subscribers (live)
-        pages/Users.jsx             all users from database
-        pages/Settings.jsx          photo, name, email (OTP), password (OTP)
-        data/adminData.js           expo/booth stats (mock)
+        AdminDashboard.jsx
+        components/                  AdminSidebar, AdminTopbar, StatusBadge
+        pages/
+          Overview.jsx               user counts + subscribers from DB
+          Users.jsx                  all users from DB
+          ExpoManagement.jsx         expo CRUD from DB
+          Applications.jsx           applications from DB, approve/reject
+          Booths.jsx                 booths from DB, assign/clear
+          Schedule.jsx               session CRUD from DB
+          Settings.jsx               photo, name, email (OTP), password (OTP)
 
   server/
-    index.js                        Express app entry
-    seed.js                         creates demo users in DB
-    .env                            environment variables (not in git)
+    index.js                        Express app, all routes
     config/db.js                    MongoDB connection
     middleware/authMiddleware.js    JWT protect + requireRole
     models/
-      User.js                       main model (all roles)
-      Subscriber.js                 newsletter subscribers
+      User.js                       users with OTP fields
+      Event.js                      expos
+      Session.js                    sessions linked to expos
       Exhibitor.js                  exhibitor applications
-      Event.js, Session.js          expo/session models
-      Registration.js, Booth.js     registration and booth models
-      Bookmark.js                   saved items
+      Booth.js                       booth assignments
+      Registration.js               attendee expo registrations
+      Subscriber.js                 newsletter subscribers
     routes/
-      authRoutes.js                 all auth + profile + OTP + admin user routes
-      newsletterRoutes.js           subscribe, list, delete subscribers
+      authRoutes.js                 auth + profile + OTP + admin user routes
+      expoRoutes.js                 expo CRUD (delete auto-removes sessions)
+      sessionRoutes.js              session CRUD
+      exhibitorRoutes.js             applications + approved exhibitors
+      boothRoutes.js                 booth CRUD + assign/clear
+      registrationRoutes.js          attendee registration
+      newsletterRoutes.js            subscribe + admin list
     utils/
-      generateToken.js              creates a JWT
-      sendEmail.js                  nodemailer OTP and welcome emails with logo
+      generateToken.js              JWT creation
+      sendEmail.js                   nodemailer with logo in emails
 
 
 ================================================================================
@@ -112,34 +137,17 @@ E-Project plainova/
 
 Requirements: Node.js v18+, MongoDB (local or Atlas)
 
-STEP 1 — Install MongoDB
-  Local: download from mongodb.com/try/download/community
-  Atlas:  create free cluster at mongodb.com/cloud/atlas
+1. Install MongoDB (local or Atlas)
+2. cd server && npm install
+3. cd client && npm install
+4. Create server/.env (see Section 5)
+5. Get Gmail App Password for SMTP (Google Account > Security > 2FA > App Passwords)
+6. Seed the database: cd server && node seed.js
+7. Start: cd server && npm run dev (port 5000)
+8. Start: cd client && npm run dev (port 5173)
+9. Open http://localhost:5173
 
-STEP 2 — Install dependencies
-  cd server && npm install
-  cd client && npm install
-
-STEP 3 — Create server/.env
-  See Section 5 below for all required values.
-
-STEP 4 — Get Gmail App Password for SMTP
-  Google Account > Security > 2-Step Verification > App Passwords
-  Create one, copy the 16-char password, remove all spaces, put in SMTP_PASS
-
-STEP 5 — Seed the database
-  cd server
-  node seed.js
-  Creates admin, exhibitor, and attendee demo users.
-
-STEP 6 — Start both servers
-  Terminal 1:  cd server && npm run dev     (port 5000)
-  Terminal 2:  cd client && npm run dev     (port 5173)
-
-STEP 7 — Open the app
-  http://localhost:5173
-
-Vite proxies /api/* to localhost:5000 automatically (vite.config.js).
+Vite proxies /api/* to localhost:5000 automatically.
 
 
 ================================================================================
@@ -149,40 +157,41 @@ Vite proxies /api/* to localhost:5000 automatically (vite.config.js).
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
-
 MONGO_URI=mongodb://localhost:27017/planovaDBTesting
-(Atlas: mongodb+srv://user:pass@cluster.mongodb.net/planova)
-
 JWT_SECRET=any_long_random_string
-
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your_email@gmail.com
-SMTP_PASS=your16charapppassword   (no spaces)
+SMTP_PASS=your16charapppassword
 
-Notes:
-  - .env is in .gitignore and never committed to git
-  - SMTP_PASS is a Gmail App Password, NOT your real password
-  - Port 587 = TLS, port 465 = SSL
+.env is in .gitignore and never committed to git.
 
 
 ================================================================================
 6. DATABASE MODELS
 ================================================================================
 
-User (server/models/User.js)
-  name, email, password (bcrypt hashed), role (attendee/exhibitor/admin)
-  phone, city, company, category, description, website, avatar (base64)
-  isActive, isVerified
-  otp, otpExpiry, otpPurpose           temporary OTP fields
-  pendingEmail, pendingPassword        stores new values while OTP is pending
-  createdAt, updatedAt
+User: name, email, password (bcrypt), role, phone, city, company, category,
+      description, website, avatar (base64), isActive, isVerified,
+      otp, otpExpiry, otpPurpose, pendingEmail, pendingPassword
 
-Subscriber (server/models/Subscriber.js)
-  email, createdAt
+Event: organizer, title, description, category, dateStart, dateEnd, venue,
+       city, image, status (draft/published/archived), totalBooths
 
-Other models (defined, not yet wired to live API):
-  Event, Session, Exhibitor, Registration, Booth, Bookmark
+Session: event (ref Event), title, description, speaker, speakerRole,
+         type (Keynote/Talk/Workshop/Panel), date, time, duration, room
+
+Exhibitor: user (ref User), event (ref Event), company, contact, phone, email,
+           category, city, description, booth, status (pending/approved/rejected),
+           rejectReason
+
+Booth: boothId, event (ref Event), type, size, status (available/occupied/pending),
+       exhibitor (company name string)
+
+Registration: user (ref User), event (ref Event), status, registeredAt
+              Unique index: { user, event } — can't register twice
+
+Subscriber: email (unique)
 
 
 ================================================================================
@@ -191,35 +200,70 @@ Other models (defined, not yet wired to live API):
 
 Base: http://localhost:5000
 
---- PUBLIC ---
+AUTH (public)
+  POST /api/auth/register                  create account, send OTP
+  POST /api/auth/verify-otp               verify OTP, activate account
+  POST /api/auth/resend-otp               resend OTP
+  POST /api/auth/login                    login
+  POST /api/auth/admin/login              admin login
+  POST /api/auth/forgot-password          send reset OTP
+  POST /api/auth/reset-password           verify OTP, set new password
 
-POST /api/auth/register                 create account, send OTP email
-POST /api/auth/verify-otp               verify OTP, activate account, get token
-POST /api/auth/resend-otp               resend registration OTP
-POST /api/auth/login                    login, returns token
-POST /api/auth/admin/login              admin-only login
-POST /api/auth/forgot-password          send OTP to email for password reset
-POST /api/auth/reset-password           verify OTP, set new password
-POST /api/newsletter/subscribe          add email to newsletter list
+AUTH (protected)
+  GET  /api/auth/profile                  get current user
+  PUT  /api/auth/profile                  update profile (not email/password)
+  POST /api/auth/request-email-change     send OTP to new email
+  POST /api/auth/confirm-email-change     verify OTP, swap email
+  POST /api/auth/request-password-change  send OTP to current email
+  POST /api/auth/confirm-password-change  verify OTP, save new password
 
---- PROTECTED (requires Authorization: Bearer token) ---
+AUTH (admin)
+  GET  /api/auth/stats                    user count stats
+  GET  /api/auth/users                    all users
+  PUT  /api/auth/users/:id/status         toggle active/inactive
 
-GET  /api/auth/profile                  get current user
-PUT  /api/auth/profile                  update name, phone, city, company, avatar, etc.
-POST /api/auth/request-email-change     send OTP to new email
-POST /api/auth/confirm-email-change     verify OTP, swap email in DB
-POST /api/auth/request-password-change  send OTP to current email
-POST /api/auth/confirm-password-change  verify OTP, save new password
+EXPOS
+  GET  /api/expos                         public, published only
+  GET  /api/expos/all                      admin, all statuses
+  GET  /api/expos/:id                      single expo
+  POST /api/expos                         admin, create
+  PUT  /api/expos/:id                     admin, edit
+  DELETE /api/expos/:id                   admin, delete (auto-deletes sessions)
 
---- ADMIN ONLY ---
+SESSIONS
+  GET  /api/sessions                      public, filter by ?event=id
+  POST /api/sessions                      admin, create
+  PUT  /api/sessions/:id                  admin, edit
+  DELETE /api/sessions/:id                admin, delete
 
-GET  /api/auth/stats                    user count stats
-GET  /api/auth/users                    all users from DB
-PUT  /api/auth/users/:id/status         toggle user active/inactive
-GET  /api/newsletter/subscribers        all newsletter subscribers
-DELETE /api/newsletter/subscribers/:id  remove subscriber
+APPLICATIONS
+  GET  /api/applications/approved         public, approved exhibitor profiles
+  GET  /api/applications                  admin, all applications
+  GET  /api/applications/mine             exhibitor, own applications
+  POST /api/applications                  exhibitor, submit application
+  PUT  /api/applications/:id/approve      admin, approve
+  PUT  /api/applications/:id/reject       admin, reject with reason
 
-GET  /api/health                        server + DB status
+BOOTHS
+  GET  /api/booths                        protected, filter by ?event=id
+  POST /api/booths                        admin, create
+  PUT  /api/booths/:id/assign             admin, assign exhibitor
+  PUT  /api/booths/:id/clear              admin, clear assignment
+  DELETE /api/booths/:id                  admin, delete
+
+REGISTRATIONS
+  POST /api/registrations                 attendee, register for expo
+  GET  /api/registrations/mine            attendee, own registrations
+  DELETE /api/registrations/:id           attendee, cancel registration
+  GET  /api/registrations                 admin, all registrations
+
+NEWSLETTER
+  POST /api/newsletter/subscribe          public, save email + send welcome
+  GET  /api/newsletter/subscribers        admin, all subscribers
+  DELETE /api/newsletter/subscribers/:id  admin, remove subscriber
+
+HEALTH
+  GET  /api/health                        server + DB status
 
 
 ================================================================================
@@ -228,28 +272,25 @@ GET  /api/health                        server + DB status
 
 Public (no login)
   /                   Home — expos, how it works, roles, newsletter
-  /about              About
-  /explore-expos      Browse expos
+  /explore-expos      Browse published expos from DB
+  /schedule           Sessions from DB, grouped by expo + date
   /exhibitors         Exhibitor directory
-  /schedule           Session schedule
-  /contact            Contact
-  /login              Login
-  /register           Register (2-step: form then OTP)
+  /about /contact     Info pages
+  /login /register    Auth (register is 2-step: form then OTP)
   /forgot-password    Forgot password (email then OTP then new password)
 
 Attendee (/users/dashboard/attendee/)
-  /                   Overview with real user name
-  /explore            Browse events
-  /my-events          Registered events
-  /schedule           Personal schedule
-  /exhibitors         View exhibitors
-  /saved              Saved items
+  /                   Overview — greeting with real name
+  /explore            Browse expos + Register button (saves to DB)
+  /my-events          Registered expos from DB (upcoming/past tabs, cancel)
+  /schedule           Sessions from DB with date picker + bookmarks
+  /exhibitors         Approved exhibitor profiles from DB, view profile modal
   /profile            Edit name, photo, email (OTP), password (OTP)
 
 Exhibitor (/users/dashboard/exhibitor/)
-  /                   Overview with real company name
-  /explore            Explore expos
-  /applications       View applications
+  /                   Overview — greeting with real company name
+  /explore            Explore published expos from DB
+  /applications       Own applications from DB
   /booths             Booth assignments
   /profile            Company info, contact details
   /products           Products and services
@@ -257,12 +298,12 @@ Exhibitor (/users/dashboard/exhibitor/)
 
 Admin (/admin/)
   /                   Overview — user counts, subscribers, recent data
-  /users              All users from DB with search, filter, activate/deactivate
-  /applications       Exhibitor applications
-  /booths             Booth management
-  /expos              Expo management
+  /users              All users from DB, search, filter, activate/deactivate
+  /expos              Expo CRUD (create, edit, delete — auto-removes sessions)
+  /applications       All applications from DB, approve/reject with reason
+  /booths             Booths from DB, grid/table view, assign exhibitor, clear
+  /schedule           Session CRUD from DB, filter by expo and type
   /attendees          Attendee list
-  /schedule           Schedule management
   /reports            Reports
   /settings           Photo, name, email (OTP), password (OTP)
 
@@ -271,29 +312,16 @@ Admin (/admin/)
 9. AUTH & OTP SYSTEM
 ================================================================================
 
-HOW LOGIN/REGISTER WORKS:
-  1. Register > OTP sent to email
-  2. Enter OTP > account verified > token returned
-  3. Token stored in localStorage as "planova_token"
-  4. Every API call sends: Authorization: Bearer token
-  5. Logout clears localStorage
+Login flow: register > OTP to email > verify > account active > token stored
+Login: email + password > token returned > stored in localStorage
+Protected routes: PrivateRoute checks localStorage + auth context
+Logout: clears localStorage
 
-AUTHCONTEXT (client/src/context/AuthContext.jsx)
-  user           logged-in user object
-  login(data)    stores token + user in localStorage
-  updateUser(f)  updates stored user so sidebar refreshes immediately
-  logout()       clears localStorage
-
-USEPROFILE HOOK (client/src/hooks/useProfile.js)
-  Fetches fresh data from GET /api/auth/profile
-  Returns { profile, loading, error, refresh }
-  Also exports: updateProfile(data), initials(name)
-
-OTP USES:
-  Registration verify   POST /register > OTP > POST /verify-otp
-  Email change          POST /request-email-change > OTP > POST /confirm-email-change
-  Password change       POST /request-password-change > OTP > POST /confirm-password-change
-  Forgot password       POST /forgot-password > OTP > POST /reset-password
+OTP uses:
+  Registration: POST /register > OTP > POST /verify-otp
+  Email change: POST /request-email-change > OTP > POST /confirm-email-change
+  Password change: POST /request-password-change > OTP > POST /confirm-password-change
+  Forgot password: POST /forgot-password > OTP > POST /reset-password
 
 
 ================================================================================
@@ -304,154 +332,169 @@ OTP USES:
   At least one letter (a-z or A-Z)
   At least one special character (!@#$%^&* etc.)
 
-Enforced on:
-  - Register
-  - Forgot password / reset password
-  - Password change from profile
-
-The Register page and ForgotPassword page show live hints as you type.
+Enforced on register, forgot password, and password change.
+Register and ForgotPassword pages show live hints as you type.
 
 
 ================================================================================
 11. EMAIL SYSTEM
 ================================================================================
 
-All emails sent via nodemailer using SMTP (works with any provider).
+All emails sent via nodemailer using SMTP (any provider).
 Transporter created fresh on each send so env var changes take effect immediately.
+Planova logo attached as CID inline image in the email header.
 
-The Planova logo (client/src/assets/Icon.png) is attached as a CID inline image
-and shown in the email header. If the file is missing, emails still send without it.
-
-Email types:
-  verify            registration OTP
-  email-change      OTP sent to new email address
-  password-change   OTP for password change
-  forgot-password   OTP for password reset
-  welcome           sent on newsletter subscription (no OTP, just confirmation)
-
-To set up emails, fill in SMTP_* values in server/.env (see Section 5).
+Email types: verify, email-change, password-change, forgot-password, welcome
+Setup: fill SMTP_* values in server/.env
 
 
 ================================================================================
 12. NEWSLETTER
 ================================================================================
 
-Users subscribe from the bottom of the Home page.
-Email is saved to the Subscriber model in MongoDB.
-A welcome email is sent immediately after subscribing.
-
-Admin can see all subscribers on the Overview page (with subscribe date).
-
-Routes:
-  POST /api/newsletter/subscribe            save email, send welcome email
-  GET  /api/newsletter/subscribers          admin only, all subscribers
-  DELETE /api/newsletter/subscribers/:id    admin only, remove one
+Users subscribe from the Home page bottom section.
+Email saved to Subscriber model, welcome email sent immediately.
+Admin sees all subscribers on the Overview page.
 
 
 ================================================================================
 13. PROFILE PICTURES
 ================================================================================
 
-Users pick an image file (JPG or PNG, max 2MB).
-The file is read as a base64 data URL in the browser.
-The base64 string is sent to PUT /api/auth/profile as the avatar field.
-It is stored directly in MongoDB on the User document.
-It is displayed everywhere the user appears: profile pages, sidebar, navbar, admin.
-
-No file storage service is needed — everything stays in MongoDB.
+Users pick an image (JPG/PNG, max 2MB).
+Read as base64 in the browser, sent to PUT /api/auth/profile.
+Stored directly in MongoDB on the User document.
+Displayed in profile pages, sidebar, navbar, admin users list.
 
 
 ================================================================================
-14. USER ROLES
+14. EXPOS & SESSIONS
+================================================================================
+
+Admin creates expos from /admin/expos with title, description, category, dates,
+venue, city, image, status (draft/published/archived), total booths.
+
+Only published expos appear on:
+  - Public website (/explore-expos)
+  - Attendee dashboard (/explore)
+  - Exhibitor dashboard (/explore)
+
+Admin creates sessions from /admin/schedule linked to an expo.
+Sessions appear on:
+  - Public website (/schedule)
+  - Attendee dashboard (/schedule)
+
+Deleting an expo automatically deletes all its sessions.
+
+
+================================================================================
+15. EXHIBITOR APPLICATIONS & BOOTHS
+================================================================================
+
+Exhibitors submit applications from their dashboard.
+Admin reviews from /admin/applications — approve or reject with reason.
+Approved exhibitors appear in the attendee Exhibitors page (/exhibitors).
+Admin assigns booths from /admin/booths — only approved exhibitors eligible.
+Each exhibitor can only be assigned to one booth per expo.
+
+
+================================================================================
+16. ATTENDEE REGISTRATION
+================================================================================
+
+Attendees register for expos from their dashboard /explore page.
+Registration saved to Registration model in MongoDB (unique per user+event).
+My Events page shows registered expos split into upcoming and past.
+Cancel button removes the registration.
+Cancel button has a red hover effect for clear visual feedback.
+
+
+================================================================================
+17. USER ROLES
 ================================================================================
 
 ATTENDEE
-  Registers through the normal signup flow
-  Access to attendee dashboard
-  Can edit profile, upload photo, change email (OTP), change password (OTP)
-  Events/sessions still from mock data
+  Registers through normal signup, OTP verified
+  Browse expos, register, view schedule, see exhibitors
+  Edit profile, photo, email (OTP), password (OTP)
 
 EXHIBITOR
-  Registers by selecting Exhibitor on signup
-  Access to exhibitor dashboard
-  Can set up company profile and contact details
-  Change password via OTP on settings page
-  Applications and booths still from mock data
+  Registers by selecting Exhibitor role
+  Set up company profile, submit applications
+  View own application status (pending/approved/rejected)
+  Applications and booths from database
 
 ADMIN
-  Created only via node seed.js (cannot self-register)
-  Access to admin panel at /admin
+  Created only via seed.js (cannot self-register)
   Admin login at /admin/login (separate from public login)
   Skips OTP verification (pre-verified)
-  Can view all users, activate/deactivate accounts, see newsletter subscribers
+  Full CRUD on expos, sessions, applications, booths, users
 
 
 ================================================================================
-15. SEEDED DEMO USERS
+18. SEEDED DEMO DATA
 ================================================================================
 
 Run: cd server && node seed.js
 
-Role       Email                            Password        Verified
---------   -------------------------------- --------------- --------
-admin      admin@planova.com                admin123        yes
-exhibitor  raza.ahmed@techbridge.pk          exhibitor123    yes
-attendee   ayesha.siddiqui@email.com         attendee123     yes
+Users (all pre-verified):
+  admin@planova.com / planova123 (admin)
+  raza.ahmed@techbridge.pk / exhibitor123 (exhibitor)
+  ayesha.siddiqui@email.com / attendee123 (attendee)
+  test@test.com / Test@1234 (attendee)
+  testexhibitor@test.com / Test@1234 (exhibitor)
 
-All pre-verified. New registrations through the UI require email OTP.
-
-
-================================================================================
-16. ADMIN PANEL
-================================================================================
-
-Overview page shows:
-  - Real user counts (total, attendees, exhibitors) from DB
-  - Newsletter subscriber count and full list from DB
-  - Recent applications, upcoming expos (mock data)
-
-Users page shows:
-  - All users from database
-  - Search by name or email
-  - Filter by role and status
-  - Shows avatar, name, email, role, verified status, join date
-  - Activate/deactivate button for non-admin users
-
-Settings page:
-  - Upload profile photo (click the avatar)
-  - Edit display name
-  - Change email with OTP
-  - Change password with OTP
-  - No fake platform settings
+Also creates:
+  7 expos (6 published, 1 draft)
+  10 sessions (7 for Karachi Tech Expo, 3 for Health Summit)
+  1 approved application (TechBridge → Karachi Tech Expo)
+  8 booths for Karachi Tech Expo
 
 
 ================================================================================
-17. WHAT IS DYNAMIC VS MOCK
+19. ADMIN PANEL
+================================================================================
+
+Overview: real user counts, newsletter subscribers, recent data
+Users: all from DB, search, filter, activate/deactivate
+Expo Management: create, edit, delete (auto-deletes sessions)
+Applications: all from DB, approve/reject with reason
+Booths: all from DB, grid/table view, assign exhibitor, clear
+Schedule: session CRUD from DB, filter by expo and type
+Settings: photo, name, email (OTP), password (OTP)
+
+
+================================================================================
+20. WHAT IS DYNAMIC VS MOCK
 ================================================================================
 
 DYNAMIC (from database):
-  User registration, login, logout
-  OTP flows for registration, email change, password change, forgot password
-  User profiles: name, email, phone, city, company, category, description, website
-  Profile picture (avatar)
-  Sidebar and navbar show real logged-in name and photo
-  Admin: user list, counts, activate/deactivate
+  User registration, login, logout, OTP flows
+  User profiles: name, email, phone, city, company, avatar
+  Admin: users, stats, activate/deactivate
+  Admin: expo CRUD (auto-deletes sessions on delete)
+  Admin: applications (approve/reject)
+  Admin: booth assignments (assign/clear)
+  Admin: session CRUD
   Admin: newsletter subscribers
-  Admin settings, exhibitor settings, attendee and exhibitor profile pages
+  Exhibitor: own applications
+  Attendee: registration for expos (register, cancel, my events)
+  Attendee: exhibitors directory (approved profiles from DB)
+  Attendee: schedule (sessions from DB, date picker, bookmarks)
+  Public: expos from DB
+  Public: schedule from DB
+  All profile/settings pages
 
-MOCK (local JS arrays, not from DB):
-  client/src/data.js                   public site expos, sessions, exhibitors
-  client/src/users/attendee/data/      attendee events, sessions
-  client/src/users/exhibitor/data/     applications, booths
-  client/src/admin/data/adminData.js   expo/booth stats, recent activity
+STILL MOCK:
+  Admin overview recent activity log (partial)
+  Exhibitor dashboard overview stats (application/booth counts still mock)
 
 
 ================================================================================
-18. DEPLOYMENT (VERCEL)
+21. DEPLOYMENT (VERCEL)
 ================================================================================
 
-Project includes vercel.json. Set these in Vercel project settings:
-
+Set these in Vercel project settings:
   NODE_ENV=production
   MONGO_URI=<Atlas connection string>
   JWT_SECRET=<your secret>
@@ -463,23 +506,26 @@ Project includes vercel.json. Set these in Vercel project settings:
 
 
 ================================================================================
-19. TEST CREDENTIALS
+22. TEST CREDENTIALS
 ================================================================================
 
-Admin panel:       http://localhost:5173/admin
-  Email:           admin@planova.com
-  Password:        admin123
+Admin:       admin@planova.com / planova123
+Exhibitor:   raza.ahmed@techbridge.pk / exhibitor123
+Attendee:    ayesha.siddiqui@email.com / attendee123
+Test attendee: test@test.com / Test@1234
+Test exhibitor: testexhibitor@test.com / Test@1234
 
-Exhibitor dashboard: http://localhost:5173/login
-  Email:           raza.ahmed@techbridge.pk
-  Password:        exhibitor123
-
-Attendee dashboard: http://localhost:5173/login
-  Email:           ayesha.siddiqui@email.com
-  Password:        attendee123
-
-These are pre-verified and skip the OTP step on login.
+All pre-verified, skip OTP on login.
 New registrations through the UI require OTP verification.
+
+HOW TO TEST END TO END:
+1. Admin creates expo at /admin/expos, set status Published
+2. Exhibitor applies at /explore, views status at /applications
+3. Admin approves at /admin/applications
+4. Admin creates booth + assigns at /admin/booths
+5. Attendee registers at /explore, sees it in /my-events
+6. Attendee views schedule at /schedule
+7. Attendee views exhibitors at /exhibitors
 
 
 ================================================================================

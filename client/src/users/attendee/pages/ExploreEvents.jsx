@@ -1,10 +1,17 @@
-import { useState, useMemo } from "react";
-import { Search, X, SlidersHorizontal, Bookmark, MapPin, CalendarDays, Users, Star } from "lucide-react";
-import { EVENTS, CATEGORY_COLORS } from "../data/mockData";
+import { useState, useEffect, useMemo } from "react";
+import { Search, X, SlidersHorizontal, MapPin, CalendarDays, Users, Star } from "lucide-react";
 
 const CATEGORIES = ["All", "Technology", "Healthcare", "Energy", "Fashion", "Agriculture"];
 const CITIES     = ["All Cities", "Karachi", "Lahore", "Islamabad"];
-const FEATURED   = EVENTS.find((e) => e.featured);
+
+const CATEGORY_COLORS = {
+  Technology:  { bg: "#DCE8FF", text: "#09152E" },
+  Healthcare:  { bg: "#DDF7E7", text: "#16804A" },
+  Energy:      { bg: "#FEF3C7", text: "#92620A" },
+  Fashion:     { bg: "#FCE7F3", text: "#9D174D" },
+  Agriculture: { bg: "#ECFDF5", text: "#065F46" },
+  Food:        { bg: "#FEF3C7", text: "#92620A" },
+};
 
 function Pill({ children, active, onClick }) {
   return (
@@ -17,14 +24,9 @@ function Pill({ children, active, onClick }) {
   );
 }
 
-function EventCard({ event, onSave }) {
-  const [saved, setSaved] = useState(event.saved);
+function EventCard({ event, registeredIds, onRegister }) {
   const c = CATEGORY_COLORS[event.category] || { bg: "#EEF1F8", text: "#3E506D" };
-  const statusStyle = {
-    Confirmed: { bg: "#E6F9F1", text: "#12875A" },
-    Pending:   { bg: "#FFF4DE", text: "#A16207" },
-  };
-  const sStyle = event.registrationStatus ? statusStyle[event.registrationStatus] : null;
+  const isRegistered = registeredIds.has(event._id || event.id);
 
   return (
     <article className="dash-card overflow-hidden flex flex-col group hover:shadow-md transition-shadow">
@@ -36,12 +38,6 @@ function EventCard({ event, onSave }) {
           style={{ background: c.bg, color: c.text }}>
           {event.category}
         </span>
-        <button className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center"
-          style={{ background: "rgba(255,255,255,0.92)" }}
-          onClick={() => { setSaved(!saved); onSave?.(event.id); }}
-          aria-label={saved ? "Remove bookmark" : "Bookmark"}>
-          <Bookmark size={13} style={{ color: saved ? "#3478F6" : "#94A3B8", fill: saved ? "#3478F6" : "none" }} />
-        </button>
       </div>
 
       <div className="flex flex-col flex-1 p-4">
@@ -56,19 +52,25 @@ function EventCard({ event, onSave }) {
             <MapPin size={11} style={{ color: "#3478F6", flexShrink: 0 }} />{event.location}
           </p>
           <p className="flex items-center gap-1.5 text-[12px]" style={{ color: "#94A3B8" }}>
-            <Users size={11} style={{ flexShrink: 0 }} />{event.attendees.toLocaleString()} attending
+            <Users size={11} style={{ flexShrink: 0 }} />{event.attendees?.toLocaleString() || "0"} attending
           </p>
         </div>
         <div className="mt-auto pt-3 flex items-center justify-between gap-2" style={{ borderTop: "1px solid #F0F3FA" }}>
-          {sStyle ? (
-            <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full" style={{ background: sStyle.bg, color: sStyle.text }}>
-              {event.registrationStatus}
+          {isRegistered ? (
+            <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full" style={{ background: "#E6F9F1", color: "#12875A" }}>
+              Registered
             </span>
           ) : (
             <span className="text-[10.5px]" style={{ color: "#B0BCC8" }}>Not registered</span>
           )}
-          <button className="btn-primary text-[12px] px-3 py-1.5 shrink-0">
-            {event.registrationStatus ? "View" : "Register"}
+          <button
+            onClick={() => !isRegistered && onRegister(event._id || event.id)}
+            disabled={isRegistered}
+            className="text-[12px] px-3 py-1.5 shrink-0 rounded-lg font-bold transition-colors"
+            style={isRegistered
+              ? { background: "#F0F3FA", color: "#94A3B8", cursor: "default" }
+              : { background: "#3478F6", color: "#fff" }}>
+            {isRegistered ? "Registered" : "Register"}
           </button>
         </div>
       </div>
@@ -77,28 +79,92 @@ function EventCard({ event, onSave }) {
 }
 
 export default function ExploreEvents() {
+  const [rawEvents, setRawEvents] = useState([]);
   const [query,    setQuery]    = useState("");
   const [category, setCategory] = useState("All");
   const [city,     setCity]     = useState("All Cities");
   const [showF,    setShowF]    = useState(false);
-  const [events,   setEvents]   = useState(EVENTS);
+  const [events,   setEvents]   = useState([]);
+  const [registeredIds, setRegisteredIds] = useState(new Set());
+  const [toast, setToast] = useState(null);
+
+  function showToast(msg, type = "ok") {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 2500);
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem("planova_token");
+
+    fetch("/api/expos")
+      .then(r => r.json())
+      .then(data => {
+        if (!Array.isArray(data)) return;
+        const shaped = data.map(e => ({
+          ...e,
+          id:        e._id,
+          location:  e.city,
+          date:      e.dateStart ? new Date(e.dateStart).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "",
+          attendees: 0,
+          featured:  false,
+        }));
+        setRawEvents(shaped);
+        setEvents(shaped);
+      })
+      .catch(() => {});
+
+    // Fetch user's registrations to mark already-registered expos
+    if (token) {
+      fetch("/api/registrations/mine", { headers: { Authorization: `Bearer ${token}` } })
+        .then(r => r.json())
+        .then(data => {
+          if (Array.isArray(data)) {
+            setRegisteredIds(new Set(data.map(r => r.event?._id || r.event)));
+          }
+        })
+        .catch(() => {});
+    }
+  }, []);
+
+  async function handleRegister(expoId) {
+    const token = localStorage.getItem("planova_token");
+    try {
+      const res = await fetch("/api/registrations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ event: expoId }),
+      });
+      const data = await res.json();
+      if (!res.ok) return showToast(data.message || "Registration failed", "err");
+      setRegisteredIds(p => new Set([...p, expoId]));
+      showToast("Registered! Check My Events.");
+    } catch {
+      showToast("Something went wrong", "err");
+    }
+  }
 
   const filtered = useMemo(() => {
     let list = events;
     if (query.trim()) {
       const q = query.toLowerCase();
-      list = list.filter((e) => e.title.toLowerCase().includes(q) || e.location.toLowerCase().includes(q) || e.category.toLowerCase().includes(q));
+      list = list.filter((e) => e.title.toLowerCase().includes(q) || e.location?.toLowerCase().includes(q) || e.category?.toLowerCase().includes(q));
     }
-    if (category !== "All")       list = list.filter((e) => e.category === category);
-    if (city !== "All Cities")    list = list.filter((e) => e.location.includes(city));
+    if (category !== "All")    list = list.filter((e) => e.category === category);
+    if (city !== "All Cities") list = list.filter((e) => e.location?.includes(city));
     return list;
   }, [events, query, category, city]);
 
   const hasFilters = category !== "All" || city !== "All Cities";
-  const handleSave = (id) => setEvents((p) => p.map((e) => e.id === id ? { ...e, saved: !e.saved } : e));
+  const FEATURED = events[0] || null;
 
   return (
     <div className="space-y-5">
+
+      {toast && (
+        <div className={`fixed top-5 right-5 z-50 flex items-center gap-2 px-4 py-3 rounded-xl text-[13px] font-semibold shadow-lg ${toast.type === "err" ? "bg-red-50 text-red-600 border border-red-200" : "bg-green-50 text-green-600 border border-green-200"}`}>
+          {toast.msg}
+        </div>
+      )}
 
       {FEATURED && (
         <div className="relative rounded-xl overflow-hidden" style={{ height: 200 }}>
@@ -178,7 +244,7 @@ export default function ExploreEvents() {
 
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filtered.map((ev) => <EventCard key={ev.id} event={ev} onSave={handleSave} />)}
+          {filtered.map((ev) => <EventCard key={ev._id || ev.id} event={ev} registeredIds={registeredIds} onRegister={handleRegister} />)}
         </div>
       ) : (
         <div className="dash-card py-16 text-center">

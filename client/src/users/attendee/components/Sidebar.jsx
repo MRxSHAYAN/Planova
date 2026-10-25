@@ -5,7 +5,6 @@ import {
   CalendarCheck,
   CalendarDays,
   Building2,
-  Bookmark,
   UserCircle2,
   LogOut,
 } from "lucide-react";
@@ -34,7 +33,6 @@ const NAV_GROUPS = [
     items: [
       { label: "My Events",      path: `${BASE}/my-events`,          icon: CalendarCheck },
       { label: "My Schedule",    path: `${BASE}/schedule`,           icon: CalendarDays },
-      { label: "Saved Items",    path: `${BASE}/saved`,              icon: Bookmark },
     ],
   },
   {

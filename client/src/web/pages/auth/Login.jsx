@@ -12,6 +12,7 @@ function EyeIcon() {
     </svg>
   );
 }
+
 function EyeOffIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -25,23 +26,24 @@ function EyeOffIcon() {
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [form, setForm]         = useState({ email: "", password: "" });
-  const [showPass, setShowPass] = useState(false);
-  const [error, setError]       = useState("");
-  const [loading, setLoading]   = useState(false);
 
-  const handleChange = (e) => {
+  const [form,     setForm]     = useState({ email: "", password: "" });
+  const [showPass, setShowPass] = useState(false);
+  const [error,    setError]    = useState("");
+  const [loading,  setLoading]  = useState(false);
+
+  function handleChange(e) {
     setForm(p => ({ ...p, [e.target.name]: e.target.value }));
     setError("");
-  };
+  }
 
-  const handleSubmit = async (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!form.email || !form.password) return setError("Please fill in all fields.");
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/login", {
+      const res  = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -49,7 +51,6 @@ export default function Login() {
       const data = await res.json();
 
       if (!res.ok) {
-        // If unverified, send them to OTP screen
         if (data.needsVerification) {
           navigate("/register?verify=" + encodeURIComponent(data.email));
           return;
@@ -57,23 +58,23 @@ export default function Login() {
         return setError(data.message || "Login failed");
       }
 
+      // Store user synchronously first, then navigate
       login(data);
 
-      if (data.role === "attendee")  navigate("/users/dashboard/attendee");
-      else if (data.role === "exhibitor") navigate("/users/dashboard/exhibitor");
-      else if (data.role === "admin") navigate("/admin");
+      if (data.role === "attendee")       navigate("/users/dashboard/attendee", { replace: true });
+      else if (data.role === "exhibitor") navigate("/users/dashboard/exhibitor", { replace: true });
+      else if (data.role === "admin")     navigate("/admin", { replace: true });
 
     } catch {
       setError("Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div className="h-screen w-screen flex overflow-hidden bg-surface">
 
-      {/* Left — image */}
       <div className="hidden lg:block w-[50%] h-full relative">
         <img src={LoginImg} alt="Exhibition" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, color-mix(in srgb, var(--color-navy) 72%, transparent) 0%, color-mix(in srgb, var(--color-navy) 45%, transparent) 100%)" }} />
@@ -99,7 +100,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Right — form */}
       <div className="flex-1 h-full flex flex-col bg-surface">
         <AuthNavbar />
 
@@ -148,7 +148,7 @@ export default function Login() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                     </svg>
-                    Signing in…
+                    Signing in...
                   </>
                 ) : "Log in"}
               </button>

@@ -17,15 +17,16 @@ A full-stack MERN platform for managing expos, trade shows, and conferences in P
 ## Features
 
 - Public website — Home, Explore Expos, Exhibitors, Schedule, About, Contact
-- Attendee dashboard — overview, explore events, schedule, saved items, profile
-- Exhibitor dashboard — overview, applications, booths, company profile, settings
-- Admin panel — users (live from DB), overview stats, subscribers, settings
+- Attendee dashboard — overview, explore events, register for expos, my events, my schedule, exhibitors directory, profile
+- Exhibitor dashboard — overview, explore expos, my applications, my booths, company profile, settings
+- Admin panel — users, expos (CRUD), applications (approve/reject), booths (assign/clear), schedule (CRUD), overview stats, newsletter subscribers, settings
 - Auth — JWT login, OTP email verification on register, OTP for email change, OTP for password change
 - Forgot password — OTP sent to email, reset password flow
 - Password requirements — 7+ characters, one letter, one special character
 - Profile picture upload — stored as base64 in MongoDB
 - Newsletter subscription — saves to DB, sends welcome email, visible in admin
-- Demo credentials removed from all login pages
+- Attendee registration for expos — saved to DB, visible in My Events
+- Sessions linked to expos — deleting an expo auto-deletes its sessions
 
 ## Getting Started
 
@@ -58,20 +59,6 @@ SMTP_PASS=your_gmail_app_password
 
 For Gmail App Password: Google Account > Security > 2-Step Verification > App Passwords. Remove all spaces from the 16-character password.
 
-### Seed Demo Users
-
-```bash
-cd server && node seed.js
-```
-
-Creates three pre-verified accounts:
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@planova.com | admin123 |
-| Exhibitor | raza.ahmed@techbridge.pk | exhibitor123 |
-| Attendee | ayesha.siddiqui@email.com | attendee123 |
-
 ### Run
 
 ```bash
@@ -99,60 +86,75 @@ cd client && npm run dev    # http://localhost:5173
 | GET | `/api/auth/stats` | Admin | User count stats |
 | GET | `/api/auth/users` | Admin | All users from database |
 | PUT | `/api/auth/users/:id/status` | Admin | Activate/deactivate user |
+| GET | `/api/expos` | Public | List published expos |
+| GET | `/api/expos/all` | Admin | List all expos (any status) |
+| GET | `/api/expos/:id` | Public | Single expo |
+| POST | `/api/expos` | Admin | Create expo |
+| PUT | `/api/expos/:id` | Admin | Edit expo |
+| DELETE | `/api/expos/:id` | Admin | Delete expo (auto-deletes sessions) |
+| GET | `/api/sessions` | Public | List sessions (filter by ?event=id) |
+| POST | `/api/sessions` | Admin | Create session |
+| PUT | `/api/sessions/:id` | Admin | Edit session |
+| DELETE | `/api/sessions/:id` | Admin | Delete session |
+| GET | `/api/applications/approved` | Public | List approved exhibitor profiles |
+| GET | `/api/applications` | Admin | All exhibitor applications |
+| GET | `/api/applications/mine` | Exhibitor | Own applications |
+| POST | `/api/applications` | Exhibitor | Submit application |
+| PUT | `/api/applications/:id/approve` | Admin | Approve application |
+| PUT | `/api/applications/:id/reject` | Admin | Reject with reason |
+| GET | `/api/booths` | Protected | List booths (filter by ?event=id) |
+| POST | `/api/booths` | Admin | Create booth |
+| PUT | `/api/booths/:id/assign` | Admin | Assign exhibitor to booth |
+| PUT | `/api/booths/:id/clear` | Admin | Clear booth assignment |
+| DELETE | `/api/booths/:id` | Admin | Delete booth |
+| POST | `/api/registrations` | Attendee | Register for an expo |
+| GET | `/api/registrations/mine` | Attendee | Own registrations |
+| DELETE | `/api/registrations/:id` | Attendee | Cancel registration |
+| GET | `/api/registrations` | Admin | All registrations |
 | POST | `/api/newsletter/subscribe` | Public | Subscribe to expo alerts |
 | GET | `/api/newsletter/subscribers` | Admin | List all subscribers |
 | DELETE | `/api/newsletter/subscribers/:id` | Admin | Remove subscriber |
 | GET | `/api/health` | Public | Server + DB status |
-
-## Project Structure
-
-```
-client/src/
-├── context/AuthContext.jsx       # Auth state: user, login, logout, updateUser
-├── hooks/useProfile.js           # Fetch and update profile from API
-├── web/                          # Public website
-│   ├── pages/                    # Home, About, ExploreExpos, etc.
-│   │   └── auth/                 # Login, Register (2-step OTP), ForgotPassword
-│   └── components/               # Navbar, Footer, AuthNavbar
-├── users/
-│   ├── attendee/
-│   │   ├── pages/MyProfile.jsx   # Dynamic — name, photo, email (OTP), password (OTP)
-│   │   └── data/mockData.js      # Events, sessions (mock)
-│   └── exhibitor/
-│       ├── pages/CompanyProfile.jsx  # Dynamic — company info
-│       ├── pages/Settings.jsx        # Dynamic — name, email (OTP), password (OTP)
-│       └── data/mockData.js          # Applications, booths (mock)
-└── admin/
-    ├── pages/Settings.jsx        # Dynamic — photo, name, email (OTP), password (OTP)
-    ├── pages/Users.jsx           # Dynamic — real users from DB
-    ├── pages/Overview.jsx        # Dynamic — user counts + newsletter subscribers
-    └── data/adminData.js         # Expo/booth stats (mock)
-
-server/
-├── routes/authRoutes.js          # All auth + profile + OTP + admin endpoints
-├── routes/newsletterRoutes.js    # Subscribe, list, delete subscribers
-├── models/User.js                # User model with OTP fields
-├── models/Subscriber.js          # Newsletter subscriber model
-├── utils/sendEmail.js            # Nodemailer with logo in emails
-├── utils/generateToken.js        # JWT token creation
-└── seed.js                       # Creates demo users
-```
 
 ## What is Dynamic vs Mock
 
 **Dynamic (from database):**
 - User profiles, avatars, names, emails
 - OTP flows (register, email change, password change, forgot password)
-- Admin user list, counts, activate/deactivate
-- Admin overview user stats
-- Newsletter subscribers
-- Admin settings (photo, name, email, password)
+- Admin: users, stats, activate/deactivate
+- Admin: expo management (create, edit, delete — auto-deletes sessions)
+- Admin: exhibitor applications (list, approve, reject)
+- Admin: booth assignments (list, assign, clear)
+- Admin: schedule and sessions (create, edit, delete)
+- Admin: newsletter subscribers
+- Exhibitor: own applications from DB
+- Attendee: registration for expos (register, cancel, my events)
+- Attendee: exhibitors directory (approved exhibitor profiles from DB)
+- Attendee: schedule (sessions from DB, date picker, bookmarks)
+- Public site: expos from DB
+- Public site: schedule from DB
+- Profile pages (admin, exhibitor, attendee) — all live from DB
 
-**Still mock (local arrays, not from DB):**
-- Expos, sessions, exhibitors on public site
-- Attendee events and schedule
-- Exhibitor applications and booths
-- Admin expo/booth/application stats
+**Still mock (local arrays, not fully wired):**
+- Admin overview recent activity log (partial)
+- Exhibitor dashboard overview stats (applications/booths counts still mock)
+
+## Test Credentials
+
+Before testing, seed the database once:
+```bash
+cd server && node seed.js
+```
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | admin@planova.com | planova123 |
+| Exhibitor | raza.ahmed@techbridge.pk | exhibitor123 |
+| Attendee | ayesha.siddiqui@email.com | attendee123 |
+| Test Attendee | test@test.com | Test@1234 |
+| Test Exhibitor | testexhibitor@test.com | Test@1234 |
+
+The seed also creates 7 expos (6 published, 1 draft), 10 sessions, 1 approved application, and 8 booths.
 
 ## Deployment (Vercel)
 
@@ -165,6 +167,6 @@ JWT_SECRET=<your secret>
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=<your Gmail>
-SMTP_PASS=<your App Password>
+SMTP_PASS=<your App Password, no spaces>
 CLIENT_URL=https://your-domain.vercel.app
 ```
