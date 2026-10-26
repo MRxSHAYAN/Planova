@@ -151,7 +151,7 @@ export default function Applications() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={24} className="animate-spin text-cyan-500" />
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
     </div>
   );
 
@@ -174,10 +174,10 @@ export default function Applications() {
         {tabs.map(tab => (
           <button key={tab} onClick={() => setTab(tab)}
             className={`px-4 py-2.5 text-[13px] font-semibold border-b-2 transition-all -mb-px ${
-              activeTab === tab ? "border-cyan-500 text-cyan-500" : "border-transparent text-slate-400 hover:text-slate-600"
+              activeTab === tab ? "border-indigo-500 text-indigo-500" : "border-transparent text-slate-400 hover:text-slate-600"
             }`}>
             {tab}
-            <span className={`ml-1.5 text-[10.5px] px-1.5 py-0.5 rounded-full font-bold ${activeTab === tab ? "bg-cyan-100 text-cyan-600" : "bg-slate-100 text-slate-400"}`}>
+            <span className={`ml-1.5 text-[10.5px] px-1.5 py-0.5 rounded-full font-bold ${activeTab === tab ? "bg-indigo-100 text-indigo-600" : "bg-slate-100 text-slate-400"}`}>
               {counts[tab]}
             </span>
           </button>
@@ -222,7 +222,7 @@ export default function Applications() {
                     <td className="px-4 py-3"><StatusBadge status={app.status} /></td>
                     <td className="px-4 py-3">
                       <button onClick={() => setSelected(app)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-50 border border-cyan-200 text-cyan-600 text-[12px] font-semibold hover:bg-cyan-100 transition-colors">
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 text-[12px] font-semibold hover:bg-indigo-100 transition-colors">
                         <Eye size={12} /> Review
                       </button>
                     </td>

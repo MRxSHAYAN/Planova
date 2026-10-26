@@ -14,7 +14,7 @@ export default function AdminTopbar({ title, onMenuToggle }) {
     <div className="h-[56px] shrink-0 flex items-center gap-3 px-5 bg-white border-b border-slate-200">
 
       <button
-        className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-cyan-400 hover:text-cyan-500 transition-colors"
+        className="lg:hidden w-8 h-8 flex items-center justify-center rounded-lg border border-slate-200 text-slate-500 hover:border-indigo-400 hover:text-indigo-500 transition-colors"
         onClick={onMenuToggle}
         aria-label="Toggle menu"
       >
@@ -28,7 +28,7 @@ export default function AdminTopbar({ title, onMenuToggle }) {
           className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-lg hover:bg-slate-50 transition-colors"
           onClick={() => setDropOpen(v => !v)}
         >
-          <div className="w-7 h-7 rounded-full bg-cyan-500/15 text-cyan-600 text-[11px] font-black flex items-center justify-center border-2 border-cyan-200">
+          <div className="w-7 h-7 rounded-full bg-indigo-500/15 text-indigo-600 text-[11px] font-black flex items-center justify-center border-2 border-indigo-200">
             {initials}
           </div>
           <div className="hidden sm:flex flex-col text-left">

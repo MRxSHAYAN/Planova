@@ -9,7 +9,7 @@ function authHeader() {
 const boothColors = {
   available: "border-green-200 bg-green-50 text-green-700 hover:border-green-400",
   occupied:  "border-blue-200 bg-blue-50 text-blue-700 hover:border-blue-400",
-  pending:   "border-cyan-200 bg-cyan-50 text-cyan-600 hover:border-cyan-400",
+  pending:   "border-indigo-200 bg-indigo-50 text-indigo-600 hover:border-indigo-400",
 };
 
 export default function Booths() {
@@ -110,7 +110,7 @@ export default function Booths() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={24} className="animate-spin text-cyan-500" />
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
     </div>
   );
 
@@ -132,7 +132,7 @@ export default function Booths() {
           ["Total",    stats.total,     "bg-slate-50 border-slate-200 text-slate-600"],
           ["Available",stats.available, "bg-green-50 border-green-200 text-green-700"],
           ["Occupied", stats.occupied,  "bg-blue-50 border-blue-200 text-blue-700"],
-          ["Pending",  stats.pending,   "bg-cyan-50 border-cyan-200 text-cyan-600"],
+          ["Pending",  stats.pending,   "bg-indigo-50 border-indigo-200 text-indigo-600"],
         ].map(([label, val, cls]) => (
           <div key={label} className={`rounded-xl border p-4 text-center ${cls}`}>
             <div className="text-[22px] font-black">{val}</div>
@@ -158,7 +158,7 @@ export default function Booths() {
         <div className="flex rounded-lg border border-slate-200 overflow-hidden bg-white">
           {["grid","table"].map(v => (
             <button key={v} onClick={() => setView(v)}
-              className={`px-3 py-2 text-[12px] font-semibold transition-colors ${view === v ? "bg-cyan-500 text-white" : "text-slate-500 hover:bg-slate-50"}`}>
+              className={`px-3 py-2 text-[12px] font-semibold transition-colors ${view === v ? "bg-indigo-500 text-white" : "text-slate-500 hover:bg-slate-50"}`}>
               {v === "grid" ? "Grid" : "Table"}
             </button>
           ))}
@@ -206,7 +206,7 @@ export default function Booths() {
                     <td className="px-4 py-3 text-slate-700">{booth.exhibitor || <span className="text-slate-300">—</span>}</td>
                     <td className="px-4 py-3">
                       <button onClick={() => { setSelected(booth); setShowAssign(false); setAssignPick(""); }}
-                        className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-[12px] font-semibold hover:border-cyan-400 hover:text-cyan-500 transition-colors">
+                        className="px-3 py-1.5 rounded-lg border border-slate-200 text-slate-500 text-[12px] font-semibold hover:border-indigo-400 hover:text-indigo-500 transition-colors">
                         Details
                       </button>
                     </td>
@@ -248,7 +248,7 @@ export default function Booths() {
                 <div className="pt-3 space-y-3">
                   {!showAssign ? (
                     <button onClick={() => setShowAssign(true)}
-                      className="w-full py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2">
+                      className="w-full py-2.5 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2">
                       <UserCheck size={14} /> Assign Exhibitor
                     </button>
                   ) : (
@@ -259,7 +259,7 @@ export default function Booths() {
                         </p>
                       ) : (
                         <select value={assignPick} onChange={e => setAssignPick(e.target.value)}
-                          className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-[13px] text-slate-700 outline-none focus:border-cyan-400 transition-all">
+                          className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-[13px] text-slate-700 outline-none focus:border-indigo-400 transition-all">
                           <option value="">— Choose exhibitor —</option>
                           {getEligible(selected).map(a => (
                             <option key={a._id} value={a.company}>{a.company} · {a.city}</option>
@@ -272,7 +272,7 @@ export default function Booths() {
                           Cancel
                         </button>
                         <button onClick={handleAssign} disabled={!assignPick}
-                          className="flex-1 py-2 rounded-lg bg-cyan-500 text-white text-[12.5px] font-bold hover:bg-cyan-600 disabled:opacity-40 transition-colors flex items-center justify-center gap-1.5">
+                          className="flex-1 py-2 rounded-lg bg-indigo-500 text-white text-[12.5px] font-bold hover:bg-indigo-600 disabled:opacity-40 transition-colors flex items-center justify-center gap-1.5">
                           <UserCheck size={13} /> Assign
                         </button>
                       </div>

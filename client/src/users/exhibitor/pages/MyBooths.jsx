@@ -1,44 +1,33 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, CalendarDays, Clock, AlertCircle, Mail } from "lucide-react";
-import { BOOTHS, APPLICATIONS } from "../data/mockData";
+import { MapPin, Loader2, Mail } from "lucide-react";
 import { StatusBadge } from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
+import { useAuth } from "../../../context/AuthContext";
 
-// Approved apps without a confirmed booth yet
-const PENDING_BOOTH = APPLICATIONS.filter(
-  (a) => a.status === "approved" && !BOOTHS.find((b) => b.applicationId === a.id)
-);
+function formatDate(d) {
+  if (!d) return "—";
+  return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
 
-function BoothCard({ booth }) {
+function BoothCard({ booth, expo }) {
   return (
     <div className="rounded-xl overflow-hidden" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
-      {/* Expo strip */}
-      <div className="relative h-[110px] overflow-hidden" style={{ background: "#E5EEFF" }}>
-        <img src={booth.expoImage} alt={booth.expoTitle} className="w-full h-full object-cover" />
-        <div className="absolute inset-0"
-          style={{ background: "linear-gradient(to top, rgba(9,21,46,0.65) 0%, transparent 55%)" }} />
-        <div className="absolute bottom-3 left-4 flex items-center gap-2">
-          <StatusBadge status={booth.status} />
-        </div>
-      </div>
-
-      {/* Details */}
       <div className="px-5 py-4">
         <p className="text-[10.5px] font-bold uppercase tracking-wider mb-1" style={{ color: "#3478F6" }}>
-          {booth.expoTitle}
+          {expo?.title || "Expo"}
         </p>
         <div className="flex items-baseline gap-3 mb-3">
-          <h3 className="text-[22px] font-black" style={{ color: "#09152E" }}>Booth {booth.boothNumber}</h3>
-          <span className="text-[13px] font-medium" style={{ color: "#64748B" }}>{booth.hall}</span>
+          <h3 className="text-[22px] font-black" style={{ color: "#09152E" }}>Booth {booth.boothId}</h3>
+          <span className="text-[13px] font-medium" style={{ color: "#64748B" }}>{booth.type}</span>
         </div>
 
-        {/* Booth specs */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
-            { label: "Size",  value: booth.size },
-            { label: "Type",  value: booth.type },
-            { label: "Level", value: booth.level },
-            { label: "Expo",  value: booth.expoDate },
+            { label: "Size",  value: booth.size || "—" },
+            { label: "Type",  value: booth.type || "—" },
+            { label: "Status", value: booth.status },
+            { label: "Expo Date", value: formatDate(expo?.dateStart) },
           ].map(({ label, value }) => (
             <div key={label} className="rounded-lg px-3 py-2.5" style={{ background: "#F5F8FF" }}>
               <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "#94A3B8" }}>{label}</p>
@@ -47,38 +36,12 @@ function BoothCard({ booth }) {
           ))}
         </div>
 
-        {/* Deadlines */}
-        <div className="space-y-2 mb-4">
-          <div className="flex items-start gap-2.5">
-            <Clock size={14} className="shrink-0 mt-0.5" style={{ color: "#D97706" }} />
-            <div>
-              <p className="text-[11.5px] font-semibold" style={{ color: "#09152E" }}>Setup deadline</p>
-              <p className="text-[12px]" style={{ color: "#64748B" }}>{booth.setupDeadline}</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-2.5">
-            <Clock size={14} className="shrink-0 mt-0.5" style={{ color: "#64748B" }} />
-            <div>
-              <p className="text-[11.5px] font-semibold" style={{ color: "#09152E" }}>Dismantle by</p>
-              <p className="text-[12px]" style={{ color: "#64748B" }}>{booth.dismantleDeadline}</p>
-            </div>
-          </div>
+        <div className="flex items-center justify-between">
+          <StatusBadge status={booth.status} />
+          <span className="text-[11.5px]" style={{ color: "#94A3B8" }}>
+            Assigned to {booth.exhibitor}
+          </span>
         </div>
-
-        {/* Instructions */}
-        <div className="rounded-lg px-3.5 py-3 mb-4" style={{ background: "#F0F3FA" }}>
-          <p className="text-[11px] font-bold uppercase tracking-wider mb-1.5" style={{ color: "#94A3B8" }}>
-            Setup Instructions
-          </p>
-          <p className="text-[12.5px] leading-relaxed" style={{ color: "#3E506D" }}>{booth.instructions}</p>
-        </div>
-
-        {/* Contact */}
-        <a href={`mailto:${booth.organiserContact}`}
-          className="flex items-center gap-2 text-[12.5px] font-semibold transition-colors"
-          style={{ color: "#3478F6" }}>
-          <Mail size={13} /> Contact organizer: {booth.organiserContact}
-        </a>
       </div>
     </div>
   );
@@ -86,30 +49,79 @@ function BoothCard({ booth }) {
 
 export default function MyBooths() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [booths,    setBooths]    = useState([]);
+  const [expos,     setExpos]     = useState({});
+  const [apps,      setApps]      = useState([]);
+  const [loading,   setLoading]   = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("planova_token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    Promise.all([
+      fetch("/api/booths", { headers }),
+      fetch("/api/applications/mine", { headers }),
+    ]).then(async ([bRes, aRes]) => {
+      const boothData = await bRes.json();
+      const appData   = await aRes.json();
+
+      // Filter booths assigned to this exhibitor's company
+      const companyName = user?.company || user?.name || "";
+      const myBooths = (Array.isArray(boothData) ? boothData : []).filter(
+        b => b.exhibitor === companyName
+      );
+      setBooths(myBooths);
+
+      // Get expo info for each booth
+      const expoIds = [...new Set(myBooths.map(b => b.event?._id || b.event))];
+      const expoMap = {};
+      await Promise.all(
+        expoIds.map(id =>
+          fetch(`/api/expos/${id}`).then(r => r.json()).then(e => { expoMap[id] = e; }).catch(() => {})
+        )
+      );
+      setExpos(expoMap);
+
+      // Find approved apps without a booth (pending assignment)
+      const approvedApps = (Array.isArray(appData) ? appData : []).filter(
+        a => a.status === "approved" && !myBooths.find(b => b.event?._id === a.event?._id || b.event === a.event)
+      );
+      setApps(approvedApps);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return (
+    <div className="flex items-center justify-center py-20">
+      <Loader2 size={22} className="animate-spin" style={{ color: "#3478F6" }} />
+    </div>
+  );
 
   return (
     <div className="space-y-5">
 
-      {/* Pending assignment notice */}
-      {PENDING_BOOTH.length > 0 && (
+      {apps.length > 0 && (
         <div className="rounded-xl p-4 flex items-start gap-3"
           style={{ background: "#FFF4DE", border: "1px solid #FDE68A" }}>
-          <AlertCircle size={16} className="shrink-0 mt-0.5" style={{ color: "#D97706" }} />
+          <span className="text-[14px] shrink-0 mt-0.5">!</span>
           <div>
             <p className="text-[13px] font-bold" style={{ color: "#92400E" }}>
               Booth assignment pending
             </p>
             <p className="text-[12.5px] mt-0.5" style={{ color: "#A16207" }}>
-              Your application for <strong>{PENDING_BOOTH[0].expoTitle}</strong> is approved. The organizer
-              will assign your booth shortly.
+              Your application for <strong>{apps[0].event?.title}</strong> is approved.
+              The organizer will assign your booth shortly.
             </p>
           </div>
         </div>
       )}
 
-      {BOOTHS.length > 0 ? (
+      {booths.length > 0 ? (
         <div className="space-y-4">
-          {BOOTHS.map((b) => <BoothCard key={b.id} booth={b} />)}
+          {booths.map(b => {
+            const expoId = b.event?._id || b.event;
+            return <BoothCard key={b._id} booth={b} expo={expos[expoId]} />;
+          })}
         </div>
       ) : (
         <EmptyState

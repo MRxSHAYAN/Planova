@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { Search, X, ExternalLink, Loader2 } from "lucide-react";
+import { Search, X, ExternalLink, Loader2, Package } from "lucide-react";
 
 const CAT_COLORS = {
   Technology:  { bg: "#DCE8FF", text: "#09152E" },
@@ -60,12 +60,23 @@ function ExhibitorCard({ exh, onView }) {
 function ProfileModal({ exh, onClose }) {
   const c = CAT_COLORS[exh.category] || { bg: "#EEF1F8", text: "#3E506D" };
   const color = COLORS[(exh.company?.charCodeAt(0) || 0) % COLORS.length];
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
+  useEffect(() => {
+    if (!exh?.user?._id) { setLoadingProducts(false); return; }
+    fetch(`/api/products/user/${exh.user._id}`)
+      .then(r => r.json())
+      .then(data => setProducts(Array.isArray(data) ? data : []))
+      .catch(() => {})
+      .finally(() => setLoadingProducts(false));
+  }, [exh]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4"
       style={{ background: "rgba(9,21,46,0.5)", backdropFilter: "blur(4px)" }}
       onClick={onClose}>
-      <div className="dash-card w-full max-w-[420px] overflow-hidden" onClick={e => e.stopPropagation()}>
+      <div className="dash-card w-full max-w-[420px] max-h-[85vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
         <div className="px-5 py-5 flex items-start gap-4" style={{ borderBottom: "1px solid #F0F3FA" }}>
           <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-black text-[18px] shrink-0"
             style={{ background: color }}>
@@ -105,6 +116,43 @@ function ProfileModal({ exh, onClose }) {
             </div>
           ))}
         </div>
+
+        {/* Products & Services */}
+        {loadingProducts ? (
+          <div className="px-5 pb-4 flex justify-center">
+            <Loader2 size={18} className="animate-spin" style={{ color: "#3478F6" }} />
+          </div>
+        ) : products.length > 0 ? (
+          <div className="px-5 pb-4" style={{ borderTop: "1px solid #F0F3FA" }}>
+            <p className="text-[10.5px] font-bold uppercase tracking-wider mt-4 mb-3" style={{ color: "#B0BCC8" }}>
+              Products & Services
+            </p>
+            <div className="space-y-2">
+              {products.map(p => (
+                <div key={p._id} className="flex gap-3 rounded-lg p-3" style={{ background: "#F5F8FF" }}>
+                  {p.image ? (
+                    <img src={p.image} alt={p.name} className="w-10 h-10 rounded-lg object-cover shrink-0" />
+                  ) : (
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0" style={{ background: "#E8EEF8" }}>
+                      <Package size={16} style={{ color: "#94A3B8" }} />
+                    </div>
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[12.5px] font-bold leading-snug" style={{ color: "#09152E" }}>{p.name}</p>
+                    <p className="text-[11.5px] mt-0.5 line-clamp-2" style={{ color: "#64748B" }}>{p.description}</p>
+                    {p.tags?.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1">
+                        {p.tags.slice(0, 3).map(t => (
+                          <span key={t} className="text-[10px] px-1.5 py-0.5 rounded" style={{ background: "#E8EEF8", color: "#3E506D" }}>#{t}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <div className="px-5 py-4 flex gap-2" style={{ borderTop: "1px solid #F0F3FA" }}>
           <button className="btn-primary flex-1 flex items-center justify-center gap-1.5 py-2.5 text-[12.5px]" onClick={onClose}>

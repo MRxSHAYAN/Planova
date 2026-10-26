@@ -1,6 +1,7 @@
-import { EXPOS, APPLICATIONS, BOOTHS, ATTENDEES, SESSIONS } from "../data/adminData";
+import { useState, useEffect } from "react";
+import { Loader2 } from "lucide-react";
 
-function StatBar({ label, value, max, color = "#06B6D4" }) {
+function StatBar({ label, value, max, color = "#6366F1" }) {
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
   return (
     <div>
@@ -27,33 +28,66 @@ function SectionCard({ title, children }) {
 }
 
 export default function Reports() {
-  const approved  = APPLICATIONS.filter(a => a.status === "Approved").length;
-  const pending   = APPLICATIONS.filter(a => a.status === "Pending").length;
-  const rejected  = APPLICATIONS.filter(a => a.status === "Rejected").length;
-  const totalApps = APPLICATIONS.length;
+  const [stats,       setStats]       = useState({ total: 0, attendees: 0, exhibitors: 0, admins: 0, verified: 0, active: 0 });
+  const [expos,       setExpos]       = useState([]);
+  const [apps,        setApps]        = useState([]);
+  const [booths,      setBooths]      = useState([]);
+  const [registrations, setRegistrations] = useState([]);
+  const [sessions,    setSessions]    = useState([]);
+  const [loading,     setLoading]     = useState(true);
 
-  const occupied  = BOOTHS.filter(b => b.status === "Occupied").length;
-  const pendingB  = BOOTHS.filter(b => b.status === "Pending").length;
-  const available = BOOTHS.filter(b => b.status === "Available").length;
-  const totalB    = BOOTHS.length;
+  useEffect(() => {
+    const token = localStorage.getItem("planova_token");
+    const headers = { Authorization: `Bearer ${token}` };
 
-  const confirmed = ATTENDEES.filter(a => a.status === "Confirmed").length;
-  const cancelledA= ATTENDEES.filter(a => a.status === "Cancelled").length;
+    Promise.all([
+      fetch("/api/auth/stats", { headers }).then(r => r.json()),
+      fetch("/api/expos/all", { headers }).then(r => r.json()),
+      fetch("/api/applications", { headers }).then(r => r.json()),
+      fetch("/api/booths", { headers }).then(r => r.json()),
+      fetch("/api/registrations", { headers }).then(r => r.json()),
+      fetch("/api/sessions", { headers }).then(r => r.json()),
+    ]).then(async ([statsData, exposData, appsData, boothsData, regsData, sessionsData]) => {
+      setStats(statsData || {});
+      setExpos(Array.isArray(exposData) ? exposData : []);
+      setApps(Array.isArray(appsData) ? appsData : []);
+      setBooths(Array.isArray(boothsData) ? boothsData : []);
+      setRegistrations(Array.isArray(regsData) ? regsData : []);
+      setSessions(Array.isArray(sessionsData) ? sessionsData : []);
+    }).catch(() => {}).finally(() => setLoading(false));
+  }, []);
+
+  if (loading) return (
+    <div className="flex items-center justify-center py-20">
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
+    </div>
+  );
+
+  const approved = apps.filter(a => a.status === "approved").length;
+  const pending  = apps.filter(a => a.status === "pending").length;
+  const rejected = apps.filter(a => a.status === "rejected").length;
+  const totalApps = apps.length;
+
+  const occupied  = booths.filter(b => b.status === "occupied").length;
+  const available = booths.filter(b => b.status === "available").length;
+  const pendingB  = booths.filter(b => b.status === "pending").length;
+  const totalB    = booths.length;
+
+  const confirmed = registrations.filter(r => r.status === "confirmed").length;
 
   return (
     <div>
       <div className="mb-5">
         <h1 className="text-[1.15rem] font-black text-slate-800">Reports & Analytics</h1>
-        <p className="text-slate-400 text-[13px] mt-0.5">Operational summary across all expos. Connect a real backend for live data.</p>
+        <p className="text-slate-400 text-[13px] mt-0.5">Live data from the database.</p>
       </div>
 
-      {/* Top KPIs */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
         {[
-          ["Total Expos",       EXPOS.length,      "text-blue-600 bg-blue-50"],
-          ["Total Attendees",   ATTENDEES.length,   "text-green-600 bg-green-50"],
-          ["Approved Exhibitors",approved,           "text-violet-600 bg-violet-50"],
-          ["Booths Occupied",   occupied,            "text-cyan-500 bg-cyan-50"],
+          ["Total Expos",       expos.length,     "text-blue-600 bg-blue-50"],
+          ["Total Attendees",   stats.attendees,   "text-green-600 bg-green-50"],
+          ["Approved Exhibitors", approved,        "text-violet-600 bg-violet-50"],
+          ["Booths Occupied",   occupied,          "text-indigo-500 bg-indigo-50"],
         ].map(([label, val, cls]) => (
           <div key={label} className="bg-white rounded-xl border border-slate-200 p-5 text-center">
             <div className={`text-[28px] font-black ${cls.split(" ")[0]}`}>{val}</div>
@@ -63,16 +97,14 @@ export default function Reports() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-
-        {/* Application status */}
         <SectionCard title="Exhibitor Application Status">
           <div className="space-y-3">
             <StatBar label="Approved"  value={approved} max={totalApps} color="#22C55E" />
-            <StatBar label="Pending"   value={pending}  max={totalApps} color="#06B6D4" />
+            <StatBar label="Pending"   value={pending}  max={totalApps} color="#6366F1" />
             <StatBar label="Rejected"  value={rejected} max={totalApps} color="#EF4444" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[12px]">
-            {[["Approved",approved,"text-green-600"],["Pending",pending,"text-cyan-500"],["Rejected",rejected,"text-red-500"]].map(([l,v,c])=>(
+            {[["Approved",approved,"text-green-600"],["Pending",pending,"text-indigo-500"],["Rejected",rejected,"text-red-500"]].map(([l,v,c]) => (
               <div key={l} className="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
                 <div className={`font-black text-[18px] ${c}`}>{v}</div>
                 <div className="text-slate-400">{l}</div>
@@ -81,15 +113,14 @@ export default function Reports() {
           </div>
         </SectionCard>
 
-        {/* Booth occupancy */}
         <SectionCard title="Booth Occupancy">
           <div className="space-y-3">
             <StatBar label="Occupied"  value={occupied}  max={totalB} color="#3B82F6" />
-            <StatBar label="Pending"   value={pendingB}  max={totalB} color="#06B6D4" />
+            <StatBar label="Pending"   value={pendingB}  max={totalB} color="#6366F1" />
             <StatBar label="Available" value={available} max={totalB} color="#22C55E" />
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2 text-center text-[12px]">
-            {[["Occupied",occupied,"text-blue-600"],["Pending",pendingB,"text-cyan-500"],["Available",available,"text-green-600"]].map(([l,v,c])=>(
+            {[["Occupied",occupied,"text-blue-600"],["Pending",pendingB,"text-indigo-500"],["Available",available,"text-green-600"]].map(([l,v,c]) => (
               <div key={l} className="bg-slate-50 rounded-lg p-2.5 border border-slate-100">
                 <div className={`font-black text-[18px] ${c}`}>{v}</div>
                 <div className="text-slate-400">{l}</div>
@@ -98,33 +129,34 @@ export default function Reports() {
           </div>
         </SectionCard>
 
-        {/* Registrations by expo */}
         <SectionCard title="Attendee Registrations by Expo">
           <div className="space-y-3">
-            {EXPOS.filter(e=>e.attendees>0).map(expo => (
-              <StatBar key={expo.id} label={expo.title} value={expo.attendees} max={5000} color="#6366F1" />
-            ))}
+            {expos.length > 0 ? expos.map(expo => {
+              const count = registrations.filter(r => (r.event?._id || r.event) === expo._id).length;
+              if (count === 0) return null;
+              return <StatBar key={expo._id} label={expo.title} value={count} max={registrations.length} color="#6366F1" />;
+            }) : <p className="text-slate-400 text-[13px]">No expos yet.</p>}
           </div>
         </SectionCard>
 
-        {/* Session popularity */}
-        <SectionCard title="Session Attendance">
+        <SectionCard title="Session Count by Expo">
           <div className="space-y-3">
-            {SESSIONS.slice(0,5).map(s => (
-              <StatBar key={s.id} label={s.title} value={s.attendees} max={500} color="#06B6D4" />
-            ))}
+            {expos.length > 0 ? expos.map(expo => {
+              const count = sessions.filter(s => (s.event?._id || s.event) === expo._id).length;
+              if (count === 0) return null;
+              return <StatBar key={expo._id} label={expo.title} value={count} max={sessions.length} color="#6366F1" />;
+            }) : <p className="text-slate-400 text-[13px]">No sessions yet.</p>}
           </div>
         </SectionCard>
       </div>
 
-      {/* Attendee registration status */}
       <div className="mt-5">
         <SectionCard title="Attendee Registration Status">
           <div className="grid grid-cols-3 gap-4 text-center">
             {[
               ["Confirmed", confirmed,  "text-green-600 bg-green-50"],
-              ["Pending",   ATTENDEES.filter(a=>a.status==="Pending").length, "text-cyan-500 bg-cyan-50"],
-              ["Cancelled", cancelledA, "text-red-500 bg-red-50"],
+              ["Total Users", stats.total, "text-indigo-500 bg-indigo-50"],
+              ["Verified",   stats.verified, "text-violet-600 bg-violet-50"],
             ].map(([label, val, cls]) => (
               <div key={label} className={`rounded-xl border border-slate-100 p-5 ${cls.split(" ")[1]}`}>
                 <div className={`text-[28px] font-black ${cls.split(" ")[0]}`}>{val}</div>
@@ -133,11 +165,6 @@ export default function Reports() {
             ))}
           </div>
         </SectionCard>
-      </div>
-
-      {/* Integration notice */}
-      <div className="mt-5 bg-blue-50 border border-blue-200 rounded-xl p-4 text-[13px] text-blue-700">
-        📊 <strong>Note:</strong> Analytics shown here reflect current platform data. Connect the backend to keep these figures updated in real time.
       </div>
     </div>
   );

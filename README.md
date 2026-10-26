@@ -121,23 +121,20 @@ cd client && npm run dev    # http://localhost:5173
 **Dynamic (from database):**
 - User profiles, avatars, names, emails
 - OTP flows (register, email change, password change, forgot password)
-- Admin: users, stats, activate/deactivate
-- Admin: expo management (create, edit, delete — auto-deletes sessions)
-- Admin: exhibitor applications (list, approve, reject)
-- Admin: booth assignments (list, assign, clear)
-- Admin: schedule and sessions (create, edit, delete)
-- Admin: newsletter subscribers
-- Exhibitor: own applications from DB
-- Attendee: registration for expos (register, cancel, my events)
-- Attendee: exhibitors directory (approved exhibitor profiles from DB)
+- Admin: users, stats, activate/deactivate, reports (all live data)
+- Admin: expo CRUD (auto-deletes sessions on delete)
+- Admin: applications (approve/reject), booths (assign/clear), sessions (CRUD)
+- Admin: attendees list (real registrations), newsletter subscribers
+- Exhibitor: apply to expos (form modal), view applications with status
+- Exhibitor: my booths from DB, products & services (create/edit/delete)
+- Exhibitor: overview shows real application counts
+- Attendee: register for expos, my events (upcoming/past), cancel
 - Attendee: schedule (sessions from DB, date picker, bookmarks)
-- Public site: expos from DB
-- Public site: schedule from DB
-- Profile pages (admin, exhibitor, attendee) — all live from DB
+- Attendee: exhibitors directory with products & services from DB
+- Public website: expos, schedule, exhibitor directory — all from DB
 
-**Still mock (local arrays, not fully wired):**
-- Admin overview recent activity log (partial)
-- Exhibitor dashboard overview stats (applications/booths counts still mock)
+**Still mock (partial):**
+- Admin overview recent activity feed
 
 ## Test Credentials
 

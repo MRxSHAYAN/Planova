@@ -8,13 +8,13 @@ function MetricCard({ icon: Icon, label, value, sub, color, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="bg-white rounded-xl border border-slate-200 p-5 text-left hover:border-cyan-300 hover:shadow-md transition-all duration-200 group"
+      className="bg-white rounded-xl border border-slate-200 p-5 text-left hover:border-indigo-300 hover:shadow-md transition-all duration-200 group"
     >
       <div className="flex items-start justify-between mb-3">
         <div className={`w-9 h-9 rounded-lg flex items-center justify-center ${color}`}>
           <Icon size={16} />
         </div>
-        <TrendingUp size={13} className="text-slate-300 group-hover:text-cyan-400 transition-colors" />
+        <TrendingUp size={13} className="text-slate-300 group-hover:text-indigo-400 transition-colors" />
       </div>
       <div className="text-[26px] font-black text-slate-800 leading-none">{value}</div>
       <div className="text-[11.5px] font-semibold text-slate-500 mt-1 uppercase tracking-wide">{label}</div>
@@ -60,7 +60,7 @@ export default function Overview() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={24} className="animate-spin text-cyan-500" />
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
     </div>
   );
 
@@ -79,7 +79,7 @@ export default function Overview() {
         <MetricCard icon={Users}         label="Total Users"    value={totalUsers}     sub={`${verifiedUsers} verified`}              color="bg-green-50 text-green-600"   onClick={() => navigate("/admin/users")} />
         <MetricCard icon={Users}         label="Attendees"      value={totalAttendees} sub="registered"                               color="bg-blue-50 text-blue-600"     onClick={() => navigate("/admin/users")} />
         <MetricCard icon={Users}         label="Exhibitors"     value={totalExhibitors}sub="verified"                                 color="bg-violet-50 text-violet-600" onClick={() => navigate("/admin/users")} />
-        <MetricCard icon={CalendarRange} label="Total Expos"    value={totalExpos}     sub={`${publishedExpos} published`}            color="bg-cyan-50 text-cyan-600"     onClick={() => navigate("/admin/expos")} />
+        <MetricCard icon={CalendarRange} label="Total Expos"    value={totalExpos}     sub={`${publishedExpos} published`}            color="bg-indigo-50 text-indigo-600"     onClick={() => navigate("/admin/expos")} />
         <MetricCard icon={ClipboardList} label="Pending Apps"   value={APPLICATIONS.filter(a => a.status === "Pending").length} sub="awaiting review" color="bg-amber-50 text-amber-600" onClick={() => navigate("/admin/applications")} />
         <MetricCard icon={Mail}          label="Subscribers"    value={subscribers.length} sub="newsletter"                          color="bg-pink-50 text-pink-600"     onClick={() => {}} />
       </div>
@@ -92,7 +92,7 @@ export default function Overview() {
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
             <h2 className="font-bold text-[13.5px] text-slate-700">Recent Applications</h2>
             <button onClick={() => navigate("/admin/applications")}
-              className="text-[12px] text-cyan-500 hover:text-cyan-600 font-semibold transition-colors">
+              className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
               View all →
             </button>
           </div>
@@ -140,7 +140,7 @@ export default function Overview() {
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
             <h2 className="font-bold text-[13.5px] text-slate-700">Upcoming Expos</h2>
             <button onClick={() => navigate("/admin/expos")}
-              className="text-[12px] text-cyan-500 hover:text-cyan-600 font-semibold transition-colors">
+              className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
               Manage →
             </button>
           </div>
@@ -163,7 +163,7 @@ export default function Overview() {
           <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
             <h2 className="font-bold text-[13.5px] text-slate-700">Recent Registrations</h2>
             <button onClick={() => navigate("/admin/attendees")}
-              className="text-[12px] text-cyan-500 hover:text-cyan-600 font-semibold transition-colors">
+              className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
               View all →
             </button>
           </div>
@@ -189,7 +189,7 @@ export default function Overview() {
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-bold text-[13.5px] text-slate-700">Booth Occupancy Summary</h2>
           <button onClick={() => navigate("/admin/booths")}
-            className="text-[12px] text-cyan-500 hover:text-cyan-600 font-semibold transition-colors">
+            className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
             Manage booths →
           </button>
         </div>
@@ -207,7 +207,7 @@ export default function Overview() {
                 <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${pct}%`, background: pct > 80 ? "#22C55E" : pct > 50 ? "#06B6D4" : "#94A3B8" }}
+                    style={{ width: `${pct}%`, background: pct > 80 ? "#22C55E" : pct > 50 ? "#6366F1" : "#94A3B8" }}
                   />
                 </div>
               </div>

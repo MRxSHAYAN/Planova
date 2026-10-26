@@ -69,14 +69,14 @@ export default function Users() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={24} className="animate-spin text-cyan-500" />
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
     </div>
   );
 
   if (error) return (
     <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
       <p className="text-[14px] font-semibold text-red-600 mb-2">{error}</p>
-      <button onClick={fetchUsers} className="text-[13px] font-bold text-cyan-500">Try again</button>
+      <button onClick={fetchUsers} className="text-[13px] font-bold text-indigo-500">Try again</button>
     </div>
   );
 
@@ -89,7 +89,7 @@ export default function Users() {
 
       <div className="grid grid-cols-3 gap-3 mb-5">
         {[
-          ["Admins", counts.Admin, "bg-cyan-50 border-cyan-200 text-cyan-700"],
+          ["Admins", counts.Admin, "bg-indigo-50 border-indigo-200 text-indigo-700"],
           ["Exhibitors", counts.Exhibitor, "bg-violet-50 border-violet-200 text-violet-700"],
           ["Attendees", counts.Attendee, "bg-blue-50 border-blue-200 text-blue-700"],
         ].map(([label, count, cls]) => (
@@ -140,7 +140,7 @@ export default function Users() {
                           <img src={u.avatar} alt={u.name} className="w-7 h-7 rounded-full object-cover shrink-0" />
                         ) : (
                           <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-black text-white shrink-0 ${
-                            u.role === "admin" ? "bg-cyan-500" : u.role === "exhibitor" ? "bg-violet-500" : "bg-blue-500"
+                            u.role === "admin" ? "bg-indigo-500" : u.role === "exhibitor" ? "bg-violet-500" : "bg-blue-500"
                           }`}>
                             {u.name?.charAt(0) || "?"}
                           </div>
@@ -170,7 +170,7 @@ export default function Users() {
                         <span className="text-[12px] text-slate-300 font-semibold">Protected</span>
                       ) : (
                         <button onClick={() => toggleStatus(u)} disabled={toggling === u._id}
-                          className="px-3 py-1.5 rounded-lg border text-[12px] font-semibold border-slate-200 text-slate-500 hover:border-cyan-400 hover:text-cyan-500 transition-colors disabled:opacity-50">
+                          className="px-3 py-1.5 rounded-lg border text-[12px] font-semibold border-slate-200 text-slate-500 hover:border-indigo-400 hover:text-indigo-500 transition-colors disabled:opacity-50">
                           {toggling === u._id ? "…" : u.isActive ? "Deactivate" : "Activate"}
                         </button>
                       )}

@@ -8,7 +8,7 @@ function Field({ label, value, type = "text", onChange }) {
     <div className="space-y-1">
       <label className="block text-[12px] font-semibold text-slate-600">{label}</label>
       <input type={type} value={value} onChange={onChange}
-        className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all" />
+        className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all" />
     </div>
   );
 }
@@ -47,7 +47,7 @@ function OTPInput({ value, onChange }) {
         <input key={i} ref={(el) => (refs.current[i] = el)}
           type="text" inputMode="numeric" maxLength={1} value={value[i] || ""}
           onChange={(e) => handle(e, i)} onKeyDown={(e) => key(e, i)} onPaste={paste}
-          className="w-10 h-11 text-center text-[16px] font-black rounded-lg outline-none border border-slate-200 focus:border-cyan-400 transition-all" />
+          className="w-10 h-11 text-center text-[16px] font-black rounded-lg outline-none border border-slate-200 focus:border-indigo-400 transition-all" />
       ))}
     </div>
   );
@@ -182,14 +182,14 @@ export default function Settings() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={22} className="animate-spin text-cyan-500" />
+      <Loader2 size={22} className="animate-spin text-indigo-500" />
     </div>
   );
 
   if (error) return (
     <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center max-w-2xl">
       <p className="text-[13.5px] font-semibold text-red-600 mb-2">Could not load profile.</p>
-      <button onClick={refresh} className="text-[13px] font-bold text-cyan-500">Try again</button>
+      <button onClick={refresh} className="text-[13px] font-bold text-indigo-500">Try again</button>
     </div>
   );
 
@@ -243,7 +243,7 @@ export default function Settings() {
             <div className="flex items-center justify-between">
               <p className="text-[13.5px] text-slate-700">{profile.name}</p>
               <button onClick={() => setEditName(true)}
-                className="flex items-center gap-1.5 text-[12.5px] font-semibold text-cyan-500 hover:text-cyan-600">
+                className="flex items-center gap-1.5 text-[12.5px] font-semibold text-indigo-500 hover:text-indigo-600">
                 <Pencil size={12} /> Edit
               </button>
             </div>
@@ -252,7 +252,7 @@ export default function Settings() {
               <Field label="Name" value={name} onChange={(e) => setName(e.target.value)} />
               <div className="flex gap-2">
                 <button onClick={saveName} disabled={saving}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 disabled:opacity-60">
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 disabled:opacity-60">
                   {saving ? <Loader2 size={13} className="animate-spin" /> : <Check size={13} />} Save
                 </button>
                 <button onClick={() => { setEditName(false); setName(profile.name); }}
@@ -270,7 +270,7 @@ export default function Settings() {
             <div className="flex items-center justify-between">
               <p className="text-[13.5px] text-slate-700">{profile.email}</p>
               <button onClick={() => setEmailStep("enter")}
-                className="flex items-center gap-1.5 text-[12.5px] font-semibold text-cyan-500 hover:text-cyan-600">
+                className="flex items-center gap-1.5 text-[12.5px] font-semibold text-indigo-500 hover:text-indigo-600">
                 <Mail size={12} /> Change
               </button>
             </div>
@@ -280,7 +280,7 @@ export default function Settings() {
               <Field label="New Email Address" value={newEmail} type="email" onChange={(e) => setNewEmail(e.target.value)} />
               <div className="flex gap-2">
                 <button onClick={sendEmailOTP}
-                  className="px-4 py-2 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600">
+                  className="px-4 py-2 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600">
                   Send OTP
                 </button>
                 <button onClick={() => setEmailStep("idle")}
@@ -298,7 +298,7 @@ export default function Settings() {
               <OTPInput value={emailOtp} onChange={setEmailOtp} />
               <div className="flex gap-2 pt-1">
                 <button onClick={confirmEmailOTP} disabled={emailOtp.length < 6}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 disabled:opacity-60">
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 disabled:opacity-60">
                   <Check size={13} /> Confirm
                 </button>
                 <button onClick={() => setEmailStep("idle")}
@@ -321,7 +321,7 @@ export default function Settings() {
                 <p className="text-[13.5px] text-slate-700">Change your password</p>
               </div>
               <button onClick={() => setPwStep("enter")}
-                className="px-4 py-2 rounded-lg border border-slate-200 text-slate-500 text-[13px] font-semibold hover:border-cyan-400 hover:text-cyan-500 transition-colors">
+                className="px-4 py-2 rounded-lg border border-slate-200 text-slate-500 text-[13px] font-semibold hover:border-indigo-400 hover:text-indigo-500 transition-colors">
                 Change
               </button>
             </div>
@@ -333,7 +333,7 @@ export default function Settings() {
               <p className="text-[12px] text-slate-400">An OTP will be sent to {profile.email} to confirm.</p>
               <div className="flex gap-2">
                 <button onClick={sendPwOTP}
-                  className="px-4 py-2 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600">
+                  className="px-4 py-2 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600">
                   Send OTP
                 </button>
                 <button onClick={() => setPwStep("idle")}
@@ -351,7 +351,7 @@ export default function Settings() {
               <OTPInput value={pwOtp} onChange={setPwOtp} />
               <div className="flex gap-2 pt-1">
                 <button onClick={confirmPwOTP} disabled={pwOtp.length < 6}
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 disabled:opacity-60">
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 disabled:opacity-60">
                   <Check size={13} /> Confirm & Update
                 </button>
                 <button onClick={() => setPwStep("idle")}

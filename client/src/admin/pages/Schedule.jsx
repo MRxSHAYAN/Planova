@@ -49,7 +49,7 @@ function SessionForm({ initial, expos, onSave, onClose, saving }) {
       <div>
         <label className="block text-[12px] font-semibold text-slate-600 mb-1">{label}</label>
         <input type={type} value={form[name]} onChange={e => setForm(p => ({ ...p, [name]: e.target.value }))}
-          className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all ${errors[name] ? "border-red-400" : "border-slate-200"}`} />
+          className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all ${errors[name] ? "border-red-400" : "border-slate-200"}`} />
         {errors[name] && <p className="text-[11px] text-red-500 mt-0.5">{errors[name]}</p>}
       </div>
     );
@@ -68,7 +68,7 @@ function SessionForm({ initial, expos, onSave, onClose, saving }) {
           <div>
             <label className="block text-[12px] font-semibold text-slate-600 mb-1">Expo</label>
             <select value={form.event} onChange={e => setForm(p => ({ ...p, event: e.target.value }))}
-              className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all ${errors.event ? "border-red-400" : "border-slate-200"}`}>
+              className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all ${errors.event ? "border-red-400" : "border-slate-200"}`}>
               <option value="">Select expo...</option>
               {expos.map(ex => <option key={ex._id} value={ex._id}>{ex.title}</option>)}
             </select>
@@ -81,7 +81,7 @@ function SessionForm({ initial, expos, onSave, onClose, saving }) {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Type</label>
               <select value={form.type} onChange={e => setForm(p => ({ ...p, type: e.target.value }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all">
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all">
                 {TYPES.map(t => <option key={t}>{t}</option>)}
               </select>
             </div>
@@ -95,12 +95,12 @@ function SessionForm({ initial, expos, onSave, onClose, saving }) {
           <div>
             <label className="block text-[12px] font-semibold text-slate-600 mb-1">Description (optional)</label>
             <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} rows={2}
-              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all resize-none" />
+              className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all resize-none" />
           </div>
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-[13px] font-semibold hover:bg-slate-50 transition-colors">Cancel</button>
             <button type="submit" disabled={saving}
-              className="flex-1 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+              className="flex-1 py-2.5 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
               {saving ? <Loader2 size={13} className="animate-spin" /> : null}
               {initial ? "Save Changes" : "Add Session"}
             </button>
@@ -179,7 +179,7 @@ export default function Schedule() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={24} className="animate-spin text-cyan-500" />
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
     </div>
   );
 
@@ -197,7 +197,7 @@ export default function Schedule() {
           <p className="text-slate-400 text-[13px] mt-0.5">{sessions.length} sessions across all expos.</p>
         </div>
         <button onClick={() => { setEditItem(null); setShowForm(true); }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors">
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 transition-colors">
           <Plus size={15} /> Add Session
         </button>
       </div>
@@ -247,7 +247,7 @@ export default function Schedule() {
                     <td className="px-4 py-3">
                       <div className="flex items-center gap-1">
                         <button onClick={() => { setEditItem(s); setShowForm(true); }}
-                          className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-cyan-50 text-slate-400 hover:text-cyan-500 transition-colors">
+                          className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-indigo-50 text-slate-400 hover:text-indigo-500 transition-colors">
                           <Pencil size={13} />
                         </button>
                         <button onClick={() => setConfirmDel(s._id)}

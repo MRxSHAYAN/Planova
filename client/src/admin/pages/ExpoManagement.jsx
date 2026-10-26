@@ -38,7 +38,7 @@ function ExpoModal({ expo, onClose }) {
               [Users,    `${expo.totalBooths} total booths`],
             ].map(([Icon, text], i) => (
               <div key={i} className="flex items-center gap-2 text-slate-600">
-                <Icon size={13} className="text-cyan-500 shrink-0" />
+                <Icon size={13} className="text-indigo-500 shrink-0" />
                 <span className="truncate">{text}</span>
               </div>
             ))}
@@ -95,7 +95,7 @@ function ExpoForm({ initial, onSave, onClose, saving }) {
       <div>
         <label className="block text-[12px] font-semibold text-slate-600 mb-1">{label}</label>
         <input type={type} value={form[name]} onChange={e => setForm(p => ({ ...p, [name]: e.target.value }))}
-          className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all ${errors[name] ? "border-red-400" : "border-slate-200"}`} />
+          className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all ${errors[name] ? "border-red-400" : "border-slate-200"}`} />
         {errors[name] && <p className="text-[11.5px] text-red-500 mt-1">{errors[name]}</p>}
       </div>
     );
@@ -113,7 +113,7 @@ function ExpoForm({ initial, onSave, onClose, saving }) {
           <div>
             <label className="block text-[12px] font-semibold text-slate-600 mb-1">Description</label>
             <textarea value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} rows={3}
-              className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all resize-none ${errors.description ? "border-red-400" : "border-slate-200"}`} />
+              className={`w-full px-3 py-2 rounded-lg border text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all resize-none ${errors.description ? "border-red-400" : "border-slate-200"}`} />
             {errors.description && <p className="text-[11.5px] text-red-500 mt-1">{errors.description}</p>}
           </div>
           <div className="grid grid-cols-2 gap-3">
@@ -126,7 +126,7 @@ function ExpoForm({ initial, onSave, onClose, saving }) {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Category</label>
               <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all">
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all">
                 {CATEGORIES.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
@@ -135,7 +135,7 @@ function ExpoForm({ initial, onSave, onClose, saving }) {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Status</label>
               <select value={form.status} onChange={e => setForm(p => ({ ...p, status: e.target.value }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all">
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all">
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
                 <option value="archived">Archived</option>
@@ -144,14 +144,14 @@ function ExpoForm({ initial, onSave, onClose, saving }) {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Total Booths</label>
               <input type="number" min="0" value={form.totalBooths} onChange={e => setForm(p => ({ ...p, totalBooths: Number(e.target.value) }))}
-                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-cyan-400 transition-all" />
+                className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13.5px] text-slate-800 outline-none focus:border-indigo-400 transition-all" />
             </div>
           </div>
           {field("image", "Image URL (optional)")}
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 py-2.5 rounded-lg border border-slate-200 text-slate-600 text-[13px] font-semibold hover:bg-slate-50 transition-colors">Cancel</button>
             <button type="submit" disabled={saving}
-              className="flex-1 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+              className="flex-1 py-2.5 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
               {saving ? <Loader2 size={14} className="animate-spin" /> : null}
               {initial ? "Save Changes" : "Create Expo"}
             </button>
@@ -224,7 +224,7 @@ export default function ExpoManagement() {
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
-      <Loader2 size={24} className="animate-spin text-cyan-500" />
+      <Loader2 size={24} className="animate-spin text-indigo-500" />
     </div>
   );
 
@@ -244,7 +244,7 @@ export default function ExpoManagement() {
           </p>
         </div>
         <button onClick={() => { setEditExpo(null); setShowForm(true); }}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-cyan-500 text-white text-[13px] font-bold hover:bg-cyan-600 transition-colors">
+          className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-500 text-white text-[13px] font-bold hover:bg-indigo-600 transition-colors">
           <Plus size={15} /> New Expo
         </button>
       </div>
@@ -256,7 +256,7 @@ export default function ExpoManagement() {
             className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
         </div>
         <select value={filterStatus} onChange={e => setFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-cyan-400">
+          className="px-3 py-2 rounded-lg border border-slate-200 bg-white text-[13px] text-slate-600 outline-none focus:border-indigo-400">
           {["All", "Published", "Draft", "Archived"].map(s => <option key={s}>{s}</option>)}
         </select>
       </div>
@@ -302,7 +302,7 @@ export default function ExpoManagement() {
                           <Eye size={13} />
                         </button>
                         <button onClick={() => { setEditExpo(expo); setShowForm(true); }} title="Edit"
-                          className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-cyan-50 text-slate-400 hover:text-cyan-500 transition-colors">
+                          className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-indigo-50 text-slate-400 hover:text-indigo-500 transition-colors">
                           <Pencil size={13} />
                         </button>
                         <button onClick={() => setConfirm(expo._id)} title="Delete"

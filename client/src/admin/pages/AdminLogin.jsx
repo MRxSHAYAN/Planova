@@ -70,7 +70,7 @@ export default function AdminLogin() {
       <div className="relative w-full max-w-[420px]">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-500 mb-4 shadow-lg shadow-cyan-500/30">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-indigo-500 mb-4 shadow-lg shadow-indigo-500/30">
             <img src={logo} alt="Planova" className="w-9 h-9 object-contain" />
           </div>
           <h1 className="text-2xl font-black text-white">Planova Admin</h1>
@@ -96,7 +96,7 @@ export default function AdminLogin() {
               <input
                 type="email" name="email" value={form.email} onChange={handleChange}
                 placeholder="admin@planova.com"
-                className="w-full px-4 py-2.5 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                className="w-full px-4 py-2.5 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
               />
             </div>
 
@@ -106,7 +106,7 @@ export default function AdminLogin() {
                 <input
                   type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full px-4 py-2.5 pr-10 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all"
+                  className="w-full px-4 py-2.5 pr-10 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                 />
                 <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
@@ -118,7 +118,7 @@ export default function AdminLogin() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 rounded-lg bg-cyan-500 text-white font-bold text-[14px] hover:bg-cyan-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1 flex items-center justify-center gap-2"
+              className="w-full py-2.5 rounded-lg bg-indigo-500 text-white font-bold text-[14px] hover:bg-indigo-600 disabled:opacity-60 disabled:cursor-not-allowed transition-colors mt-1 flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>
