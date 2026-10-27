@@ -74,4 +74,16 @@ router.put("/:id/reject", protect, requireRole("admin"), async (req, res) => {
   res.json(app);
 });
 
+// Exhibitor: request booth change (updates booth preference on existing approved application)
+router.put("/:id/booth-change", protect, requireRole("exhibitor"), async (req, res) => {
+  const app = await Exhibitor.findOne({ _id: req.params.id, user: req.user.userId });
+  if (!app) return res.status(404).json({ message: "Application not found" });
+  if (app.status !== "approved") return res.status(400).json({ message: "Only approved applications can request booth change" });
+
+  app.booth = req.body.boothPreference || app.booth;
+  app.boothChangeRequest = req.body.boothPreference || "";
+  await app.save();
+  res.json({ message: "Booth change request sent", app });
+});
+
 export default router;

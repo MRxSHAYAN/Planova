@@ -4,6 +4,12 @@ import { protect, requireRole } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
+// Public: list available booths for a specific expo (for apply form)
+router.get("/expo/:expoId", async (req, res) => {
+  const booths = await Booth.find({ event: req.params.expoId, status: "available" }).sort({ boothId: 1 });
+  res.json(booths);
+});
+
 // Get booths for an expo
 router.get("/", protect, async (req, res) => {
   const filter = {};

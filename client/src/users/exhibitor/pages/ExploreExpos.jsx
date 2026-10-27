@@ -43,8 +43,18 @@ function ApplyModal({ expo, user, onClose, onSubmitted }) {
     description:      user?.description || "",
     boothPreference:  "",
   });
-  const [saving, setSaving] = useState(false);
-  const [error,  setError]  = useState("");
+  const [saving,  setSaving]  = useState(false);
+  const [error,   setError]   = useState("");
+  const [booths,  setBooths]  = useState([]);
+  const [loadingBooths, setLoadingBooths] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/booths/expo/${expo._id}`)
+      .then(r => r.json())
+      .then(data => setBooths(Array.isArray(data) ? data : []))
+      .catch(() => {})
+      .finally(() => setLoadingBooths(false));
+  }, [expo._id]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -143,7 +153,33 @@ function ApplyModal({ expo, user, onClose, onSubmitted }) {
               onFocus={e => e.target.style.borderColor = "#3478F6"}
               onBlur={e => e.target.style.borderColor = "#DCEAFF"} />
           </div>
-          {field("Booth Preference (optional)", "boothPreference")}
+          {/* Booth selection */}
+          <div>
+            <label className="block text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: "#94A3B8" }}>
+              Select Available Booth
+            </label>
+            {loadingBooths ? (
+              <div className="flex items-center gap-2 py-2">
+                <Loader2 size={13} className="animate-spin" style={{ color: "#94A3B8" }} />
+                <span className="text-[12px]" style={{ color: "#94A3B8" }}>Loading booths...</span>
+              </div>
+            ) : booths.length > 0 ? (
+              <select value={form.boothPreference} onChange={e => setForm(p => ({ ...p, boothPreference: e.target.value }))}
+                className="w-full text-[13px] px-3 py-2 rounded-lg outline-none transition-colors"
+                style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }}>
+                <option value="">No preference</option>
+                {booths.map(b => (
+                  <option key={b._id} value={b.boothId}>
+                    {b.boothId} - {b.type} ({b.size})
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <p className="text-[12px] py-1.5" style={{ color: "#94A3B8" }}>
+                No booths available for this expo yet. Admin will assign one after approval.
+              </p>
+            )}
+          </div>
 
           <div className="flex gap-2 pt-2">
             <button type="button" onClick={onClose}

@@ -222,6 +222,15 @@ export default function ExpoManagement() {
     } catch { showToast("Something went wrong", "err"); }
   }
 
+  async function handleClose(id) {
+    try {
+      const res = await fetch(`/api/expos/${id}/close`, { method: "PUT", headers: authHeader() });
+      if (!res.ok) return showToast("Close failed", "err");
+      fetchExpos();
+      showToast("Expo closed — data saved, removed from public view");
+    } catch { showToast("Something went wrong", "err"); }
+  }
+
   if (loading) return (
     <div className="flex items-center justify-center py-20">
       <Loader2 size={24} className="animate-spin text-indigo-500" />
@@ -305,6 +314,12 @@ export default function ExpoManagement() {
                           className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-indigo-50 text-slate-400 hover:text-indigo-500 transition-colors">
                           <Pencil size={13} />
                         </button>
+                        {expo.status === "published" && (
+                          <button onClick={() => handleClose(expo._id)} title="Close expo"
+                            className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-amber-50 text-slate-400 hover:text-amber-500 transition-colors">
+                            <Calendar size={13} />
+                          </button>
+                        )}
                         <button onClick={() => setConfirm(expo._id)} title="Delete"
                           className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors">
                           <Trash2 size={13} />

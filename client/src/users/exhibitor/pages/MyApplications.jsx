@@ -16,9 +16,31 @@ function formatDate(d) {
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-function AppCard({ app }) {
+function AppCard({ app, onBoothChange }) {
   const [open, setOpen] = useState(false);
+  const [showChange, setShowChange] = useState(false);
+  const [booths, setBooths] = useState([]);
+  const [loadingBooths, setLoadingBooths] = useState(false);
+  const [selectedBooth, setSelectedBooth] = useState("");
   const expo = app.event || {};
+
+  async function loadBooths() {
+    if (booths.length > 0) return;
+    setLoadingBooths(true);
+    try {
+      const res = await fetch(`/api/booths/expo/${expo._id}`);
+      const data = await res.json();
+      setBooths(Array.isArray(data) ? data : []);
+    } catch {}
+    finally { setLoadingBooths(false); }
+  }
+
+  async function submitChange() {
+    if (!selectedBooth) return;
+    await onBoothChange(app._id, selectedBooth);
+    setShowChange(false);
+    setSelectedBooth("");
+  }
 
   return (
     <div className="rounded-xl overflow-hidden" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
@@ -95,9 +117,50 @@ function AppCard({ app }) {
               </span>
             )}
             {app.status === "approved" && (
-              <span className="text-[12px] font-semibold" style={{ color: "#12875A" }}>
-                Approved — check My Booths for your assignment
-              </span>
+              <div className="space-y-3">
+                <span className="text-[12px] font-semibold" style={{ color: "#12875A" }}>
+                  Approved — check My Booths for your assignment
+                </span>
+                {!showChange ? (
+                  <button onClick={() => { setShowChange(true); loadBooths(); }}
+                    className="block text-[12px] font-semibold transition-colors"
+                    style={{ color: "#3478F6" }}>
+                    Request Booth Change →
+                  </button>
+                ) : (
+                  <div className="space-y-2">
+                    {loadingBooths ? (
+                      <div className="flex items-center gap-2 py-2">
+                        <Loader2 size={13} className="animate-spin" style={{ color: "#94A3B8" }} />
+                        <span className="text-[12px]" style={{ color: "#94A3B8" }}>Loading booths...</span>
+                      </div>
+                    ) : booths.length > 0 ? (
+                      <select value={selectedBooth} onChange={e => setSelectedBooth(e.target.value)}
+                        className="w-full px-3 py-2 rounded-lg text-[13px] outline-none"
+                        style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }}>
+                        <option value="">Select a new booth...</option>
+                        {booths.map(b => (
+                          <option key={b._id} value={b.boothId}>{b.boothId} - {b.type} ({b.size})</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <p className="text-[12px]" style={{ color: "#94A3B8" }}>No available booths for this expo.</p>
+                    )}
+                    <div className="flex gap-2">
+                      <button onClick={() => { setShowChange(false); setSelectedBooth(""); }}
+                        className="text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                        style={{ background: "#F0F3FA", color: "#64748B" }}>
+                        Cancel
+                      </button>
+                      <button onClick={submitChange} disabled={!selectedBooth}
+                        className="text-[12px] font-bold px-3 py-1.5 rounded-lg text-white transition-colors disabled:opacity-40"
+                        style={{ background: "#3478F6" }}>
+                        Send Request
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
             {app.status === "rejected" && (
               <span className="text-[12px] font-medium" style={{ color: "#94A3B8" }}>
@@ -129,6 +192,21 @@ export default function MyApplications() {
   const list = tab === "all"
     ? applications
     : applications.filter(a => a.status === tab);
+
+  async function handleBoothChange(appId, newBooth) {
+    const token = localStorage.getItem("planova_token");
+    const res = await fetch(`/api/applications/${appId}/booth-change`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ boothPreference: newBooth }),
+    });
+    if (res.ok) {
+      // Refresh list
+      fetch("/api/applications/mine", { headers: { Authorization: `Bearer ${token}` } })
+        .then(r => r.json())
+        .then(data => setApplications(Array.isArray(data) ? data : []));
+    }
+  }
 
   if (loading) return (
     <div className="flex items-center justify-center py-20">
@@ -165,7 +243,7 @@ export default function MyApplications() {
 
       {list.length > 0 ? (
         <div className="space-y-3">
-          {list.map(app => <AppCard key={app._id} app={app} />)}
+          {list.map(app => <AppCard key={app._id} app={app} onBoothChange={handleBoothChange} />)}
         </div>
       ) : (
         <EmptyState
