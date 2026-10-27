@@ -229,6 +229,8 @@ EXPOS
   POST /api/expos                         admin, create
   PUT  /api/expos/:id                     admin, edit
   DELETE /api/expos/:id                   admin, delete (auto-deletes sessions)
+  PUT  /api/expos/:id/close               admin, close/archive (data kept, removed from public)
+  PUT  /api/expos/:id/close                admin, close/archive (keeps data, removes from public)
 
 SESSIONS
   GET  /api/sessions                      public, filter by ?event=id
@@ -243,8 +245,10 @@ APPLICATIONS
   POST /api/applications                  exhibitor, submit application
   PUT  /api/applications/:id/approve      admin, approve
   PUT  /api/applications/:id/reject       admin, reject with reason
+  PUT  /api/applications/:id/booth-change exhibitor, request booth change
 
 BOOTHS
+  GET  /api/booths/expo/:expoId           public, available booths for an expo
   GET  /api/booths                        protected, filter by ?event=id
   POST /api/booths                        admin, create
   PUT  /api/booths/:id/assign             admin, assign exhibitor
@@ -299,9 +303,9 @@ Exhibitor (/users/dashboard/exhibitor/)
 Admin (/admin/)
   /                   Overview — user counts, subscribers, recent data
   /users              All users from DB, search, filter, activate/deactivate
-  /expos              Expo CRUD (create, edit, delete — auto-removes sessions)
+  /expos              Expo CRUD (create, edit, close/archive, delete — auto-removes sessions)
   /applications       All applications from DB, approve/reject with reason
-  /booths             Booths from DB, grid/table view, assign exhibitor, clear
+  /booths             Booths from DB, grid/table view, create/bulk-create, assign, clear, delete
   /schedule           Session CRUD from DB, filter by expo and type
   /attendees          Attendee list
   /reports            Reports
@@ -472,12 +476,15 @@ DYNAMIC (from database):
   User registration, login, logout, OTP flows
   User profiles: name, email, phone, city, company, avatar
   Admin: users, stats, activate/deactivate
-  Admin: expo CRUD (auto-deletes sessions on delete)
-  Admin: applications (approve/reject)
-  Admin: booth assignments (assign/clear)
+  Admin: expo CRUD (auto-deletes sessions on delete, close/archive keeps all data)
+  Admin: booth management — create single or bulk, assign exhibitor, clear, delete
+  Admin: applications (approve/reject, see booth change requests)
   Admin: session CRUD
   Admin: newsletter subscribers
-  Exhibitor: own applications
+  Exhibitor: apply to expos — sees available booths, picks preferred booth
+  Exhibitor: own applications — view status (pending/approved/rejected)
+  Exhibitor: request booth change on approved applications
+  Exhibitor: my booths, products & services from DB
   Attendee: registration for expos (register, cancel, my events)
   Attendee: exhibitors directory (approved profiles from DB)
   Attendee: schedule (sessions from DB, date picker, bookmarks)

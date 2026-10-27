@@ -19,7 +19,7 @@ A full-stack MERN platform for managing expos, trade shows, and conferences in P
 - Public website — Home, Explore Expos, Exhibitors, Schedule, About, Contact
 - Attendee dashboard — overview, explore events, register for expos, my events, my schedule, exhibitors directory, profile
 - Exhibitor dashboard — overview, explore expos, my applications, my booths, company profile, settings
-- Admin panel — users, expos (CRUD), applications (approve/reject), booths (assign/clear), schedule (CRUD), overview stats, newsletter subscribers, settings
+- Admin panel — users, expos (CRUD + close/archive), applications, booths (create/bulk/assign/clear), schedule, newsletter, settings
 - Auth — JWT login, OTP email verification on register, OTP for email change, OTP for password change
 - Forgot password — OTP sent to email, reset password flow
 - Password requirements — 7+ characters, one letter, one special character
@@ -92,6 +92,7 @@ cd client && npm run dev    # http://localhost:5173
 | POST | `/api/expos` | Admin | Create expo |
 | PUT | `/api/expos/:id` | Admin | Edit expo |
 | DELETE | `/api/expos/:id` | Admin | Delete expo (auto-deletes sessions) |
+| PUT | `/api/expos/:id/close` | Admin | Close/archive expo (keeps data, removes from public) |
 | GET | `/api/sessions` | Public | List sessions (filter by ?event=id) |
 | POST | `/api/sessions` | Admin | Create session |
 | PUT | `/api/sessions/:id` | Admin | Edit session |
@@ -102,6 +103,8 @@ cd client && npm run dev    # http://localhost:5173
 | POST | `/api/applications` | Exhibitor | Submit application |
 | PUT | `/api/applications/:id/approve` | Admin | Approve application |
 | PUT | `/api/applications/:id/reject` | Admin | Reject with reason |
+| PUT | `/api/applications/:id/booth-change` | Exhibitor | Request booth change |
+| GET | `/api/booths/expo/:expoId` | Public | List available booths for an expo |
 | GET | `/api/booths` | Protected | List booths (filter by ?event=id) |
 | POST | `/api/booths` | Admin | Create booth |
 | PUT | `/api/booths/:id/assign` | Admin | Assign exhibitor to booth |
@@ -122,11 +125,13 @@ cd client && npm run dev    # http://localhost:5173
 - User profiles, avatars, names, emails
 - OTP flows (register, email change, password change, forgot password)
 - Admin: users, stats, activate/deactivate, reports (all live data)
-- Admin: expo CRUD (auto-deletes sessions on delete)
-- Admin: applications (approve/reject), booths (assign/clear), sessions (CRUD)
+- Admin: expo CRUD (auto-deletes sessions on delete, close/archive keeps all data)
+- Admin: booth management — create single or bulk per expo, assign approved exhibitor, clear, delete
+- Admin: applications (approve/reject, view booth change requests), booths, sessions (CRUD)
 - Admin: attendees list (real registrations), newsletter subscribers
-- Exhibitor: apply to expos (form modal), view applications with status
-- Exhibitor: my booths from DB, products & services (create/edit/delete)
+- Exhibitor: apply to expos — sees available booths, picks preferred booth
+- Exhibitor: own applications with status, request booth change
+- Exhibitor: my booths, products & services from DB
 - Exhibitor: overview shows real application counts
 - Attendee: register for expos, my events (upcoming/past), cancel
 - Attendee: schedule (sessions from DB, date picker, bookmarks)
