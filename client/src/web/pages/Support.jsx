@@ -5,7 +5,7 @@ import Layout from "../components/Layout";
 const FAQS = [
   {
     q: "How do I register for an expo?",
-    a: "Go to Explore Expos, click on the event you want to attend, then hit 'Register to Attend'. You'll need a free Planova account — create one in under a minute.",
+    a: "Go to Explore Expos, click on the event you want to attend, then hit 'Register to Attend'. You'll need a free Planova account  create one in under a minute.",
   },
   {
     q: "How does an exhibitor apply to participate?",
@@ -13,7 +13,7 @@ const FAQS = [
   },
   {
     q: "Can I change my booth after it's been assigned?",
-    a: "Yes, as long as the expo is more than 7 days away and the organizer allows reassignments. Go to your Exhibitor Dashboard → My Booths → Request Change.",
+    a: "Yes, as long as the expo is more than 7 days away and the organizer allows reassignments. Go to your Exhibitor Dashboard  My Booths  Request Change.",
   },
   {
     q: "How do I cancel my registration?",
@@ -143,7 +143,7 @@ export default function Support() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search for help…"
+                placeholder="Search for help"
                 className="flex-1 bg-transparent text-[13px] text-white placeholder-white/35 outline-none"
               />
             </div>
@@ -214,7 +214,7 @@ export default function Support() {
             to="/contact"
             className="px-6 py-3 rounded-lg bg-accent text-navy font-bold text-[13px] hover:bg-accent-hover hover:text-white transition-colors min-h-44px flex items-center shrink-0"
           >
-            Contact Us →
+            Contact Us 
           </Link>
         </div>
       </section>

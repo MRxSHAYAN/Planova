@@ -1,5 +1,5 @@
 /**
- * Avatar — shows image if src provided, otherwise initials fallback.
+ * Avatar  shows image if src provided, otherwise initials fallback.
  */
 export default function Avatar({ src, initials = "?", size = "md", className = "" }) {
   const sizes = {

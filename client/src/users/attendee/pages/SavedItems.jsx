@@ -110,9 +110,9 @@ export default function SavedItems() {
                   <div className="flex-1 min-w-0">
                     <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full mb-1.5 inline-block" style={{ background: cat.bg, color: cat.text }}>{s.category}</span>
                     <p className="text-[13.5px] font-bold leading-snug mb-1" style={{ color: "#09152E" }}>{s.title}</p>
-                    <p className="text-[12px]" style={{ color: "#64748B" }}>{s.speaker}{s.speakerRole && ` · ${s.speakerRole}`}</p>
+                    <p className="text-[12px]" style={{ color: "#64748B" }}>{s.speaker}{s.speakerRole && `  ${s.speakerRole}`}</p>
                     <p className="text-[11.5px] mt-1 flex items-center gap-1" style={{ color: "#94A3B8" }}>
-                      <Clock size={10} /> {s.timeStart}–{s.timeEnd} · {s.room}
+                      <Clock size={10} /> {s.timeStart}{s.timeEnd}  {s.room}
                     </p>
                   </div>
                   <button
@@ -148,7 +148,7 @@ export default function SavedItems() {
                     <div className="flex flex-wrap gap-1.5 mb-1">
                       <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full" style={{ background: cat.bg, color: cat.text }}>{exh.category}</span>
                       <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full" style={{ background: "#F0F3FA", color: "#3E506D" }}>
-                        {exh.hall} · Booth {exh.booth}
+                        {exh.hall}  Booth {exh.booth}
                       </span>
                     </div>
                     <p className="text-[11.5px]" style={{ color: "#94A3B8" }}>{exh.eventTitle}</p>

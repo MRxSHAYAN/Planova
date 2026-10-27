@@ -55,7 +55,7 @@ function ExpoModal({ expo, onClose }) {
             </span>
             {expo.status === "Published" && (
               <span className="text-[10.5px] font-bold px-2.5 py-0.5 rounded-full bg-white/95 text-status-open">
-                ● Open
+                 Open
               </span>
             )}
             {expo.status === "Draft" && (
@@ -121,7 +121,7 @@ function ExpoCard({ expo, onView }) {
         <div className="absolute inset-0 bg-gradient-to-t from-[#09152E]/50 to-transparent" />
         <div className="absolute top-3 right-3">
           {expo.status === "Published"
-            ? <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/95 text-status-open shadow-sm">● Open</span>
+            ? <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/95 text-status-open shadow-sm"> Open</span>
             : <span className="text-[10.5px] font-bold px-2.5 py-1 rounded-full bg-white/15 text-white border border-white/25 backdrop-blur-sm">Coming soon</span>
           }
         </div>
@@ -145,11 +145,11 @@ function ExpoCard({ expo, onView }) {
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
           <div className="flex items-center gap-3 text-[11.5px]">
             <span className="text-dark font-semibold">{expo.exhibitors} <span className="text-muted font-normal">exhibitors</span></span>
-            <span className="text-muted">·</span>
+            <span className="text-muted"></span>
             <span className="text-dark font-semibold">{expo.attendees.toLocaleString()} <span className="text-muted font-normal">attending</span></span>
           </div>
           <button className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors shrink-0">
-            Details →
+            Details 
           </button>
         </div>
       </div>
@@ -214,7 +214,7 @@ export default function ExploreExpos() {
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search by name or city…"
+                placeholder="Search by name or city"
                 className="flex-1 bg-transparent text-[13px] text-white placeholder-white/35 outline-none"
               />
             </div>

@@ -351,7 +351,7 @@ export default function Booths() {
           <p className="text-slate-400 font-semibold mb-2">No booths created yet.</p>
           <button onClick={() => setShowCreate(true)}
             className="text-[13px] font-bold text-indigo-500 hover:text-indigo-600">
-            Create your first booth →
+            Create your first booth 
           </button>
         </div>
       ) : view === "grid" ? (
@@ -388,11 +388,11 @@ export default function Booths() {
                 {filtered.map(booth => (
                   <tr key={booth._id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3 font-mono font-bold text-slate-700">{booth.boothId}</td>
-                    <td className="px-4 py-3 text-slate-500 max-w-[160px] truncate">{booth.event?.title || "—"}</td>
+                    <td className="px-4 py-3 text-slate-500 max-w-[160px] truncate">{booth.event?.title || ""}</td>
                     <td className="px-4 py-3 text-slate-500">{booth.type}</td>
                     <td className="px-4 py-3 text-slate-500">{booth.size}</td>
                     <td className="px-4 py-3"><StatusBadge status={booth.status} /></td>
-                    <td className="px-4 py-3 text-slate-700">{booth.exhibitor || <span className="text-slate-300">—</span>}</td>
+                    <td className="px-4 py-3 text-slate-700">{booth.exhibitor || <span className="text-slate-300"></span>}</td>
                     <td className="px-4 py-3">
                       <div className="flex gap-1">
                         <button onClick={() => { setSelected(booth); setShowAssign(false); setAssignPick(""); }}
@@ -421,7 +421,7 @@ export default function Booths() {
             <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
               <div>
                 <span className="font-black text-[1.2rem] text-slate-800 font-mono">{selected.boothId}</span>
-                <p className="text-[12px] text-slate-400 truncate max-w-[200px]">{selected.event?.title || "—"}</p>
+                <p className="text-[12px] text-slate-400 truncate max-w-[200px]">{selected.event?.title || ""}</p>
               </div>
               <div className="flex items-center gap-2">
                 <StatusBadge status={selected.status} />
@@ -456,9 +456,9 @@ export default function Booths() {
                       ) : (
                         <select value={assignPick} onChange={e => setAssignPick(e.target.value)}
                           className="w-full px-3 py-2.5 rounded-lg border border-slate-200 text-[13px] text-slate-700 outline-none focus:border-indigo-400">
-                          <option value="">— Choose exhibitor —</option>
+                          <option value=""> Choose exhibitor </option>
                           {getEligible(selected).map(a => (
-                            <option key={a._id} value={a.company}>{a.company} · {a.city}</option>
+                            <option key={a._id} value={a.company}>{a.company}  {a.city}</option>
                           ))}
                         </select>
                       )}

@@ -33,7 +33,7 @@ function SessionRow({ session, bookmarked, onToggle }) {
         <h3 className="text-dark font-semibold text-[14px] leading-snug mb-0.5">{session.title}</h3>
         <p className="text-[12.5px] text-body">
           {session.speaker}
-          {session.speakerRole && <span className="text-muted"> — {session.speakerRole}</span>}
+          {session.speakerRole && <span className="text-muted">  {session.speakerRole}</span>}
         </p>
       </div>
       <button onClick={() => onToggle(session._id)} title={bookmarked ? "Remove" : "Bookmark"}
@@ -76,7 +76,7 @@ export default function Schedule() {
   // Group by expo + date
   const grouped = filtered.reduce((acc, s) => {
     const expo = s.event?.title || "Unknown Expo";
-    const key  = `${expo} — ${dayLabel(s.date)}`;
+    const key  = `${expo}  ${dayLabel(s.date)}`;
     if (!acc[key]) acc[key] = [];
     acc[key].push(s);
     return acc;
@@ -116,7 +116,7 @@ export default function Schedule() {
                     className={`px-3.5 py-1.5 rounded-full text-[12.5px] font-semibold border transition-all ${
                       activeExpo === e ? "bg-navy text-white border-navy" : "bg-surface text-body border-border hover:border-accent hover:text-accent"
                     }`}>
-                    {e === "All" ? "All expos" : e.split(" ").slice(0, 3).join(" ") + "…"}
+                    {e === "All" ? "All expos" : e.split(" ").slice(0, 3).join(" ") + ""}
                   </button>
                 ))}
               </div>

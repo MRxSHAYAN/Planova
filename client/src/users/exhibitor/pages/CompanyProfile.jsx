@@ -246,7 +246,7 @@ export default function CompanyProfile() {
             {profile.company || profile.name}
           </p>
           <p className="text-[13px] mt-0.5" style={{ color: "rgba(255,255,255,0.5)" }}>
-            {profile.category || "No category"} · {profile.city || "No city"}
+            {profile.category || "No category"}  {profile.city || "No city"}
           </p>
         </div>
       </div>
@@ -257,7 +257,7 @@ export default function CompanyProfile() {
           className="rounded-xl px-5 py-4 flex items-start gap-3"
           style={{ background: "#FFF8E6", border: "1.5px solid #FDE68A" }}
         >
-          <span className="text-[18px]">👋</span>
+          <span className="text-[18px]"></span>
           <div>
             <p className="text-[13.5px] font-bold" style={{ color: "#92400E" }}>
               Welcome! Set up your company profile.

@@ -133,7 +133,7 @@ export default function Sidebar({ onClose }) {
           )}
           <div className="flex-1 min-w-0">
             <p className="text-[12px] font-semibold text-white truncate leading-none">
-              {user?.company || user?.name || "—"}
+              {user?.company || user?.name || ""}
             </p>
             <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.3)" }}>
               {user?.email || ""}

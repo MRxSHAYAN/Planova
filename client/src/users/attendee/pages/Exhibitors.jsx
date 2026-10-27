@@ -32,7 +32,7 @@ function ExhibitorCard({ exh, onView }) {
 
       <div>
         <p className="text-[13.5px] font-bold leading-snug" style={{ color: "#09152E" }}>{exh.company}</p>
-        <p className="text-[11.5px] mt-0.5" style={{ color: "#94A3B8" }}>{exh.event?.title || "—"}</p>
+        <p className="text-[11.5px] mt-0.5" style={{ color: "#94A3B8" }}>{exh.event?.title || ""}</p>
       </div>
 
       <div className="flex flex-wrap gap-1.5">
@@ -84,7 +84,7 @@ function ProfileModal({ exh, onClose }) {
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[16px] font-black" style={{ color: "#09152E" }}>{exh.company}</p>
-            <p className="text-[12px] mt-0.5" style={{ color: "#94A3B8" }}>{exh.event?.title || "—"}</p>
+            <p className="text-[12px] mt-0.5" style={{ color: "#94A3B8" }}>{exh.event?.title || ""}</p>
             <div className="flex flex-wrap gap-1.5 mt-2">
               <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full" style={{ background: c.bg, color: c.text }}>{exh.category}</span>
               {exh.booth && (
@@ -112,7 +112,7 @@ function ProfileModal({ exh, onClose }) {
           ].map(([label, val]) => (
             <div key={label}>
               <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "#B0BCC8" }}>{label}</p>
-              <p className="text-[12.5px] font-medium mt-0.5" style={{ color: val ? "#09152E" : "#B0BCC8" }}>{val || "—"}</p>
+              <p className="text-[12.5px] font-medium mt-0.5" style={{ color: val ? "#09152E" : "#B0BCC8" }}>{val || ""}</p>
             </div>
           ))}
         </div>

@@ -83,11 +83,11 @@ function ExpoCard({ expo }) {
         <p className="text-[12px] text-muted mb-4 truncate">{expo.venue}</p>
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
           <div className="text-[11.5px] text-muted">
-            <span className="text-dark font-semibold">{expo.exhibitors}</span> exhibitors &nbsp;·&nbsp;
+            <span className="text-dark font-semibold">{expo.exhibitors}</span> exhibitors &nbsp;&nbsp;
             <span className="text-dark font-semibold">{expo.attendees.toLocaleString()}</span> attending
           </div>
           <Link to="/explore-expos" className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors shrink-0 ml-2">
-            View →
+            View 
           </Link>
         </div>
       </div>
@@ -132,7 +132,7 @@ function FeaturedExpos() {
           </div>
           <Link to="/explore-expos"
             className="hidden sm:flex items-center gap-1.5 text-[13px] font-semibold text-accent border border-border bg-surface px-4 py-2 rounded-xl hover:border-accent/40 transition-colors">
-            See all →
+            See all 
           </Link>
         </div>
 
@@ -165,7 +165,7 @@ function FeaturedExpos() {
 
         <div className="mt-6 md:hidden">
           <Link to="/explore-expos" className="w-full flex justify-center text-[13px] font-semibold text-accent border border-border bg-surface px-4 py-3 rounded-xl">
-            See all expos →
+            See all expos 
           </Link>
         </div>
       </div>
@@ -186,7 +186,7 @@ function HowItWorks() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#09152E]/50 to-transparent" />
             <div className="absolute bottom-5 left-5 bg-white/95 backdrop-blur-sm rounded-xl px-4 py-3 border border-border shadow-sm">
               <p className="text-[10.5px] text-muted mb-0.5">Interactive floor plan</p>
-              <p className="text-[13px] font-black text-dark">Booth B-12 — Available</p>
+              <p className="text-[13px] font-black text-dark">Booth B-12  Available</p>
             </div>
           </div>
 
@@ -242,7 +242,7 @@ function ForWho() {
               Publish expos, review exhibitor applications, fill the floor plan, manage sessions, watch live analytics.
             </p>
             <Link to="/register" className="mt-7 inline-flex items-center justify-center text-[13px] font-bold py-3 px-5 rounded-xl bg-accent text-navy hover:bg-accent-hover hover:text-white transition-colors">
-              Start organizing →
+              Start organizing 
             </Link>
           </div>
 
@@ -252,13 +252,13 @@ function ForWho() {
                 role: "Exhibitors",
                 sub: "Apply, get a booth, manage your presence",
                 desc: "Build a company profile, apply to expos, pick your booth on the floor plan, and list what you're showcasing.",
-                cta: "Apply as exhibitor →",
+                cta: "Apply as exhibitor ",
               },
               {
                 role: "Attendees",
                 sub: "Register, browse, and plan your visit",
                 desc: "Register for expos, explore who's exhibiting, bookmark sessions you want to attend, and navigate the venue on the day.",
-                cta: "Register to attend →",
+                cta: "Register to attend ",
               },
             ].map(r => (
               <div key={r.role} className="bg-surface rounded-2xl border border-border-card p-7 flex flex-col">
@@ -306,7 +306,7 @@ function Newsletter() {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-7">
         <div>
           <h3 className="text-[1.05rem] font-black text-white mb-1">Get expo alerts for your city</h3>
-          <p className="text-white/35 text-[13px]">New expos in Karachi, Lahore, or Islamabad — straight to your inbox.</p>
+          <p className="text-white/35 text-[13px]">New expos in Karachi, Lahore, or Islamabad  straight to your inbox.</p>
         </div>
         {status === "done" ? (
           <div className="shrink-0 text-[13px] font-semibold text-status-open bg-status-open-bg px-5 py-3 rounded-xl">
@@ -341,7 +341,7 @@ function CTA() {
         <div className="max-w-lg">
           <h2 className="text-[1.8rem] font-black text-white leading-snug mb-2">Ready to join?</h2>
           <p className="text-white/35 text-[14px] leading-relaxed">
-            Organizer, exhibitor, or attendee — takes five minutes to set up.
+            Organizer, exhibitor, or attendee  takes five minutes to set up.
           </p>
         </div>
         <div className="flex flex-wrap gap-3 shrink-0">

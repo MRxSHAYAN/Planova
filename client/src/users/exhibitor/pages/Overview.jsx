@@ -7,7 +7,7 @@ import { useAuth } from "../../../context/AuthContext";
 const BASE = "/users/dashboard/exhibitor";
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -46,7 +46,7 @@ export default function Overview() {
           <p className="text-[12px] font-medium" style={{ color: "#3478F6" }}>Welcome back,</p>
           <h2 className="text-[22px] font-black leading-tight mt-0.5" style={{ color: "#09152E" }}>{displayName}</h2>
           <p className="text-[13px] mt-1" style={{ color: "#64748B" }}>
-            {approved} approved · {pending} pending · {rejected} not accepted
+            {approved} approved  {pending} pending  {rejected} not accepted
           </p>
         </div>
         <div className="flex gap-2 shrink-0">
@@ -128,7 +128,7 @@ export default function Overview() {
                 </p>
                 <button onClick={() => navigate(`${BASE}/explore`)}
                   className="mt-3 text-[12px] font-bold" style={{ color: "#3478F6" }}>
-                  Explore expos →
+                  Explore expos 
                 </button>
               </div>
             </div>

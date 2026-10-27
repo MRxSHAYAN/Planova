@@ -3,7 +3,7 @@ import { Bookmark, MapPin, Calendar, Users } from "lucide-react";
 import Badge from "./Badge";
 
 /**
- * EventCard — used on Explore Events and My Events pages.
+ * EventCard  used on Explore Events and My Events pages.
  * onSave: (eventId) => void
  * onView: (event) => void
  * onRegister: (event) => void
@@ -68,7 +68,7 @@ export default function EventCard({ event, onSave, onView, onRegister, compact =
           {!compact && (
             <div className="flex items-center gap-1.5 text-[12px] text-[#3E506D]">
               <Users size={12} className="shrink-0 text-[#3478F6]" />
-              {event.attendees.toLocaleString()} attending · {event.exhibitors} exhibitors
+              {event.attendees.toLocaleString()} attending  {event.exhibitors} exhibitors
             </div>
           )}
         </div>
@@ -93,7 +93,7 @@ export default function EventCard({ event, onSave, onView, onRegister, compact =
               onClick={(e) => { e.stopPropagation(); onView?.(event); }}
               className="text-[12px] font-semibold text-[#3478F6] hover:text-[#1D5FE0] transition-colors"
             >
-              View →
+              View 
             </button>
           </div>
         </div>

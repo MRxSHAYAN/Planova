@@ -38,7 +38,7 @@ function buildEmail(heading, bodyHtml) {
           <p style="color:#94A3B8;font-size:12px;margin-top:24px">If you didn't request this, ignore this email.</p>
         </div>
         <div style="background:#F0F3FA;padding:12px 28px;text-align:center">
-          <p style="color:#94A3B8;font-size:11px;margin:0">© 2026 Planova · Pakistan's Expo Platform</p>
+          <p style="color:#94A3B8;font-size:11px;margin:0"> 2026 Planova  Pakistan's Expo Platform</p>
         </div>
       </div>
     `,
@@ -50,10 +50,10 @@ function buildEmail(heading, bodyHtml) {
 
 export async function sendOTPEmail(to, otp, purpose = "verify") {
   const subjects = {
-    verify:            "Planova — Verify your email",
-    "email-change":    "Planova — Confirm your new email",
-    "password-change": "Planova — Confirm password change",
-    "forgot-password": "Planova — Reset your password",
+    verify:            "Planova  Verify your email",
+    "email-change":    "Planova  Confirm your new email",
+    "password-change": "Planova  Confirm password change",
+    "forgot-password": "Planova  Reset your password",
   };
 
   const headings = {
@@ -96,7 +96,7 @@ export async function sendWelcomeEmail(to) {
   await makeTransporter().sendMail({
     from: `"Planova" <${process.env.SMTP_USER}>`,
     to,
-    subject: "Planova — You're subscribed to expo alerts",
+    subject: "Planova  You're subscribed to expo alerts",
     html,
     attachments,
   });

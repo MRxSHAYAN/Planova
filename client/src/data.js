@@ -1,10 +1,10 @@
-// ─────────────────────────────────────────────
-//  PLANOVA — Shared Data
+// 
+//  PLANOVA  Shared Data
 //  All expo data lives here. Website + admin both import from this file.
 //  When backend is ready, replace each export with an API call.
-// ─────────────────────────────────────────────
+// 
 
-// ── Expos ────────────────────────────────────
+//  Expos 
 export const EXPOS = [
   {
     id: 1,
@@ -12,7 +12,7 @@ export const EXPOS = [
     category: "Technology",
     startDate: "2026-11-15",
     endDate: "2026-11-17",
-    date: "Nov 15–17, 2026",
+    date: "Nov 1517, 2026",
     venue: "Expo Centre, Karachi",
     city: "Karachi",
     status: "Published",       // Published | Draft | Archived
@@ -29,7 +29,7 @@ export const EXPOS = [
     category: "Healthcare",
     startDate: "2026-12-03",
     endDate: "2026-12-05",
-    date: "Dec 3–5, 2026",
+    date: "Dec 35, 2026",
     venue: "Convention Centre, Lahore",
     city: "Lahore",
     status: "Published",
@@ -46,7 +46,7 @@ export const EXPOS = [
     category: "Energy",
     startDate: "2027-01-20",
     endDate: "2027-01-22",
-    date: "Jan 20–22, 2027",
+    date: "Jan 2022, 2027",
     venue: "Jinnah Convention, Islamabad",
     city: "Islamabad",
     status: "Draft",
@@ -63,7 +63,7 @@ export const EXPOS = [
     category: "Agriculture",
     startDate: "2026-12-10",
     endDate: "2026-12-12",
-    date: "Dec 10–12, 2026",
+    date: "Dec 1012, 2026",
     venue: "Faisalabad Expo Centre",
     city: "Faisalabad",
     status: "Published",
@@ -80,7 +80,7 @@ export const EXPOS = [
     category: "Fashion",
     startDate: "2027-02-05",
     endDate: "2027-02-07",
-    date: "Feb 5–7, 2027",
+    date: "Feb 57, 2027",
     venue: "Lahore Expo Centre",
     city: "Lahore",
     status: "Draft",
@@ -97,7 +97,7 @@ export const EXPOS = [
     category: "Food",
     startDate: "2027-03-01",
     endDate: "2027-03-03",
-    date: "Mar 1–3, 2027",
+    date: "Mar 13, 2027",
     venue: "Karachi Expo Centre",
     city: "Karachi",
     status: "Draft",
@@ -106,11 +106,11 @@ export const EXPOS = [
     totalBooths: 110,
     occupiedBooths: 0,
     image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=75",
-    description: "Everything food — from street food brands to large FMCG companies. Cooking competitions, tastings, and retail buyer meetups.",
+    description: "Everything food  from street food brands to large FMCG companies. Cooking competitions, tastings, and retail buyer meetups.",
   },
 ];
 
-// ── Exhibitors / Applications ─────────────────
+//  Exhibitors / Applications 
 // Used by website Exhibitors page + admin Applications page
 export const EXHIBITORS = [
   {
@@ -252,7 +252,7 @@ export const EXHIBITORS = [
   },
 ];
 
-// ── Sessions / Schedule ──────────────────────
+//  Sessions / Schedule 
 // Used by website Schedule page + admin Schedule page
 export const SESSIONS = [
   {
@@ -335,29 +335,29 @@ export const SESSIONS = [
   },
 ];
 
-// ── Booths ───────────────────────────────────
+//  Booths 
 export const BOOTHS = [
-  { id: "A-01", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "A-02", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "TechVision PK" },
-  { id: "A-03", expo: "Karachi Technology Expo 2026", type: "Premium",  size: "6×3m", status: "Occupied",   exhibitor: "DevSync" },
-  { id: "A-04", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "Netsol Technologies" },
-  { id: "A-05", expo: "Karachi Technology Expo 2026", type: "Corner",   size: "4×4m", status: "Pending",    exhibitor: "Inbox Business" },
-  { id: "A-06", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "A-07", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "A-08", expo: "Karachi Technology Expo 2026", type: "Premium",  size: "6×3m", status: "Occupied",   exhibitor: "10Pearls" },
-  { id: "A-09", expo: "Karachi Technology Expo 2026", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "Systems Limited" },
-  { id: "A-10", expo: "Karachi Technology Expo 2026", type: "Corner",   size: "4×4m", status: "Available",  exhibitor: null },
-  { id: "B-01", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "3×3m", status: "Available",  exhibitor: null },
-  { id: "B-02", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "3×3m", status: "Occupied",   exhibitor: "MedCo Pakistan" },
-  { id: "B-11", expo: "Pakistan Health & Pharma Summit", type: "Premium",  size: "6×3m", status: "Occupied",   exhibitor: "Shaukat Khanum Labs" },
-  { id: "B-14", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "3×3m", status: "Pending",    exhibitor: "HealthTech Solutions" },
-  { id: "C-02", expo: "Green Energy & Sustainability Expo", type: "Standard", size: "3×3m", status: "Occupied", exhibitor: "K-Electric" },
-  { id: "C-07", expo: "Green Energy & Sustainability Expo", type: "Premium",  size: "6×3m", status: "Pending",  exhibitor: "SolarMax Pakistan" },
-  { id: "D-02", expo: "Agri-Tech Pakistan 2026",            type: "Standard", size: "3×3m", status: "Pending",  exhibitor: "Engro Fertilizers" },
-  { id: "E-01", expo: "Textile & Fashion Expo Pakistan",    type: "Corner",   size: "4×4m", status: "Pending",  exhibitor: "Gul Ahmed Textile" },
+  { id: "A-01", expo: "Karachi Technology Expo 2026", type: "Standard", size: "33m", status: "Available",  exhibitor: null },
+  { id: "A-02", expo: "Karachi Technology Expo 2026", type: "Standard", size: "33m", status: "Occupied",   exhibitor: "TechVision PK" },
+  { id: "A-03", expo: "Karachi Technology Expo 2026", type: "Premium",  size: "63m", status: "Occupied",   exhibitor: "DevSync" },
+  { id: "A-04", expo: "Karachi Technology Expo 2026", type: "Standard", size: "33m", status: "Occupied",   exhibitor: "Netsol Technologies" },
+  { id: "A-05", expo: "Karachi Technology Expo 2026", type: "Corner",   size: "44m", status: "Pending",    exhibitor: "Inbox Business" },
+  { id: "A-06", expo: "Karachi Technology Expo 2026", type: "Standard", size: "33m", status: "Available",  exhibitor: null },
+  { id: "A-07", expo: "Karachi Technology Expo 2026", type: "Standard", size: "33m", status: "Available",  exhibitor: null },
+  { id: "A-08", expo: "Karachi Technology Expo 2026", type: "Premium",  size: "63m", status: "Occupied",   exhibitor: "10Pearls" },
+  { id: "A-09", expo: "Karachi Technology Expo 2026", type: "Standard", size: "33m", status: "Occupied",   exhibitor: "Systems Limited" },
+  { id: "A-10", expo: "Karachi Technology Expo 2026", type: "Corner",   size: "44m", status: "Available",  exhibitor: null },
+  { id: "B-01", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "33m", status: "Available",  exhibitor: null },
+  { id: "B-02", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "33m", status: "Occupied",   exhibitor: "MedCo Pakistan" },
+  { id: "B-11", expo: "Pakistan Health & Pharma Summit", type: "Premium",  size: "63m", status: "Occupied",   exhibitor: "Shaukat Khanum Labs" },
+  { id: "B-14", expo: "Pakistan Health & Pharma Summit", type: "Standard", size: "33m", status: "Pending",    exhibitor: "HealthTech Solutions" },
+  { id: "C-02", expo: "Green Energy & Sustainability Expo", type: "Standard", size: "33m", status: "Occupied", exhibitor: "K-Electric" },
+  { id: "C-07", expo: "Green Energy & Sustainability Expo", type: "Premium",  size: "63m", status: "Pending",  exhibitor: "SolarMax Pakistan" },
+  { id: "D-02", expo: "Agri-Tech Pakistan 2026",            type: "Standard", size: "33m", status: "Pending",  exhibitor: "Engro Fertilizers" },
+  { id: "E-01", expo: "Textile & Fashion Expo Pakistan",    type: "Corner",   size: "44m", status: "Pending",  exhibitor: "Gul Ahmed Textile" },
 ];
 
-// ── Attendees ────────────────────────────────
+//  Attendees 
 export const ATTENDEES = [
   { id: 1,  name: "Ahmed Raza",    email: "ahmed.raza@gmail.com",  expo: "Karachi Technology Expo 2026",       registeredAt: "2026-10-01", status: "Confirmed", sessions: 3 },
   { id: 2,  name: "Sara Khan",     email: "sara.khan@outlook.com", expo: "Karachi Technology Expo 2026",       registeredAt: "2026-10-03", status: "Confirmed", sessions: 2 },
@@ -371,7 +371,7 @@ export const ATTENDEES = [
   { id: 10, name: "Mariam Javed",  email: "mariam.j@gmail.com",    expo: "Textile & Fashion Expo Pakistan",    registeredAt: "2026-10-14", status: "Pending",   sessions: 0 },
 ];
 
-// ── Users ────────────────────────────────────
+//  Users 
 export const USERS = [
   { id: 1, name: "Ahmed Raza",   email: "ahmed.raza@gmail.com",   role: "Attendee",  status: "Active",   joinedAt: "2026-09-12" },
   { id: 2, name: "Sara Khan",    email: "sara.khan@outlook.com",  role: "Attendee",  status: "Active",   joinedAt: "2026-09-18" },
@@ -383,7 +383,7 @@ export const USERS = [
   { id: 8, name: "Fatima Raza",  email: "fatima@gulahmed.com",    role: "Exhibitor", status: "Active",   joinedAt: "2026-10-08" },
 ];
 
-// ── Admin activity ─────────────────────────────
+//  Admin activity 
 export const ADMIN_ACTIVITY = [
   { id: 1, action: "Approved application from K-Electric",          user: "Admin", time: "1 hour ago",  type: "success" },
   { id: 2, action: "Rejected application from HealthTech Solutions", user: "Admin", time: "3 hours ago", type: "error"   },

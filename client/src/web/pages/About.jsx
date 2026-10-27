@@ -18,7 +18,7 @@ const avatarColors = [
 export default function About() {
   return (
     <Layout>
-      {/* ── Header ── */}
+      {/*  Header  */}
       <div className="bg-navy pt-[90px] pb-16 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto max-w-2xl">
           <p className="text-accent text-[11px] font-bold tracking-[0.2em] uppercase mb-4">Our story</p>
@@ -31,7 +31,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── Stats strip ── */}
+      {/*  Stats strip  */}
       <div className="bg-navy-mid border-y border-white/[0.05] px-5 sm:px-8 py-8">
         <div className="max-w-7xl mx-auto flex flex-wrap gap-10">
           {[["2024", "Founded"], ["120+", "Expos hosted"], ["3,400+", "Exhibitors"], ["85,000+", "Attendees"]].map(([v, l]) => (
@@ -43,7 +43,7 @@ export default function About() {
         </div>
       </div>
 
-      {/* ── What we're building ── */}
+      {/*  What we're building  */}
       <section className="bg-surface px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <div>
@@ -52,11 +52,11 @@ export default function About() {
               Planova is an end-to-end expo management platform. Organizers publish events, review exhibitor applications, and assign booths on an interactive floor plan. Exhibitors build profiles and manage their participation. Attendees browse, register, and navigate expos from one account.
             </p>
             <p className="text-body text-[14px] leading-relaxed mb-7">
-              We started with trade shows in Karachi, Lahore, and Islamabad — expanding to every major city in Pakistan.
+              We started with trade shows in Karachi, Lahore, and Islamabad  expanding to every major city in Pakistan.
             </p>
             <Link to="/explore-expos"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-accent text-white font-bold text-[13.5px] hover:bg-accent-hover transition-colors">
-              Browse upcoming expos →
+              Browse upcoming expos 
             </Link>
           </div>
 
@@ -67,7 +67,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Values — horizontal list, not cards ── */}
+      {/*  Values  horizontal list, not cards  */}
       <section className="bg-page px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-[1.6rem] font-black text-dark mb-2">What we stand for</h2>
@@ -75,9 +75,9 @@ export default function About() {
 
           <div className="grid sm:grid-cols-3 gap-x-12 gap-y-10">
             {[
-              { title: "Transparency", desc: "Every application status, booth assignment, and update — visible and trackable in real time by everyone it affects." },
+              { title: "Transparency", desc: "Every application status, booth assignment, and update  visible and trackable in real time by everyone it affects." },
               { title: "Simplicity",   desc: "Managing an expo should not require a team of coordinators. Planova makes it a one-person job." },
-              { title: "Local first",  desc: "Built for Pakistan's expo ecosystem — cities, industries, and payment methods that matter here, not generic SaaS fluff." },
+              { title: "Local first",  desc: "Built for Pakistan's expo ecosystem  cities, industries, and payment methods that matter here, not generic SaaS fluff." },
             ].map((v, i) => (
               <div key={v.title}>
                 <span className="text-[11px] font-black text-accent tracking-[0.15em] uppercase">0{i + 1}</span>
@@ -89,7 +89,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── Team — no cards, just a grid ── */}
+      {/*  Team  no cards, just a grid  */}
       <section className="bg-surface px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-[1.6rem] font-black text-dark mb-1">The team</h2>
@@ -112,12 +112,12 @@ export default function About() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/*  CTA  */}
       <section className="bg-navy px-5 sm:px-8 py-16">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8">
           <div>
             <h2 className="text-[1.5rem] font-black text-white mb-2">Ready to use Planova?</h2>
-            <p className="text-white/35 text-[13.5px]">Whether you're organizing, exhibiting, or attending — start here.</p>
+            <p className="text-white/35 text-[13.5px]">Whether you're organizing, exhibiting, or attending  start here.</p>
           </div>
           <div className="flex flex-wrap gap-3 shrink-0">
             <Link to="/register"

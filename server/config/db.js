@@ -15,6 +15,6 @@ export default async function connectDB() {
 
   cached.conn = await cached.promise;
   global.mongooseConn = cached;
-  console.log(`MongoDB connected → ${cached.conn.connection.host}`);
+  console.log(`MongoDB connected  ${cached.conn.connection.host}`);
   return cached.conn;
 }

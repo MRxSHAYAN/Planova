@@ -14,7 +14,7 @@ export default function Contact() {
 
   return (
     <Layout>
-      {/* ── Header ── */}
+      {/*  Header  */}
       <div className="bg-navy pt-[90px] pb-14 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <p className="text-accent text-[11px] font-bold tracking-[0.2em] uppercase mb-4">Get in touch</p>
@@ -22,12 +22,12 @@ export default function Contact() {
             We'd love to hear from you.
           </h1>
           <p className="text-white/45 text-[14.5px] leading-relaxed max-w-[460px]">
-            Question about an expo, issue with your account, or want to partner — reach out and we'll get back within 24 hours.
+            Question about an expo, issue with your account, or want to partner  reach out and we'll get back within 24 hours.
           </p>
         </div>
       </div>
 
-      {/* ── Form + sidebar ── */}
+      {/*  Form + sidebar  */}
       <section className="bg-page py-14 px-5 sm:px-8">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-[1fr_380px] gap-14">
 
@@ -80,7 +80,7 @@ export default function Contact() {
                     <label className="block text-[12.5px] font-semibold text-dark mb-1.5">Message</label>
                     <textarea name="message" value={form.message}
                       onChange={e => setForm({ ...form, message: e.target.value })} required rows={6}
-                      placeholder="Tell us more…"
+                      placeholder="Tell us more"
                       className="w-full px-4 py-3 rounded-xl border border-border bg-surface text-[13.5px] text-dark placeholder-muted outline-none focus:border-accent transition-colors resize-none" />
                   </div>
 
@@ -121,7 +121,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* ── Bottom CTA ── */}
+      {/*  Bottom CTA  */}
       <section className="bg-navy px-5 sm:px-8 py-14">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-7">
           <div>
@@ -130,7 +130,7 @@ export default function Contact() {
           </div>
           <Link to="/support"
             className="px-6 py-3 rounded-xl bg-accent text-white font-bold text-[13px] hover:bg-accent-hover transition-colors shrink-0">
-            Go to Support →
+            Go to Support 
           </Link>
         </div>
       </section>

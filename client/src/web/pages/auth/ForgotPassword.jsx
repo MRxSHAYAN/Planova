@@ -121,7 +121,7 @@ export default function ForgotPassword() {
       <div className="flex-1 flex items-center justify-center px-6">
         <div className="w-full max-w-[400px]">
 
-          {/* Step 1 — enter email */}
+          {/* Step 1  enter email */}
           {step === "email" && (
             <>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 mx-auto"
@@ -152,7 +152,7 @@ export default function ForgotPassword() {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                     </svg>
                   ) : null}
-                  {loading ? "Sending…" : "Send reset code"}
+                  {loading ? "Sending" : "Send reset code"}
                 </button>
               </form>
 
@@ -163,7 +163,7 @@ export default function ForgotPassword() {
             </>
           )}
 
-          {/* Step 2 — enter OTP + new password */}
+          {/* Step 2  enter OTP + new password */}
           {step === "otp" && (
             <>
               <div className="text-center mb-6">
@@ -207,7 +207,7 @@ export default function ForgotPassword() {
                       ].map(([ok, label]) => (
                         <p key={label} className="text-[11.5px] flex items-center gap-1.5"
                           style={{ color: ok ? "#12875A" : "#94A3B8" }}>
-                          <span>{ok ? "✓" : "·"}</span> {label}
+                          <span>{ok ? "" : ""}</span> {label}
                         </p>
                       ))}
                     </div>
@@ -230,7 +230,7 @@ export default function ForgotPassword() {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                     </svg>
                   ) : null}
-                  {loading ? "Resetting…" : "Reset Password"}
+                  {loading ? "Resetting" : "Reset Password"}
                 </button>
               </form>
 
@@ -259,7 +259,7 @@ export default function ForgotPassword() {
         </div>
       </div>
 
-      <p className="text-center text-[11px] text-border py-4">© 2026 Planova</p>
+      <p className="text-center text-[11px] text-border py-4"> 2026 Planova</p>
     </div>
   );
 }

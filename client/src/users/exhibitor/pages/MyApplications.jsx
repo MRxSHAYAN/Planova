@@ -12,7 +12,7 @@ const TABS = [
 ];
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -87,7 +87,7 @@ function AppCard({ app, onBoothChange }) {
           <div className="px-5 py-3.5 flex flex-wrap gap-x-8 gap-y-2" style={{ background: "#FAFBFF" }}>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "#B0BCC8" }}>Booth Preference</p>
-              <p className="text-[12.5px] font-medium mt-0.5" style={{ color: "#09152E" }}>{app.booth || "—"}</p>
+              <p className="text-[12.5px] font-medium mt-0.5" style={{ color: "#09152E" }}>{app.booth || ""}</p>
             </div>
             <div>
               <p className="text-[10px] font-bold uppercase tracking-wider" style={{ color: "#B0BCC8" }}>Category</p>
@@ -119,13 +119,13 @@ function AppCard({ app, onBoothChange }) {
             {app.status === "approved" && (
               <div className="space-y-3">
                 <span className="text-[12px] font-semibold" style={{ color: "#12875A" }}>
-                  Approved — check My Booths for your assignment
+                  Approved  check My Booths for your assignment
                 </span>
                 {!showChange ? (
                   <button onClick={() => { setShowChange(true); loadBooths(); }}
                     className="block text-[12px] font-semibold transition-colors"
                     style={{ color: "#3478F6" }}>
-                    Request Booth Change →
+                    Request Booth Change 
                   </button>
                 ) : (
                   <div className="space-y-2">
@@ -253,7 +253,7 @@ export default function MyApplications() {
           action={
             <button onClick={() => navigate("/users/dashboard/exhibitor/explore")}
               className="text-[13px] font-bold" style={{ color: "#3478F6" }}>
-              Explore expos →
+              Explore expos 
             </button>
           }
         />

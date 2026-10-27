@@ -10,7 +10,7 @@ function authHeader() {
 }
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -33,7 +33,7 @@ function ExpoModal({ expo, onClose }) {
         <div className="p-5 space-y-3">
           <div className="grid grid-cols-2 gap-3 text-[13px]">
             {[
-              [Calendar, `${formatDate(expo.dateStart)} — ${formatDate(expo.dateEnd)}`],
+              [Calendar, `${formatDate(expo.dateStart)}  ${formatDate(expo.dateEnd)}`],
               [MapPin,   `${expo.venue}, ${expo.city}`],
               [Users,    `${expo.totalBooths} total booths`],
             ].map(([Icon, text], i) => (
@@ -227,7 +227,7 @@ export default function ExpoManagement() {
       const res = await fetch(`/api/expos/${id}/close`, { method: "PUT", headers: authHeader() });
       if (!res.ok) return showToast("Close failed", "err");
       fetchExpos();
-      showToast("Expo closed — data saved, removed from public view");
+      showToast("Expo closed  data saved, removed from public view");
     } catch { showToast("Something went wrong", "err"); }
   }
 
@@ -249,7 +249,7 @@ export default function ExpoManagement() {
         <div>
           <h1 className="text-[1.15rem] font-black text-slate-800">Expo Management</h1>
           <p className="text-slate-400 text-[13px] mt-0.5">
-            {expos.length} expos · {expos.filter(e => e.status === "published").length} published
+            {expos.length} expos  {expos.filter(e => e.status === "published").length} published
           </p>
         </div>
         <button onClick={() => { setEditExpo(null); setShowForm(true); }}
@@ -261,7 +261,7 @@ export default function ExpoManagement() {
       <div className="flex flex-wrap gap-3 mb-5">
         <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 flex-1 min-w-[200px] max-w-sm">
           <Search size={14} className="text-slate-400 shrink-0" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search expos…"
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search expos"
             className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
         </div>
         <select value={filterStatus} onChange={e => setFilter(e.target.value)}

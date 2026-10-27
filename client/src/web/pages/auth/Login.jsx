@@ -86,7 +86,7 @@ export default function Login() {
               Pakistan's expos, one platform.
             </h2>
             <p className="text-white/50 text-[13px] mt-2 max-w-[280px] leading-relaxed">
-              Organizers, exhibitors, and attendees — all managed in one place.
+              Organizers, exhibitors, and attendees  all managed in one place.
             </p>
             <div className="flex gap-7 mt-7 pt-5 border-t border-white/10">
               {[["120+","Expos"],["3,400+","Exhibitors"],["85K+","Attendees"]].map(([n,l]) => (
@@ -131,7 +131,7 @@ export default function Login() {
                 </div>
                 <div className="relative">
                   <input type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
-                    placeholder="••••••••"
+                    placeholder=""
                     className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all" />
                   <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-body transition-colors">
@@ -163,7 +163,7 @@ export default function Login() {
           </div>
         </div>
 
-        <p className="text-center text-[11px] text-border py-4">© 2026 Planova</p>
+        <p className="text-center text-[11px] text-border py-4"> 2026 Planova</p>
       </div>
     </div>
   );

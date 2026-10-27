@@ -323,7 +323,7 @@ export default function ExploreExpos() {
             </div>
             <h2 className="text-white font-black text-[17px] leading-snug mb-1 max-w-sm">{FEATURED.title}</h2>
             <p className="text-[12px] mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
-              {FEATURED.city} · {FEATURED.totalBooths || 0} booths
+              {FEATURED.city}  {FEATURED.totalBooths || 0} booths
             </p>
           </div>
         </div>

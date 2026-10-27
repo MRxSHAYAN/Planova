@@ -93,7 +93,7 @@ export default function Overview() {
             <h2 className="font-bold text-[13.5px] text-slate-700">Recent Applications</h2>
             <button onClick={() => navigate("/admin/applications")}
               className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
-              View all →
+              View all 
             </button>
           </div>
           <div className="divide-y divide-slate-50">
@@ -124,7 +124,7 @@ export default function Overview() {
                 <span className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${activityColors[a.type]}`} />
                 <div>
                   <p className="text-[12.5px] text-slate-700 leading-snug">{a.action}</p>
-                  <p className="text-[11px] text-slate-400 mt-0.5">{a.user} · {a.time}</p>
+                  <p className="text-[11px] text-slate-400 mt-0.5">{a.user}  {a.time}</p>
                 </div>
               </div>
             ))}
@@ -141,7 +141,7 @@ export default function Overview() {
             <h2 className="font-bold text-[13.5px] text-slate-700">Upcoming Expos</h2>
             <button onClick={() => navigate("/admin/expos")}
               className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
-              Manage →
+              Manage 
             </button>
           </div>
           <div className="divide-y divide-slate-50">
@@ -150,7 +150,7 @@ export default function Overview() {
                 <img src={expo.image} alt={expo.title} className="w-10 h-10 rounded-lg object-cover shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-semibold text-slate-700 truncate">{expo.title}</p>
-                  <p className="text-[11.5px] text-slate-400">{expo.startDate} · {expo.venue}</p>
+                  <p className="text-[11.5px] text-slate-400">{expo.startDate}  {expo.venue}</p>
                 </div>
                 <StatusBadge status={expo.status} />
               </div>
@@ -164,7 +164,7 @@ export default function Overview() {
             <h2 className="font-bold text-[13.5px] text-slate-700">Recent Registrations</h2>
             <button onClick={() => navigate("/admin/attendees")}
               className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
-              View all →
+              View all 
             </button>
           </div>
           <div className="divide-y divide-slate-50">
@@ -190,7 +190,7 @@ export default function Overview() {
           <h2 className="font-bold text-[13.5px] text-slate-700">Booth Occupancy Summary</h2>
           <button onClick={() => navigate("/admin/booths")}
             className="text-[12px] text-indigo-500 hover:text-indigo-600 font-semibold transition-colors">
-            Manage booths →
+            Manage booths 
           </button>
         </div>
         <div className="space-y-3">

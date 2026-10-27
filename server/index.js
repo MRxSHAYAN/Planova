@@ -47,8 +47,8 @@ app.get("/api/health", (_req, res) => {
     },
     database: {
       state: STATES[conn.readyState] || "unknown",
-      name: conn.name || "—",
-      host: conn.host || "—",
+      name: conn.name || "",
+      host: conn.host || "",
     },
     time: new Date().toISOString(),
   });
@@ -56,7 +56,7 @@ app.get("/api/health", (_req, res) => {
 const PORT = process.env.PORT || 5000;
 
 if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => console.log(`\n  Planova API → http://localhost:${PORT}\n`));
+  app.listen(PORT, () => console.log(`\n  Planova API  http://localhost:${PORT}\n`));
 }
 
 export default app;

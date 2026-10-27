@@ -1,5 +1,5 @@
 /**
- * StatCard — summary metric tile used on the Overview page.
+ * StatCard  summary metric tile used on the Overview page.
  */
 export default function StatCard({ icon, label, value, sub, accent = false }) {
   return (

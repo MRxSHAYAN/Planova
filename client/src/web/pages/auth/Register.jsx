@@ -28,7 +28,7 @@ function EyeOffIcon() {
   );
 }
 
-// ── OTP input — 6 individual boxes ──────────────
+//  OTP input  6 individual boxes 
 function OTPInput({ value, onChange }) {
   const inputs = useRef([]);
 
@@ -79,7 +79,7 @@ function OTPInput({ value, onChange }) {
   );
 }
 
-// Password requirement checker — same rules as server
+// Password requirement checker  same rules as server
 function pwCheck(pw) {
   return {
     length:  pw.length >= 7,
@@ -88,7 +88,7 @@ function pwCheck(pw) {
   };
 }
 
-// ── Main component ───────────────────────────────
+//  Main component 
 export default function Register() {
   const navigate   = useNavigate();
   const { login }  = useAuth();
@@ -108,7 +108,7 @@ export default function Register() {
     setError("");
   }
 
-  // Submit form → call /register → server sends OTP
+  // Submit form  call /register  server sends OTP
   async function handleFormSubmit(e) {
     e.preventDefault();
     if (!form.name || !form.email || !form.password) return setError("Please fill in all fields.");
@@ -125,7 +125,7 @@ export default function Register() {
       const data = await res.json();
       if (!res.ok) return setError(data.message || "Registration failed");
 
-      // OTP sent — move to OTP step
+      // OTP sent  move to OTP step
       setStep("otp");
       setError("");
     } catch {
@@ -135,7 +135,7 @@ export default function Register() {
     }
   }
 
-  // Submit OTP → call /verify-otp → get token → login
+  // Submit OTP  call /verify-otp  get token  login
   async function handleOTPSubmit(e) {
     e.preventDefault();
     if (otp.length < 6) return setError("Enter the full 6-digit code.");
@@ -204,7 +204,7 @@ export default function Register() {
 
         <div className="flex-1 flex items-center justify-center px-8">
 
-          {/* ── STEP 1: Registration form ── */}
+          {/*  STEP 1: Registration form  */}
           {step === "form" && (
             <div className="w-full max-w-[400px]">
               <h1 className="text-[1.6rem] font-black text-dark mb-1">Create your account</h1>
@@ -212,7 +212,7 @@ export default function Register() {
 
               {/* Role picker */}
               <div className="mb-5">
-                <p className="text-[11.5px] font-bold text-dark uppercase tracking-wider mb-2">I am joining as…</p>
+                <p className="text-[11.5px] font-bold text-dark uppercase tracking-wider mb-2">I am joining as</p>
                 <div className="grid grid-cols-2 gap-2">
                   {ROLES.map(({ id, label, Icon }) => (
                     <button key={id} type="button"
@@ -266,7 +266,7 @@ export default function Register() {
                       ].map(([ok, label]) => (
                         <p key={label} className="text-[11.5px] flex items-center gap-1.5"
                           style={{ color: ok ? "#12875A" : "#94A3B8" }}>
-                          <span>{ok ? "✓" : "·"}</span> {label}
+                          <span>{ok ? "" : ""}</span> {label}
                         </p>
                       ))}
                     </div>
@@ -280,7 +280,7 @@ export default function Register() {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                     </svg>
                   ) : null}
-                  {loading ? "Sending code…" : "Continue"}
+                  {loading ? "Sending code" : "Continue"}
                 </button>
               </form>
 
@@ -291,12 +291,12 @@ export default function Register() {
             </div>
           )}
 
-          {/* ── STEP 2: OTP verification ── */}
+          {/*  STEP 2: OTP verification  */}
           {step === "otp" && (
             <div className="w-full max-w-[380px] text-center">
               <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4"
                 style={{ background: "#E5EEFF" }}>
-                ✉️
+                
               </div>
               <h1 className="text-[1.5rem] font-black text-dark mb-2">Check your email</h1>
               <p className="text-body text-[14px] mb-1">
@@ -321,7 +321,7 @@ export default function Register() {
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                     </svg>
                   ) : null}
-                  {loading ? "Verifying…" : "Verify & Create Account"}
+                  {loading ? "Verifying" : "Verify & Create Account"}
                 </button>
               </form>
 
@@ -333,14 +333,14 @@ export default function Register() {
               </p>
               <button onClick={() => { setStep("form"); setError(""); setOtp(""); }}
                 className="mt-2 text-[12.5px] text-muted hover:text-body">
-                ← Back to form
+                 Back to form
               </button>
             </div>
           )}
 
         </div>
 
-        <p className="text-center text-[11px] text-border py-4">© 2026 Planova</p>
+        <p className="text-center text-[11px] text-border py-4"> 2026 Planova</p>
       </div>
     </div>
   );

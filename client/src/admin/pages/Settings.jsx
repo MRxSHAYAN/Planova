@@ -90,7 +90,7 @@ export default function Settings() {
   async function handleAvatarChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) return showToast("err", "Image too large — max 2MB");
+    if (file.size > 2 * 1024 * 1024) return showToast("err", "Image too large  max 2MB");
 
     setUploadingAvatar(true);
     const reader = new FileReader();
@@ -264,7 +264,7 @@ export default function Settings() {
           )}
         </Section>
 
-        {/* Email — OTP required */}
+        {/* Email  OTP required */}
         <Section title="Email Address">
           {emailStep === "idle" && (
             <div className="flex items-center justify-between">
@@ -310,7 +310,7 @@ export default function Settings() {
           )}
         </Section>
 
-        {/* Password — OTP required */}
+        {/* Password  OTP required */}
         <Section title="Password">
           {pwStep === "idle" && (
             <div className="flex items-center justify-between">

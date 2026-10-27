@@ -40,12 +40,12 @@ function SessionModal({ session, onClose }) {
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <User size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
               <span><strong style={{ color: "#09152E" }}>{session.speaker}</strong>
-                {session.speakerRole && ` · ${session.speakerRole}`}
+                {session.speakerRole && `  ${session.speakerRole}`}
               </span>
             </div>
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <Clock size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
-              {session.time}{session.duration && ` · ${session.duration}`}
+              {session.time}{session.duration && `  ${session.duration}`}
             </div>
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <MapPin size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
@@ -54,7 +54,7 @@ function SessionModal({ session, onClose }) {
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <CalendarDays size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
               {new Date(session.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-              {session.event?.title && ` · ${session.event.title}`}
+              {session.event?.title && `  ${session.event.title}`}
             </div>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function MySchedule() {
       {/* Date picker */}
       <div className="rounded-xl p-4" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
         <p className="text-[13px] font-black mb-3" style={{ color: "#09152E" }}>
-          {currentDate ? dayLabel(currentDate) : "—"} &nbsp;·&nbsp;
+          {currentDate ? dayLabel(currentDate) : ""} &nbsp;&nbsp;
           <span style={{ color: "#94A3B8", fontWeight: 400 }}>{sessionsForDate.length} sessions</span>
         </p>
         <div className="flex gap-2 flex-wrap">
@@ -180,10 +180,10 @@ export default function MySchedule() {
                       <p className="text-[13.5px] font-semibold leading-snug mb-1" style={{ color: "#09152E" }}>{session.title}</p>
                       <p className="text-[12px]" style={{ color: "#64748B" }}>
                         {session.speaker}
-                        {session.speakerRole && <span style={{ color: "#94A3B8" }}> · {session.speakerRole}</span>}
+                        {session.speakerRole && <span style={{ color: "#94A3B8" }}>  {session.speakerRole}</span>}
                       </p>
                       <p className="text-[11.5px] mt-1.5" style={{ color: "#B0BCC8" }}>
-                        {session.room}{session.event?.title && ` · ${session.event.title}`}
+                        {session.room}{session.event?.title && `  ${session.event.title}`}
                       </p>
                     </div>
                     <button className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-colors"
@@ -217,7 +217,7 @@ export default function MySchedule() {
               onClick={() => setModal(s)}>
               <p className="text-[12.5px] font-semibold leading-snug line-clamp-2 mb-1" style={{ color: "#09152E" }}>{s.title}</p>
               <p className="text-[11px]" style={{ color: "#94A3B8" }}>
-                {new Date(s.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })} · {s.time}
+                {new Date(s.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}  {s.time}
               </p>
             </div>
           )) : (

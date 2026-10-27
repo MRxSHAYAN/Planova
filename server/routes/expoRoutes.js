@@ -62,7 +62,7 @@ router.put("/:id", protect, requireRole("admin"), async (req, res) => {
   res.json(expo);
 });
 
-// Admin: close expo (archive — keeps all data, removes from public)
+// Admin: close expo (archive  keeps all data, removes from public)
 router.put("/:id/close", protect, requireRole("admin"), async (req, res) => {
   const expo = await Event.findById(req.params.id);
   if (!expo) return res.status(404).json({ message: "Expo not found" });
@@ -71,7 +71,7 @@ router.put("/:id/close", protect, requireRole("admin"), async (req, res) => {
   res.json({ message: "Expo closed", expo });
 });
 
-// Admin: delete — also removes all sessions for that expo
+// Admin: delete  also removes all sessions for that expo
 router.delete("/:id", protect, requireRole("admin"), async (req, res) => {
   const expo = await Event.findById(req.params.id);
   if (!expo) return res.status(404).json({ message: "Expo not found" });

@@ -5,7 +5,7 @@ import StatusBadge from "../components/StatusBadge";
 const ROLES = ["All", "Admin", "Exhibitor", "Attendee"];
 
 function formatDate(dateStr) {
-  if (!dateStr) return "—";
+  if (!dateStr) return "";
   const d = new Date(dateStr);
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
@@ -84,7 +84,7 @@ export default function Users() {
     <div>
       <div className="mb-5">
         <h1 className="text-[1.15rem] font-black text-slate-800">Users & Roles</h1>
-        <p className="text-slate-400 text-[13px] mt-0.5">{users.length} total users — real data from database.</p>
+        <p className="text-slate-400 text-[13px] mt-0.5">{users.length} total users  real data from database.</p>
       </div>
 
       <div className="grid grid-cols-3 gap-3 mb-5">
@@ -103,7 +103,7 @@ export default function Users() {
       <div className="flex flex-wrap gap-3 mb-5">
         <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 flex-1 min-w-[180px] max-w-sm">
           <Search size={14} className="text-slate-400 shrink-0" />
-          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name or email…"
+          <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search name or email"
             className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
         </div>
         <select value={filterRole} onChange={(e) => setFilterRole(e.target.value)}
@@ -171,7 +171,7 @@ export default function Users() {
                       ) : (
                         <button onClick={() => toggleStatus(u)} disabled={toggling === u._id}
                           className="px-3 py-1.5 rounded-lg border text-[12px] font-semibold border-slate-200 text-slate-500 hover:border-indigo-400 hover:text-indigo-500 transition-colors disabled:opacity-50">
-                          {toggling === u._id ? "…" : u.isActive ? "Deactivate" : "Activate"}
+                          {toggling === u._id ? "" : u.isActive ? "Deactivate" : "Activate"}
                         </button>
                       )}
                     </td>

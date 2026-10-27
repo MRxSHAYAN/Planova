@@ -6,7 +6,7 @@ import EmptyState from "../components/EmptyState";
 import { useAuth } from "../../../context/AuthContext";
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -24,8 +24,8 @@ function BoothCard({ booth, expo }) {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
-            { label: "Size",  value: booth.size || "—" },
-            { label: "Type",  value: booth.type || "—" },
+            { label: "Size",  value: booth.size || "" },
+            { label: "Type",  value: booth.type || "" },
             { label: "Status", value: booth.status },
             { label: "Expo Date", value: formatDate(expo?.dateStart) },
           ].map(({ label, value }) => (
@@ -131,7 +131,7 @@ export default function MyBooths() {
           action={
             <button onClick={() => navigate("/users/dashboard/exhibitor/explore")}
               className="text-[13px] font-bold" style={{ color: "#3478F6" }}>
-              Explore expos →
+              Explore expos 
             </button>
           }
         />

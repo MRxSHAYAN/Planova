@@ -37,7 +37,7 @@ export default function Overview() {
         <div>
           <p className="text-[12px] font-medium" style={{ color: "#3478F6" }}>{greeting}</p>
           <h2 className="text-[22px] font-black leading-tight mt-0.5" style={{ color: "#09152E" }}>
-            {(user?.name || "").split(" ")[0]} 👋
+            {(user?.name || "").split(" ")[0]} 
           </h2>
           <p className="text-[13px] mt-1" style={{ color: "#64748B" }}>
             {registeredCount} event{registeredCount !== 1 ? "s" : ""} registered
@@ -144,7 +144,7 @@ export default function Overview() {
               <p className="text-[14px] font-semibold mb-3" style={{ color: "#09152E" }}>No registered events yet</p>
               <button onClick={() => navigate(`${BASE}/explore`)}
                 className="text-[13px] font-bold" style={{ color: "#3478F6" }}>
-                Browse events →
+                Browse events 
               </button>
             </div>
           )}
@@ -170,7 +170,7 @@ export default function Overview() {
                   className="w-11 h-11 rounded-lg object-cover shrink-0" style={{ background: "#E5EEFF" }} />
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-semibold leading-snug truncate" style={{ color: "#09152E" }}>{ev.title}</p>
-                  <p className="text-[11.5px] mt-0.5" style={{ color: "#94A3B8" }}>{ev.date} · {ev.location}</p>
+                  <p className="text-[11.5px] mt-0.5" style={{ color: "#94A3B8" }}>{ev.date}  {ev.location}</p>
                 </div>
                 <CategoryPill label={ev.category} />
               </div>

@@ -266,7 +266,7 @@ router.post("/confirm-password-change", protect, async (req, res) => {
   res.json(sendUser(user));
 });
 
-// Forgot password step 1 — send OTP to email (no auth needed)
+// Forgot password step 1  send OTP to email (no auth needed)
 router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ message: "Email is required" });
@@ -287,7 +287,7 @@ router.post("/forgot-password", async (req, res) => {
   res.json({ message: "Reset code sent to " + email });
 });
 
-// Forgot password step 2 — verify OTP + set new password (no auth needed)
+// Forgot password step 2  verify OTP + set new password (no auth needed)
 router.post("/reset-password", async (req, res) => {
   const { email, otp, newPassword } = req.body;
   if (!email || !otp || !newPassword)

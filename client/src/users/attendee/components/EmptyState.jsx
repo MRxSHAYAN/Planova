@@ -1,5 +1,5 @@
 /**
- * EmptyState — friendly placeholder when a list is empty.
+ * EmptyState  friendly placeholder when a list is empty.
  */
 export default function EmptyState({ icon, title, message, action }) {
   return (

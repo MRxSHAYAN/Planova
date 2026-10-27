@@ -1,4 +1,4 @@
-// Exhibitor data — imports shared business data from src/data.js
+// Exhibitor data  imports shared business data from src/data.js
 // Company-specific data (profile, applications, booths, products) stays here.
 // When backend is ready, replace the imports with API calls.
 
@@ -6,7 +6,7 @@ import {
   EXPOS as SHARED_EXPOS,
 } from "../../../data.js";
 
-// ── Current company (exhibitor profile) ──────
+//  Current company (exhibitor profile) 
 export const CURRENT_COMPANY = {
   id: "co_001",
   name: "TechBridge Solutions",
@@ -28,7 +28,7 @@ export const CURRENT_COMPANY = {
   memberSince: "January 2025",
 };
 
-// ── Expos (mapped from shared EXPOS) ──────────
+//  Expos (mapped from shared EXPOS) 
 // Adds exhibitor-specific fields like availableBooths, applicationOpen, boothPriceFrom
 export const EXPOS = SHARED_EXPOS.map((e) => ({
   id: `exp_${String(e.id).padStart(3, "0")}`,
@@ -52,13 +52,13 @@ export const EXPOS = SHARED_EXPOS.map((e) => ({
   boothPriceFrom: [45000, 38000, 30000, 28000, 22000, 25000][e.id - 1] || 30000,
 }));
 
-// ── Applications (company-specific, kept local) ─
+//  Applications (company-specific, kept local) 
 export const APPLICATIONS = [
   {
     id: "app_001",
     expoId: "exp_001",
     expoTitle: "Karachi Technology Expo 2026",
-    expoDate: "Nov 15–17, 2026",
+    expoDate: "Nov 1517, 2026",
     expoImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75",
     expoCity: "Karachi",
     appliedDate: "2026-10-02",
@@ -74,12 +74,12 @@ export const APPLICATIONS = [
     id: "app_002",
     expoId: "exp_002",
     expoTitle: "Pakistan Health & Pharma Summit",
-    expoDate: "Dec 3–5, 2026",
+    expoDate: "Dec 35, 2026",
     expoImage: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=700&q=75",
     expoCity: "Lahore",
     appliedDate: "2026-10-05",
     appliedDateLabel: "Oct 5, 2026",
-    boothPreference: "Standard 3×3m booth",
+    boothPreference: "Standard 33m booth",
     category: "Software & IT",
     status: "pending",
     organiserNote: null,
@@ -90,7 +90,7 @@ export const APPLICATIONS = [
     id: "app_003",
     expoId: "exp_004",
     expoTitle: "Agri-Tech Pakistan 2026",
-    expoDate: "Dec 10–12, 2026",
+    expoDate: "Dec 1012, 2026",
     expoImage: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=700&q=75",
     expoCity: "Faisalabad",
     appliedDate: "2026-08-01",
@@ -104,37 +104,37 @@ export const APPLICATIONS = [
   },
 ];
 
-// ── Booths (company-specific, kept local) ─────
+//  Booths (company-specific, kept local) 
 export const BOOTHS = [
   {
     id: "bth_001",
     applicationId: "app_001",
     expoId: "exp_001",
     expoTitle: "Karachi Technology Expo 2026",
-    expoDate: "Nov 15–17, 2026",
+    expoDate: "Nov 1517, 2026",
     expoImage: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&q=75",
     boothNumber: "A-14",
     hall: "Hall A",
     type: "Corner",
-    size: "4 × 4 m",
+    size: "4  4 m",
     level: "Ground Floor",
     setupDeadline: "Nov 14, 2026, 6:00 PM",
     dismantleDeadline: "Nov 17, 2026, 8:00 PM",
     organiserContact: "events@kteexpo.pk",
     instructions:
-      "Setup begins Nov 14 from 9:00 AM. All materials must be cleared by 6:00 PM. Power outlets (2×16A) are included. Wi-Fi credentials will be distributed at the registration desk. No open flames or liquids near electrical equipment.",
+      "Setup begins Nov 14 from 9:00 AM. All materials must be cleared by 6:00 PM. Power outlets (216A) are included. Wi-Fi credentials will be distributed at the registration desk. No open flames or liquids near electrical equipment.",
     status: "confirmed",
   },
 ];
 
-// ── Products (company-specific, kept local) ───
+//  Products (company-specific, kept local) 
 export const PRODUCTS = [
   {
     id: "prd_001",
     name: "TechBridge ERP Suite",
     category: "Enterprise Software",
     description:
-      "An end-to-end ERP platform covering inventory, HR, payroll, procurement, and reporting — built for Pakistani SMEs.",
+      "An end-to-end ERP platform covering inventory, HR, payroll, procurement, and reporting  built for Pakistani SMEs.",
     image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&q=70",
     tags: ["ERP", "SaaS", "SME"],
     showcasing: true,
@@ -161,9 +161,9 @@ export const PRODUCTS = [
   },
 ];
 
-// ── Exhibitor notifications (local) ───────────
+//  Exhibitor notifications (local) 
 
-// ── Style maps (local) ────────────────────────
+//  Style maps (local) 
 export const CATEGORY_COLORS = {
   Technology:       { bg: "#DCE8FF", text: "#09152E" },
   Healthcare:       { bg: "#DDF7E7", text: "#16804A" },

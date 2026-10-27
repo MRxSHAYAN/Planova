@@ -2,7 +2,7 @@ import { Bookmark } from "lucide-react";
 import Badge from "./Badge";
 
 /**
- * SessionRow — schedule agenda item.
+ * SessionRow  schedule agenda item.
  */
 export default function SessionRow({ session, onToggleSave, compact = false }) {
   return (
@@ -10,7 +10,7 @@ export default function SessionRow({ session, onToggleSave, compact = false }) {
       {/* Time */}
       <div className="shrink-0 w-[72px] text-right">
         <span className="text-[12px] font-semibold text-[#3478F6]">{session.timeStart}</span>
-        <span className="block text-[11px] text-[#7A8AA5]">–{session.timeEnd}</span>
+        <span className="block text-[11px] text-[#7A8AA5]">{session.timeEnd}</span>
       </div>
 
       {/* Content */}
@@ -23,13 +23,13 @@ export default function SessionRow({ session, onToggleSave, compact = false }) {
             <p className="text-[12px] text-[#3E506D] mb-1.5">
               {session.speaker}
               {session.speakerRole && (
-                <span className="text-[#7A8AA5]"> · {session.speakerRole}</span>
+                <span className="text-[#7A8AA5]">  {session.speakerRole}</span>
               )}
             </p>
             <div className="flex items-center gap-2 flex-wrap">
               <Badge label={session.category} variant="category" />
               {!compact && (
-                <span className="text-[11px] text-[#7A8AA5]">📍 {session.room}</span>
+                <span className="text-[11px] text-[#7A8AA5]"> {session.room}</span>
               )}
             </div>
           </div>

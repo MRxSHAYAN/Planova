@@ -71,7 +71,7 @@ function ExhibitorModal({ ex, onClose }) {
             ].map(([label, val]) => (
               <div key={label}>
                 <p className="text-[10px] font-bold uppercase tracking-wider text-muted">{label}</p>
-                <p className="text-dark font-medium mt-0.5">{val || "—"}</p>
+                <p className="text-dark font-medium mt-0.5">{val || ""}</p>
               </div>
             ))}
           </div>

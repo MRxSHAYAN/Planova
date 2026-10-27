@@ -45,7 +45,7 @@ export async function updateProfile(data) {
   return body;
 }
 
-// Get initials from a name — "Ali Hassan" → "AH"
+// Get initials from a name  "Ali Hassan"  "AH"
 export function initials(name = "") {
   return name
     .split(" ")

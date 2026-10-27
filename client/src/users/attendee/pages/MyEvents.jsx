@@ -12,7 +12,7 @@ const CAT_COLORS = {
 };
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -44,7 +44,7 @@ function EventCard({ reg, onCancel }) {
           <div className="flex flex-wrap gap-x-4 gap-y-1">
             <span className="flex items-center gap-1.5 text-[12px]" style={{ color: "#64748B" }}>
               <CalendarDays size={11} style={{ color: "#3478F6" }} />
-              {formatDate(expo.dateStart)}{expo.dateEnd ? ` — ${formatDate(expo.dateEnd)}` : ""}
+              {formatDate(expo.dateStart)}{expo.dateEnd ? `  ${formatDate(expo.dateEnd)}` : ""}
             </span>
             <span className="flex items-center gap-1.5 text-[12px]" style={{ color: "#64748B" }}>
               <MapPin size={11} style={{ color: "#3478F6" }} />

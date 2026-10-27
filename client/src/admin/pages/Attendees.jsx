@@ -3,7 +3,7 @@ import { Search, X, Loader2 } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -17,7 +17,7 @@ function AttendeeDetail({ reg, onClose }) {
             {reg.user?.name?.charAt(0) || "?"}
           </div>
           <div className="flex-1">
-            <h2 className="font-black text-slate-800">{reg.user?.name || "—"}</h2>
+            <h2 className="font-black text-slate-800">{reg.user?.name || ""}</h2>
             <p className="text-[12.5px] text-slate-400">{reg.user?.email}</p>
           </div>
           <StatusBadge status={reg.status} />
@@ -27,10 +27,10 @@ function AttendeeDetail({ reg, onClose }) {
         </div>
         <div className="p-5 space-y-0">
           {[
-            ["Registered Expo",  reg.event?.title || "—"],
+            ["Registered Expo",  reg.event?.title || ""],
             ["Registration Date", formatDate(reg.registeredAt)],
             ["Status",           reg.status],
-            ["City",             reg.user?.city || "—"],
+            ["City",             reg.user?.city || ""],
           ].map(([label, val]) => (
             <div key={label} className="flex gap-3 py-2.5 border-b border-slate-50 text-[13px]">
               <span className="font-semibold text-slate-400 w-36 shrink-0">{label}</span>
@@ -76,7 +76,7 @@ export default function Attendees() {
       <div className="mb-5">
         <h1 className="text-[1.15rem] font-black text-slate-800">Attendees & Registrations</h1>
         <p className="text-slate-400 text-[13px] mt-0.5">
-          {regs.length} registrations · {regs.filter(r => r.status === "confirmed").length} confirmed
+          {regs.length} registrations  {regs.filter(r => r.status === "confirmed").length} confirmed
         </p>
       </div>
 
@@ -115,11 +115,11 @@ export default function Attendees() {
                         <div className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-400 to-cyan-600 flex items-center justify-center text-[10px] font-black text-white shrink-0">
                           {reg.user?.name?.charAt(0) || "?"}
                         </div>
-                        <span className="font-semibold text-slate-700 whitespace-nowrap">{reg.user?.name || "—"}</span>
+                        <span className="font-semibold text-slate-700 whitespace-nowrap">{reg.user?.name || ""}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-500">{reg.user?.email || "—"}</td>
-                    <td className="px-4 py-3 text-slate-500 max-w-[160px] truncate">{reg.event?.title || "—"}</td>
+                    <td className="px-4 py-3 text-slate-500">{reg.user?.email || ""}</td>
+                    <td className="px-4 py-3 text-slate-500 max-w-[160px] truncate">{reg.event?.title || ""}</td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">{formatDate(reg.registeredAt)}</td>
                     <td className="px-4 py-3"><StatusBadge status={reg.status} /></td>
                     <td className="px-4 py-3">

@@ -7,7 +7,7 @@ function authHeader() {
 }
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -25,7 +25,7 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
           </div>
           <div className="flex-1">
             <h2 className="font-black text-[1rem] text-slate-800">{app.company}</h2>
-            <p className="text-[12.5px] text-slate-400">{app.city} · {app.category}</p>
+            <p className="text-[12.5px] text-slate-400">{app.city}  {app.category}</p>
           </div>
           <StatusBadge status={app.status} />
           <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-lg hover:bg-slate-100 text-slate-400 transition-colors ml-1">
@@ -40,8 +40,8 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
           </div>
 
           {[
-            ["Expo",           app.event?.title || "—"],
-            ["Booth Preference", app.booth || "—"],
+            ["Expo",           app.event?.title || ""],
+            ["Booth Preference", app.booth || ""],
             ["Contact",        app.contact],
             ["Email",          app.email],
             ["Phone",          app.phone],
@@ -64,7 +64,7 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
             <div>
               <label className="block text-[12px] font-semibold text-slate-600 mb-1">Rejection Reason</label>
               <textarea value={rejectReason} onChange={e => setRejectReason(e.target.value)} rows={3}
-                placeholder="Explain why this application is being rejected…"
+                placeholder="Explain why this application is being rejected"
                 className="w-full px-3 py-2 rounded-lg border border-slate-200 text-[13px] text-slate-700 outline-none focus:border-red-400 resize-none transition-all" />
             </div>
           )}
@@ -166,7 +166,7 @@ export default function Applications() {
       <div className="mb-5">
         <h1 className="text-[1.15rem] font-black text-slate-800">Exhibitor Applications</h1>
         <p className="text-slate-400 text-[13px] mt-0.5">
-          {counts["Pending"]} pending review · {counts["Approved"]} approved
+          {counts["Pending"]} pending review  {counts["Approved"]} approved
         </p>
       </div>
 
@@ -186,7 +186,7 @@ export default function Applications() {
 
       <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 max-w-sm mb-5">
         <Search size={14} className="text-slate-400 shrink-0" />
-        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search company or expo…"
+        <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search company or expo"
           className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
       </div>
 
@@ -216,7 +216,7 @@ export default function Applications() {
                         <span className="font-semibold text-slate-700 whitespace-nowrap">{app.company}</span>
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-slate-500 max-w-[180px] truncate">{app.event?.title || "—"}</td>
+                    <td className="px-4 py-3 text-slate-500 max-w-[180px] truncate">{app.event?.title || ""}</td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">{formatDate(app.appliedAt)}</td>
                     <td className="px-4 py-3 text-slate-500">{app.category}</td>
                     <td className="px-4 py-3"><StatusBadge status={app.status} /></td>

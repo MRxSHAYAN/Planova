@@ -261,7 +261,7 @@ export default function MyProfile() {
         <div className="flex-1 min-w-0">
           <p className="text-[18px] font-black text-white">{profile.name}</p>
           <p className="text-[13px] mt-0.5" style={{ color: "rgba(255,255,255,0.5)" }}>
-            {profile.company || "No company"} · {profile.city || "No city"}
+            {profile.company || "No company"}  {profile.city || "No city"}
           </p>
         </div>
         <span className="text-[10.5px] font-bold px-3 py-1 rounded-full shrink-0 capitalize"

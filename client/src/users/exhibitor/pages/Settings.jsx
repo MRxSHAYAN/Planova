@@ -150,7 +150,7 @@ export default function Settings() {
               className="w-full text-[13.5px] px-3 py-2 rounded-lg outline-none"
               style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }} />
           ) : (
-            <p className="text-[13.5px] font-medium" style={{ color: "#09152E" }}>{name || "—"}</p>
+            <p className="text-[13.5px] font-medium" style={{ color: "#09152E" }}>{name || ""}</p>
           )}
         </div>
         <div className="py-3.5" style={{ borderBottom: "1px solid #F5F7FB" }}>

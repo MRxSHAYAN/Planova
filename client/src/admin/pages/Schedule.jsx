@@ -9,7 +9,7 @@ function authHeader() {
 }
 
 function formatDate(d) {
-  if (!d) return "—";
+  if (!d) return "";
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
@@ -205,7 +205,7 @@ export default function Schedule() {
       <div className="flex flex-wrap gap-3 mb-5">
         <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 flex-1 min-w-[180px] max-w-sm">
           <Search size={14} className="text-slate-400 shrink-0" />
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search session or speaker…"
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search session or speaker"
             className="flex-1 bg-transparent text-[13px] text-slate-700 outline-none placeholder-slate-400" />
         </div>
         <select value={filterExpo} onChange={e => setFilterExpo(e.target.value)}
@@ -239,7 +239,7 @@ export default function Schedule() {
                   <tr key={s._id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3 font-semibold text-slate-700 max-w-[200px]"><p className="truncate">{s.title}</p></td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{s.speaker}</td>
-                    <td className="px-4 py-3 text-slate-400 max-w-[140px] truncate">{s.event?.title || "—"}</td>
+                    <td className="px-4 py-3 text-slate-400 max-w-[140px] truncate">{s.event?.title || ""}</td>
                     <td className="px-4 py-3 text-slate-500 whitespace-nowrap">{formatDate(s.date)}</td>
                     <td className="px-4 py-3 text-slate-500">{s.time}</td>
                     <td className="px-4 py-3 text-slate-500">{s.room}</td>

@@ -1,6 +1,6 @@
 
 /**
- * Planova — Charcoal, Ivory & Burnt Orange
+ * Planova  Charcoal, Ivory & Burnt Orange
  * Direction: Contemporary exhibition / editorial
  */
 

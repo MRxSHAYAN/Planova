@@ -105,7 +105,7 @@ export default function AdminLogin() {
               <div className="relative">
                 <input
                   type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
-                  placeholder="••••••••"
+                  placeholder=""
                   className="w-full px-4 py-2.5 pr-10 rounded-lg bg-[#0F172A] border border-slate-600 text-white text-[14px] placeholder-slate-500 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
                 />
                 <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
@@ -126,7 +126,7 @@ export default function AdminLogin() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                   </svg>
-                  Signing in…
+                  Signing in
                 </>
               ) : "Sign in to Admin Panel"}
             </button>
@@ -134,7 +134,7 @@ export default function AdminLogin() {
         </div>
 
         <p className="text-center text-slate-600 text-[12px] mt-6">
-          © 2026 Planova · Admin Access Only
+           2026 Planova  Admin Access Only
         </p>
       </div>
     </div>

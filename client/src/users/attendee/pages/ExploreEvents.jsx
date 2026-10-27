@@ -180,7 +180,7 @@ export default function ExploreEvents() {
             </div>
             <h2 className="text-white font-black text-[17px] leading-snug mb-1 max-w-xs">{FEATURED.title}</h2>
             <p className="text-[12px] mb-3" style={{ color: "rgba(255,255,255,0.55)" }}>
-              {FEATURED.date} · {FEATURED.location}
+              {FEATURED.date}  {FEATURED.location}
             </p>
             <button className="btn-primary self-start px-4 py-2 text-[12.5px]">View & Register</button>
           </div>
@@ -191,7 +191,7 @@ export default function ExploreEvents() {
         <div className="dash-card flex-1 flex items-center gap-2 px-3 py-2.5">
           <Search size={14} style={{ color: "#94A3B8", flexShrink: 0 }} />
           <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search events, cities, categories…"
+            placeholder="Search events, cities, categories"
             className="flex-1 text-[13px] outline-none bg-transparent" style={{ color: "#09152E" }} />
           {query && <button onClick={() => setQuery("")}><X size={13} style={{ color: "#94A3B8" }} /></button>}
         </div>
