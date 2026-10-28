@@ -92,12 +92,11 @@ router.post("/register", async (req, res) => {
   res.status(201).json({ message: "OTP sent to " + email });
 });
 
-// Verify OTP (registration)
+// Verify OTP (registration) — find the pending (unverified) account for this email
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
   if (!email || !otp) return res.status(400).json({ message: "Email and OTP required" });
 
-  // Find the pending (unverified) account for this email
   const user = await User.findOne({ email, isVerified: false });
   if (!user) return res.status(404).json({ message: "User not found or already verified" });
 
@@ -130,11 +129,10 @@ router.post("/resend-otp", async (req, res) => {
   res.json({ message: "OTP resent to " + email });
 });
 
-// Login
+// Login — look up by email+role so the role card on the login page selects the right account
 router.post("/login", async (req, res) => {
   const { email, password, role } = req.body;
 
-  // If role provided, look up that specific account; otherwise fall back to any match
   const query = role ? { email, role } : { email };
   const user  = await User.findOne(query);
 
@@ -191,11 +189,12 @@ router.put("/profile", protect, async (req, res) => {
 router.post("/request-email-change", protect, async (req, res) => {
   const { newEmail } = req.body;
   if (!newEmail) return res.status(400).json({ message: "New email required" });
-  if (await User.findOne({ email: newEmail, role: user.role }))
-    return res.status(400).json({ message: "Email already in use for this role" });
 
   const user = await User.findById(req.user.userId);
   if (!user) return res.status(404).json({ message: "User not found" });
+
+  if (await User.findOne({ email: newEmail, role: user.role }))
+    return res.status(400).json({ message: "Email already in use for this role" });
 
   setOTP(user, "email-change");
   user.pendingEmail = newEmail;
@@ -269,12 +268,11 @@ router.post("/confirm-password-change", protect, async (req, res) => {
   res.json(sendUser(user));
 });
 
-// Forgot password step 1  send OTP to email (no auth needed)
+// Forgot password step 1 — send OTP to email (no auth needed)
 router.post("/forgot-password", async (req, res) => {
   const { email, role } = req.body;
   if (!email) return res.status(400).json({ message: "Email is required" });
 
-  // If role provided, target that specific account; otherwise find any account
   const query = role ? { email, role } : { email };
   const user  = await User.findOne(query);
   if (!user) return res.json({ message: "If that email exists, a code was sent" });
@@ -292,7 +290,7 @@ router.post("/forgot-password", async (req, res) => {
   res.json({ message: "Reset code sent to " + email });
 });
 
-// Forgot password step 2  verify OTP + set new password (no auth needed)
+// Forgot password step 2 — verify OTP + set new password (no auth needed)
 router.post("/reset-password", async (req, res) => {
   const { email, role, otp, newPassword } = req.body;
   if (!email || !otp || !newPassword)

@@ -103,8 +103,8 @@ export default function ForgotPassword() {
 
   async function resetPassword(e) {
     e.preventDefault();
-    if (otp.length < 6)   return setError("Enter the full 6-digit code");
-    if (!pwValid)         return setError("Password doesn't meet the requirements below");
+    if (otp.length < 6)    return setError("Enter the full 6-digit code");
+    if (!pwValid)          return setError("Password doesn't meet the requirements below");
     if (newPw !== confirm) return setError("Passwords don't match");
 
     setLoading(true);
@@ -128,16 +128,16 @@ export default function ForgotPassword() {
       <div className="flex-1 flex items-center justify-center px-6">
         <div className="w-full max-w-[400px]">
 
-          {/* Step 1  enter email */}
+          {/* Step 1 — enter email + role */}
           {step === "email" && (
             <>
               <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 mx-auto"
                 style={{ background: "#E5EEFF" }}>
-                 <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
               </div>
               <h1 className="text-[1.4rem] font-black text-dark text-center mb-1">Forgot your password?</h1>
-              <p className="text-body text-[14px] text-center mb-7">
-                Enter your email and we'll send you a reset code.
+              <p className="text-body text-[14px] text-center mb-6">
+                Pick your account type and enter your email.
               </p>
 
               {error && (
@@ -163,12 +163,14 @@ export default function ForgotPassword() {
                     ))}
                   </div>
                 </div>
+
                 <div>
                   <label className="block text-[12.5px] font-semibold text-dark mb-1.5">Email address</label>
                   <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setError(""); }}
                     placeholder="you@example.com"
                     className="w-full px-4 py-2.5 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent transition-all" />
                 </div>
+
                 <button type="submit" disabled={loading}
                   className="w-full py-2.5 rounded-lg bg-accent text-white font-bold text-[14px] hover:bg-accent-hover disabled:opacity-60 transition-colors flex items-center justify-center gap-2">
                   {loading ? (
@@ -188,11 +190,11 @@ export default function ForgotPassword() {
             </>
           )}
 
-          {/* Step 2  enter OTP + new password */}
+          {/* Step 2 — enter OTP + new password */}
           {step === "otp" && (
             <>
               <div className="text-center mb-6">
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4"
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4"
                   style={{ background: "#E5EEFF" }}>
                   <svg className="w-5 h-5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
                 </div>
@@ -214,7 +216,7 @@ export default function ForgotPassword() {
                   <div className="relative">
                     <input type={showPw ? "text" : "password"} value={newPw}
                       onChange={(e) => { setNewPw(e.target.value); setError(""); }}
-                      placeholder="Min. 7 chars, one special character"
+                      placeholder="Min. 7 chars, number, special character"
                       className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent transition-all" />
                     <button type="button" tabIndex={-1} onClick={() => setShowPw(v => !v)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-body">
@@ -222,7 +224,6 @@ export default function ForgotPassword() {
                     </button>
                   </div>
 
-                  {/* Live requirement hints */}
                   {newPw.length > 0 && (
                     <div className="mt-2 space-y-1">
                       {[
@@ -281,6 +282,7 @@ export default function ForgotPassword() {
               </button>
             </div>
           )}
+
         </div>
       </div>
 
