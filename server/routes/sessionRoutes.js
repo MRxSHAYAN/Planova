@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Session from "../models/Session.js";
+import Registration from "../models/Registration.js";
 import { protect, requireRole } from "../middleware/authMiddleware.js";
 
 const router = Router();
@@ -9,6 +10,20 @@ router.get("/", async (req, res) => {
   const filter = {};
   if (req.query.event) filter.event = req.query.event;
   const sessions = await Session.find(filter)
+    .populate("event", "title city dateStart dateEnd")
+    .sort({ date: 1, time: 1 });
+  res.json(sessions);
+});
+
+// Attendee: get sessions for expos they are registered for
+router.get("/mine", protect, requireRole("attendee"), async (req, res) => {
+  // Find all expos this attendee has registered for
+  const registrations = await Registration.find({ user: req.user.userId }).select("event");
+  const expoIds = registrations.map(r => r.event);
+
+  if (expoIds.length === 0) return res.json([]);
+
+  const sessions = await Session.find({ event: { $in: expoIds } })
     .populate("event", "title city dateStart dateEnd")
     .sort({ date: 1, time: 1 });
   res.json(sessions);

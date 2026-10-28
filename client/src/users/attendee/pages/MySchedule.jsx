@@ -40,12 +40,12 @@ function SessionModal({ session, onClose }) {
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <User size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
               <span><strong style={{ color: "#09152E" }}>{session.speaker}</strong>
-                {session.speakerRole && `  ${session.speakerRole}`}
+                {session.speakerRole && `  \u2014  ${session.speakerRole}`}
               </span>
             </div>
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <Clock size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
-              {session.time}{session.duration && `  ${session.duration}`}
+              {session.time}{session.duration && `  \u00b7  ${session.duration}`}
             </div>
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <MapPin size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
@@ -54,7 +54,7 @@ function SessionModal({ session, onClose }) {
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <CalendarDays size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
               {new Date(session.date).toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-              {session.event?.title && `  ${session.event.title}`}
+              {session.event?.title && `  \u00b7  ${session.event.title}`}
             </div>
           </div>
         </div>
@@ -72,52 +72,33 @@ function SessionModal({ session, onClose }) {
 export default function MySchedule() {
   const [sessions, setSessions] = useState([]);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState("");
   const [saved,    setSaved]    = useState({});
   const [modal,    setModal]    = useState(null);
   const [dateIdx,  setDateIdx]  = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem("planova_token");
-    const headers = { Authorization: `Bearer ${token}` };
 
-    // Fetch all sessions first, then filter by registered expos if possible
-    fetch("/api/sessions")
-      .then(r => r.json())
-      .then(allSessions => {
-        if (!Array.isArray(allSessions) || allSessions.length === 0) {
-          setSessions([]);
-          setLoading(false);
-          return;
+    fetch("/api/sessions/mine", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async r => {
+        if (!r.ok) {
+          const d = await r.json().catch(() => ({}));
+          throw new Error(d.message || `${r.status}`);
         }
-
-        // Try to get registered expos — if this fails or user has no registrations, show all sessions
-        fetch("/api/registrations/mine", { headers })
-          .then(r => r.ok ? r.json() : [])
-          .then(regs => {
-            if (!Array.isArray(regs) || regs.length === 0) {
-              // No registrations found — show nothing with a clear message
-              setSessions([]);
-              setSaved({});
-            } else {
-              // Convert to strings so ObjectId comparison works reliably
-              const registeredExpoIds = regs.map(r => String(r.event?._id || r.event));
-              const filtered = allSessions.filter(s => {
-                const sessionExpoId = String(s.event?._id || s.event);
-                return registeredExpoIds.includes(sessionExpoId);
-              });
-              setSessions(filtered);
-              const init = {};
-              filtered.forEach(s => { init[s._id] = false; });
-              setSaved(init);
-            }
-          })
-          .catch(() => {
-            // Registrations fetch failed — still show nothing with clear message
-            setSessions([]);
-          })
-          .finally(() => setLoading(false));
+        return r.json();
       })
-      .catch(() => setLoading(false));
+      .then(data => {
+        const list = Array.isArray(data) ? data : [];
+        setSessions(list);
+        const init = {};
+        list.forEach(s => { init[s._id] = false; });
+        setSaved(init);
+      })
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false));
   }, []);
 
   // Build unique sorted date list
@@ -125,7 +106,7 @@ export default function MySchedule() {
     sessions.map(s => new Date(s.date).toDateString())
   )].sort((a, b) => new Date(a) - new Date(b));
 
-  const safeIdx     = Math.min(dateIdx, dates.length - 1);
+  const safeIdx     = Math.min(dateIdx, Math.max(0, dates.length - 1));
   const currentDate = dates[safeIdx];
 
   const sessionsForDate = sessions.filter(s => new Date(s.date).toDateString() === currentDate);
@@ -143,12 +124,20 @@ export default function MySchedule() {
     </div>
   );
 
+  if (error) return (
+    <div className="rounded-xl px-5 py-16 text-center" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
+      <CalendarDays size={24} style={{ color: "#CBD5E1", margin: "0 auto 12px" }} />
+      <p className="text-[14px] font-semibold" style={{ color: "#09152E" }}>Could not load schedule</p>
+      <p className="text-[12.5px] mt-1" style={{ color: "#94A3B8" }}>{error}</p>
+    </div>
+  );
+
   if (sessions.length === 0) return (
     <div className="rounded-xl px-5 py-16 text-center" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
       <CalendarDays size={24} style={{ color: "#CBD5E1", margin: "0 auto 12px" }} />
       <p className="text-[14px] font-semibold" style={{ color: "#09152E" }}>No sessions in your schedule</p>
       <p className="text-[12.5px] mt-1" style={{ color: "#94A3B8" }}>
-        Register for an expo first, then its sessions will appear here.
+        Register for an expo to see its sessions here.
       </p>
     </div>
   );
@@ -159,8 +148,8 @@ export default function MySchedule() {
       {/* Date picker */}
       <div className="rounded-xl p-4" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
         <p className="text-[13px] font-black mb-3" style={{ color: "#09152E" }}>
-          {currentDate ? dayLabel(currentDate) : ""}  
-          <span style={{ color: "#94A3B8", fontWeight: 400 }}>{sessionsForDate.length} sessions</span>
+          {currentDate ? dayLabel(currentDate) : ""}
+          <span className="ml-2" style={{ color: "#94A3B8", fontWeight: 400 }}>{sessionsForDate.length} sessions</span>
         </p>
         <div className="flex gap-2 flex-wrap">
           {dates.map((d, i) => {
@@ -213,7 +202,7 @@ export default function MySchedule() {
                         {session.speakerRole && <span style={{ color: "#94A3B8" }}>  {session.speakerRole}</span>}
                       </p>
                       <p className="text-[11.5px] mt-1.5" style={{ color: "#B0BCC8" }}>
-                        {session.room}{session.event?.title && `  ${session.event.title}`}
+                        {session.room}{session.event?.title && `  \u00b7  ${session.event.title}`}
                       </p>
                     </div>
                     <button className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-colors"
