@@ -129,7 +129,7 @@ export default function MySchedule() {
       {/* Date picker */}
       <div className="rounded-xl p-4" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
         <p className="text-[13px] font-black mb-3" style={{ color: "#09152E" }}>
-          {currentDate ? dayLabel(currentDate) : ""} &nbsp;&nbsp;
+          {currentDate ? dayLabel(currentDate) : ""}  
           <span style={{ color: "#94A3B8", fontWeight: 400 }}>{sessionsForDate.length} sessions</span>
         </p>
         <div className="flex gap-2 flex-wrap">

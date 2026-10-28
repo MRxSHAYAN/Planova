@@ -259,7 +259,7 @@ export default function ForgotPassword() {
         </div>
       </div>
 
-      <p className="text-center text-[11px] text-border py-4">&copy; 2026 Planova</p>
+      <p className="text-center text-[11px] text-border py-4">(c) 2026 Planova</p>
     </div>
   );
 }

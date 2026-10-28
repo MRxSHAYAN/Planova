@@ -343,7 +343,7 @@ export default function Register() {
 
         </div>
 
-        <p className="text-center text-[11px] text-border py-4">2026 Planova</p>
+        <p className="text-center text-[11px] text-border py-4">(c) 2026 Planova</p>
       </div>
     </div>
   );

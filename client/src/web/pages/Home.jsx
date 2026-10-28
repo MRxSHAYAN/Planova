@@ -83,7 +83,7 @@ function ExpoCard({ expo }) {
         <p className="text-[12px] text-muted mb-4 truncate">{expo.venue}</p>
         <div className="mt-auto pt-3 border-t border-border-card flex items-center justify-between">
           <div className="text-[11.5px] text-muted">
-            <span className="text-dark font-semibold">{expo.exhibitors}</span> exhibitors &nbsp;&nbsp;
+            <span className="text-dark font-semibold">{expo.exhibitors}</span> exhibitors  
             <span className="text-dark font-semibold">{expo.attendees.toLocaleString()}</span> attending
           </div>
           <Link to="/explore-expos" className="text-[12px] font-bold text-accent hover:text-accent-hover transition-colors shrink-0 ml-2">

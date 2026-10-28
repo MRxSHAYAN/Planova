@@ -4,13 +4,13 @@ import { protect, requireRole } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-// Public: list available booths for a specific expo (for apply form)
+// Public: available booths for an expo (used in apply form)
 router.get("/expo/:expoId", async (req, res) => {
   const booths = await Booth.find({ event: req.params.expoId, status: "available" }).sort({ boothId: 1 });
   res.json(booths);
 });
-   
-// Get booths assigned to the logged-in exhibitor (by user ID via their approved applications)
+
+// Exhibitor: booths assigned to them (must come before /:id to avoid conflict)
 router.get("/mine", protect, requireRole("exhibitor"), async (req, res) => {
   const Exhibitor = (await import("../models/Exhibitor.js")).default;
   const apps = await Exhibitor.find({ user: req.user.userId, status: "approved" });
@@ -21,15 +21,17 @@ router.get("/mine", protect, requireRole("exhibitor"), async (req, res) => {
   res.json(booths);
 });
 
-// Get booths for an expo
+// List booths (admin/protected, filter by ?event=id)
 router.get("/", protect, async (req, res) => {
   const filter = {};
   if (req.query.event) filter.event = req.query.event;
-  const booths = await Booth.find(filter).sort({ boothId: 1 });
+  const booths = await Booth.find(filter)
+    .populate("event", "title")
+    .sort({ boothId: 1 });
   res.json(booths);
 });
 
-// Admin: create booth
+// Create booth
 router.post("/", protect, requireRole("admin"), async (req, res) => {
   const { boothId, event, type, size } = req.body;
   if (!boothId || !event) return res.status(400).json({ message: "boothId and event are required" });
@@ -41,29 +43,27 @@ router.post("/", protect, requireRole("admin"), async (req, res) => {
   res.status(201).json(booth);
 });
 
-// Admin: assign exhibitor to booth
+// Assign exhibitor
 router.put("/:id/assign", protect, requireRole("admin"), async (req, res) => {
   const booth = await Booth.findById(req.params.id);
   if (!booth) return res.status(404).json({ message: "Booth not found" });
-
   booth.status    = "occupied";
   booth.exhibitor = req.body.exhibitor;
   await booth.save();
   res.json(booth);
 });
 
-// Admin: clear booth assignment
+// Clear assignment
 router.put("/:id/clear", protect, requireRole("admin"), async (req, res) => {
   const booth = await Booth.findById(req.params.id);
   if (!booth) return res.status(404).json({ message: "Booth not found" });
-
   booth.status    = "available";
   booth.exhibitor = null;
   await booth.save();
   res.json(booth);
 });
 
-// Admin: delete booth
+// Delete booth
 router.delete("/:id", protect, requireRole("admin"), async (req, res) => {
   await Booth.findByIdAndDelete(req.params.id);
   res.json({ message: "Booth deleted" });
