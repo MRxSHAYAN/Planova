@@ -1,6 +1,12 @@
 import { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { User, BarChart2 } from "lucide-react";
 import AuthNavbar from "../../components/AuthNavbar";
+
+const ROLES = [
+  { id: "attendee",  label: "Attendee",  Icon: User },
+  { id: "exhibitor", label: "Exhibitor", Icon: BarChart2 },
+];
 
 function EyeIcon() {
   return (
@@ -51,11 +57,11 @@ function OTPInput({ value, onChange }) {
   );
 }
 
-// Password requirement checker
+// Password requirement checker (matches server: 7+ chars, number, special)
 function pwCheck(pw) {
   return {
     length:  pw.length >= 7,
-    letter:  /[a-zA-Z]/.test(pw),
+    number:  /\d/.test(pw),
     special: /[!@#$%^&*()\-_=+\[\]{};':"\\|,.<>\/?~`]/.test(pw),
   };
 }
@@ -66,6 +72,7 @@ export default function ForgotPassword() {
   // "email" | "otp" | "done"
   const [step,    setStep]    = useState("email");
   const [email,   setEmail]   = useState("");
+  const [role,    setRole]    = useState("attendee");
   const [otp,     setOtp]     = useState("");
   const [newPw,   setNewPw]   = useState("");
   const [confirm, setConfirm] = useState("");
@@ -74,7 +81,7 @@ export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
 
   const checks = pwCheck(newPw);
-  const pwValid = checks.length && checks.letter && checks.special;
+  const pwValid = checks.length && checks.number && checks.special;
 
   async function sendOTP(e) {
     e.preventDefault();
@@ -84,7 +91,7 @@ export default function ForgotPassword() {
       const res  = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, role }),
       });
       const data = await res.json();
       if (!res.ok) return setError(data.message || "Failed");
@@ -105,7 +112,7 @@ export default function ForgotPassword() {
       const res  = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, newPassword: newPw }),
+        body: JSON.stringify({ email, role, otp, newPassword: newPw }),
       });
       const data = await res.json();
       if (!res.ok) return setError(data.message || "Failed");
@@ -138,6 +145,24 @@ export default function ForgotPassword() {
               )}
 
               <form onSubmit={sendOTP} className="flex flex-col gap-4">
+                {/* Role picker */}
+                <div>
+                  <p className="text-[11.5px] font-bold text-dark uppercase tracking-wider mb-2">Reset password for</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {ROLES.map(({ id, label, Icon }) => (
+                      <button key={id} type="button"
+                        onClick={() => { setRole(id); setError(""); }}
+                        className={`flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all ${
+                          role === id ? "border-accent bg-accent/5" : "border-border-card bg-page hover:border-border"
+                        }`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${role === id ? "bg-accent" : "bg-ice"}`}>
+                          <Icon size={15} className={role === id ? "text-white" : "text-accent"} />
+                        </div>
+                        <span className={`text-[11.5px] font-bold ${role === id ? "text-accent" : "text-dark"}`}>{label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div>
                   <label className="block text-[12.5px] font-semibold text-dark mb-1.5">Email address</label>
                   <input type="email" value={email} onChange={(e) => { setEmail(e.target.value); setError(""); }}
@@ -202,7 +227,7 @@ export default function ForgotPassword() {
                     <div className="mt-2 space-y-1">
                       {[
                         [checks.length,  "At least 7 characters"],
-                        [checks.letter,  "At least one letter"],
+                        [checks.number,  "At least one number"],
                         [checks.special, "At least one special character (!@#$%^&* etc.)"],
                       ].map(([ok, label]) => (
                         <p key={label} className="text-[11.5px] flex items-center gap-1.5"

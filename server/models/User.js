@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   name:        { type: String, required: true },
-  email:       { type: String, required: true, unique: true, lowercase: true },
+  email:       { type: String, required: true, lowercase: true },
   password:    { type: String, required: true },
   role:        { type: String, enum: ["attendee", "exhibitor", "admin"], default: "attendee" },
   phone:       { type: String },
@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
   pendingEmail:    { type: String },
   pendingPassword: { type: String },
 }, { timestamps: true });
+
+// One account per email+role combo (same email can exist as attendee AND exhibitor)
+userSchema.index({ email: 1, role: 1 }, { unique: true });
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
