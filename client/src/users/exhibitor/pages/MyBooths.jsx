@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { MapPin, Loader2, Mail } from "lucide-react";
+import { MapPin, Loader2 } from "lucide-react";
 import { StatusBadge } from "../components/StatusBadge";
 import EmptyState from "../components/EmptyState";
-import { useAuth } from "../../../context/AuthContext";
 
 function formatDate(d) {
   if (!d) return "";
@@ -49,43 +48,37 @@ function BoothCard({ booth, expo }) {
 
 export default function MyBooths() {
   const navigate = useNavigate();
-  const { user } = useAuth();
-  const [booths,    setBooths]    = useState([]);
-  const [expos,     setExpos]     = useState({});
-  const [apps,      setApps]      = useState([]);
-  const [loading,   setLoading]   = useState(true);
+  const [booths,  setBooths]  = useState([]);
+  const [expos,   setExpos]   = useState({});
+  const [apps,    setApps]    = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("planova_token");
     const headers = { Authorization: `Bearer ${token}` };
 
     Promise.all([
-      fetch("/api/booths", { headers }),
+      fetch("/api/booths/mine", { headers }),
       fetch("/api/applications/mine", { headers }),
     ]).then(async ([bRes, aRes]) => {
       const boothData = await bRes.json();
       const appData   = await aRes.json();
 
-      // Filter booths assigned to this exhibitor's company
-      const companyName = user?.company || user?.name || "";
-      const myBooths = (Array.isArray(boothData) ? boothData : []).filter(
-        b => b.exhibitor === companyName
-      );
+      const myBooths = Array.isArray(boothData) ? boothData : [];
       setBooths(myBooths);
 
-      // Get expo info for each booth
-      const expoIds = [...new Set(myBooths.map(b => b.event?._id || b.event))];
+      // Expo info is already populated from /api/booths/mine
       const expoMap = {};
-      await Promise.all(
-        expoIds.map(id =>
-          fetch(`/api/expos/${id}`).then(r => r.json()).then(e => { expoMap[id] = e; }).catch(() => {})
-        )
-      );
+      myBooths.forEach(b => {
+        const id = b.event?._id || b.event;
+        if (id && b.event?.title) expoMap[id] = b.event;
+      });
       setExpos(expoMap);
 
-      // Find approved apps without a booth (pending assignment)
+      // Approved apps without a booth yet
+      const assignedEventIds = new Set(myBooths.map(b => String(b.event?._id || b.event)));
       const approvedApps = (Array.isArray(appData) ? appData : []).filter(
-        a => a.status === "approved" && !myBooths.find(b => b.event?._id === a.event?._id || b.event === a.event)
+        a => a.status === "approved" && !assignedEventIds.has(String(a.event?._id || a.event))
       );
       setApps(approvedApps);
     }).catch(() => {}).finally(() => setLoading(false));

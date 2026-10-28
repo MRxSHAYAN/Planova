@@ -141,7 +141,15 @@ Requirements: Node.js v18+, MongoDB (local or Atlas)
 2. cd server && npm install
 3. cd client && npm install
 4. Create server/.env (see Section 5)
-5. Get Gmail App Password for SMTP (Google Account > Security > 2FA > App Passwords)
+5. Get Gmail App Password for SMTP
+
+   You need a Gmail App Password (not your real password) for OTP emails.
+   Steps:
+     - Go to myaccount.google.com > Security
+     - Turn on 2-Step Verification
+     - Search "App Passwords", create one, copy the 16-char password
+     - Remove all spaces before pasting into SMTP_PASS in .env
+     - If you paste with spaces, SMTP will fail with error 535
 6. Seed the database: cd server && node seed.js
 7. Start: cd server && npm run dev (port 5000)
 8. Start: cd client && npm run dev (port 5173)
@@ -442,7 +450,7 @@ ADMIN
 Run: cd server && node seed.js
 
 Users (all pre-verified):
-  admin@planova.com / planova123 (admin)
+  admin@planova.com / planovaAdmin123 (admin)
   raza.ahmed@techbridge.pk / exhibitor123 (exhibitor)
   ayesha.siddiqui@email.com / attendee123 (attendee)
   test@test.com / Test@1234 (attendee)
@@ -516,7 +524,7 @@ Set these in Vercel project settings:
 22. TEST CREDENTIALS
 ================================================================================
 
-Admin:       admin@planova.com / planova123
+Admin:       admin@planova.com / planovaAdmin123
 Exhibitor:   raza.ahmed@techbridge.pk / exhibitor123
 Attendee:    ayesha.siddiqui@email.com / attendee123
 Test attendee: test@test.com / Test@1234

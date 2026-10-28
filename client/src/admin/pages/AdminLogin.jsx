@@ -133,8 +133,7 @@ export default function AdminLogin() {
           </form>
         </div>
 
-        <p className="text-center text-slate-600 text-[12px] mt-6">
-           2026 Planova  Admin Access Only
+        <p className="text-center text-slate-600 text-[12px] mt-6">Admin Access Only
         </p>
       </div>
     </div>

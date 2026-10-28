@@ -294,9 +294,12 @@ export default function Register() {
           {/*  STEP 2: OTP verification  */}
           {step === "otp" && (
             <div className="w-full max-w-[380px] text-center">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4"
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
                 style={{ background: "#E5EEFF" }}>
-                
+                <svg className="w-6 h-6 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect width="20" height="16" x="2" y="4" rx="2"/>
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                </svg>
               </div>
               <h1 className="text-[1.5rem] font-black text-dark mb-2">Check your email</h1>
               <p className="text-body text-[14px] mb-1">
@@ -333,14 +336,14 @@ export default function Register() {
               </p>
               <button onClick={() => { setStep("form"); setError(""); setOtp(""); }}
                 className="mt-2 text-[12.5px] text-muted hover:text-body">
-                 Back to form
+                Back to form
               </button>
             </div>
           )}
 
         </div>
 
-        <p className="text-center text-[11px] text-border py-4"> 2026 Planova</p>
+        <p className="text-center text-[11px] text-border py-4">2026 Planova</p>
       </div>
     </div>
   );

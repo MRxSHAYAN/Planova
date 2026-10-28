@@ -66,6 +66,46 @@ cd server && npm run dev    # http://localhost:5000
 cd client && npm run dev    # http://localhost:5173
 ```
 
+### SMTP Setup (required for OTP emails)
+
+All OTP emails (register, forgot password, email change, password change) are sent via Gmail SMTP.
+
+**How to get a Gmail App Password:**
+1. Go to [myaccount.google.com](https://myaccount.google.com)
+2. Security > 2-Step Verification (must be ON)
+3. Search for "App Passwords"
+4. Create one — name it anything (e.g. "Planova")
+5. Copy the 16-character password, **remove all spaces**
+6. Put it in `server/.env` as `SMTP_PASS=yourpasswordwithoutspaces`
+
+```
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your16charapppassword
+```
+
+### Seed Test Data
+
+The database needs at least one admin user and some expos to test properly.
+
+**Create admin:**
+```bash
+# Run this once — creates admin@planova.com / planovaAdmin123
+cd server
+node -e "
+import('./utils/adminSetup.mjs').catch(() => {})
+" 
+```
+
+Or log into your MongoDB and insert manually, or just register via the admin login page after creating the admin through a helper script.
+
+**Faster option — use the admin panel:**
+1. Log in at `http://localhost:5173/admin` with `admin@planova.com` / `planovaAdmin123`
+2. Go to Expo Management > New Expo, create an expo and set status to Published
+3. Go to Booth & Floor Plan > New Booth, select that expo and create some booths
+4. Register as an exhibitor at `/register`, then apply to the expo from the exhibitor dashboard
+
 ## API Endpoints
 
 | Method | Route | Auth | Description |
@@ -150,7 +190,7 @@ cd server && node seed.js
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@planova.com | planova123 |
+| Admin | admin@planova.com | planovaAdmin123 |
 | Exhibitor | raza.ahmed@techbridge.pk | exhibitor123 |
 | Attendee | ayesha.siddiqui@email.com | attendee123 |
 | Test Attendee | test@test.com | Test@1234 |

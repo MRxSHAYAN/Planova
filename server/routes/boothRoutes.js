@@ -9,6 +9,17 @@ router.get("/expo/:expoId", async (req, res) => {
   const booths = await Booth.find({ event: req.params.expoId, status: "available" }).sort({ boothId: 1 });
   res.json(booths);
 });
+   
+// Get booths assigned to the logged-in exhibitor (by user ID via their approved applications)
+router.get("/mine", protect, requireRole("exhibitor"), async (req, res) => {
+  const Exhibitor = (await import("../models/Exhibitor.js")).default;
+  const apps = await Exhibitor.find({ user: req.user.userId, status: "approved" });
+  const companyNames = apps.map(a => a.company);
+  const booths = await Booth.find({ exhibitor: { $in: companyNames } })
+    .populate("event", "title city dateStart dateEnd")
+    .sort({ boothId: 1 });
+  res.json(booths);
+});
 
 // Get booths for an expo
 router.get("/", protect, async (req, res) => {

@@ -40,13 +40,14 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
           </div>
 
           {[
-            ["Expo",           app.event?.title || ""],
+            ["Expo",             app.event?.title || ""],
             ["Booth Preference", app.booth || ""],
-            ["Contact",        app.contact],
-            ["Email",          app.email],
-            ["Phone",          app.phone],
-            ["Applied",        formatDate(app.appliedAt)],
-          ].map(([label, val]) => (
+            ["Booth Change Request", app.boothChangeRequest || ""],
+            ["Contact",          app.contact],
+            ["Email",            app.email],
+            ["Phone",            app.phone],
+            ["Applied",          formatDate(app.appliedAt)],
+          ].filter(([, val]) => val).map(([label, val]) => (
             <div key={label} className="flex gap-3 py-2 border-b border-slate-50 text-[13px]">
               <span className="font-semibold text-slate-400 w-36 shrink-0">{label}</span>
               <span className="text-slate-700">{val}</span>
@@ -219,7 +220,16 @@ export default function Applications() {
                     <td className="px-4 py-3 text-slate-500 max-w-[180px] truncate">{app.event?.title || ""}</td>
                     <td className="px-4 py-3 text-slate-400 whitespace-nowrap">{formatDate(app.appliedAt)}</td>
                     <td className="px-4 py-3 text-slate-500">{app.category}</td>
-                    <td className="px-4 py-3"><StatusBadge status={app.status} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-2">
+                        <StatusBadge status={app.status} />
+                        {app.boothChangeRequest && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">
+                            Booth request
+                          </span>
+                        )}
+                      </div>
+                    </td>
                     <td className="px-4 py-3">
                       <button onClick={() => setSelected(app)}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 text-[12px] font-semibold hover:bg-indigo-100 transition-colors">
