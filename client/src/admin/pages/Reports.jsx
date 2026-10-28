@@ -87,7 +87,7 @@ export default function Reports() {
   const expoPublished = expos.filter(e => e.status === "published" || e.status === "upcoming").length;
   const expoArchived  = expos.filter(e => e.status === "archived").length;
 
-  // Per-expo registration counts (string comparison to avoid ObjectId mismatch)
+  // per-expo counts — use String() to avoid ObjectId comparison issues
   const regsByExpo = expos.map(expo => ({
     title: expo.title,
     count: regs.filter(r => String(r.event?._id || r.event) === String(expo._id)).length,

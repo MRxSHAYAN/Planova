@@ -15,9 +15,8 @@ router.get("/", async (req, res) => {
   res.json(sessions);
 });
 
-// Attendee: get sessions for expos they are registered for
+// GET /mine — sessions for expos the attendee registered for
 router.get("/mine", protect, requireRole("attendee"), async (req, res) => {
-  // Find all expos this attendee has registered for
   const registrations = await Registration.find({ user: req.user.userId }).select("event");
   const expoIds = registrations.map(r => r.event);
 

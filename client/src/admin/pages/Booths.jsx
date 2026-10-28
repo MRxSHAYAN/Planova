@@ -196,18 +196,12 @@ export default function Booths() {
 
   const expoNames = ["All", ...expos.map(e => e.title)];
 
-  // Returns approved applications for the same expo as the selected booth
-  // that haven't already been assigned a booth in that expo.
+  // approved apps for this expo that don't already have a booth
   function getEligible(booth) {
-    // booth.event is a populated object { _id, title } OR a raw ObjectId string
     const expoId = String(booth.event?._id || booth.event);
-
-    // Companies already assigned a booth in this expo (excluding current booth)
     const assignedCompanies = booths
       .filter(b => String(b.event?._id || b.event) === expoId && b.status === "occupied" && b._id !== booth._id)
       .map(b => b.exhibitor);
-
-    // Approved applications for this expo that aren't yet assigned
     return apps.filter(a => {
       const appExpoId = String(a.event?._id || a.event);
       return a.status === "approved"

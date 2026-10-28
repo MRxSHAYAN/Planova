@@ -4,13 +4,13 @@ import { protect, requireRole } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
-// Public: available booths for an expo (used in apply form)
+// GET /expo/:expoId — available booths for an expo
 router.get("/expo/:expoId", async (req, res) => {
   const booths = await Booth.find({ event: req.params.expoId, status: "available" }).sort({ boothId: 1 });
   res.json(booths);
 });
 
-// Exhibitor: booths assigned to them (must come before /:id to avoid conflict)
+// GET /mine — exhibitor's assigned booths (before /:id to avoid route conflict)
 router.get("/mine", protect, requireRole("exhibitor"), async (req, res) => {
   const Exhibitor = (await import("../models/Exhibitor.js")).default;
   const apps = await Exhibitor.find({ user: req.user.userId, status: "approved" });
@@ -21,7 +21,7 @@ router.get("/mine", protect, requireRole("exhibitor"), async (req, res) => {
   res.json(booths);
 });
 
-// List booths (admin/protected, filter by ?event=id)
+// GET / — all booths, optional ?event= filter
 router.get("/", protect, async (req, res) => {
   const filter = {};
   if (req.query.event) filter.event = req.query.event;
@@ -43,7 +43,7 @@ router.post("/", protect, requireRole("admin"), async (req, res) => {
   res.status(201).json(booth);
 });
 
-// Assign exhibitor — also stamps the application's assignedBooth field
+// PUT /:id/assign — assign exhibitor and update their application record
 router.put("/:id/assign", protect, requireRole("admin"), async (req, res) => {
   const booth = await Booth.findById(req.params.id);
   if (!booth) return res.status(404).json({ message: "Booth not found" });
@@ -55,7 +55,7 @@ router.put("/:id/assign", protect, requireRole("admin"), async (req, res) => {
   booth.exhibitor = exhibitorName;
   await booth.save();
 
-  // Also stamp the application so the exhibitor can see their assigned booth
+  // stamp assigned booth on the application (non-critical)
   if (exhibitorId) {
     try {
       const Exhibitor = (await import("../models/Exhibitor.js")).default;

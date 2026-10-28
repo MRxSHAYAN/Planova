@@ -57,7 +57,7 @@ function OTPInput({ value, onChange }) {
   );
 }
 
-// Password requirement checker (matches server: 7+ chars, number, special)
+// password rules: 7+ chars, number, special char
 function pwCheck(pw) {
   return {
     length:  pw.length >= 7,

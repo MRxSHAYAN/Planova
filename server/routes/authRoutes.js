@@ -8,7 +8,7 @@ const router = Router();
 
 const OTP_EXPIRY = 10 * 60 * 1000;
 
-// Password: min 7 chars, at least one number, at least one special character
+// Password: 7+ chars, one number, one special char
 function validatePassword(pw) {
   if (!pw || pw.length < 7)
     return "Password must be at least 7 characters";
@@ -92,7 +92,7 @@ router.post("/register", async (req, res) => {
   res.status(201).json({ message: "OTP sent to " + email });
 });
 
-// Verify OTP (registration) — find the pending (unverified) account for this email
+// Verify OTP — finds the pending (unverified) account
 router.post("/verify-otp", async (req, res) => {
   const { email, otp } = req.body;
   if (!email || !otp) return res.status(400).json({ message: "Email and OTP required" });
@@ -129,7 +129,7 @@ router.post("/resend-otp", async (req, res) => {
   res.json({ message: "OTP resent to " + email });
 });
 
-// Login — look up by email+role so the role card on the login page selects the right account
+// Login — finds account by email+role
 router.post("/login", async (req, res) => {
   const { email, password, role } = req.body;
 
@@ -268,7 +268,7 @@ router.post("/confirm-password-change", protect, async (req, res) => {
   res.json(sendUser(user));
 });
 
-// Forgot password step 1 — send OTP to email (no auth needed)
+// Forgot password — send OTP
 router.post("/forgot-password", async (req, res) => {
   const { email, role } = req.body;
   if (!email) return res.status(400).json({ message: "Email is required" });
@@ -290,7 +290,7 @@ router.post("/forgot-password", async (req, res) => {
   res.json({ message: "Reset code sent to " + email });
 });
 
-// Forgot password step 2 — verify OTP + set new password (no auth needed)
+// Reset password — verify OTP then set new password
 router.post("/reset-password", async (req, res) => {
   const { email, role, otp, newPassword } = req.body;
   if (!email || !otp || !newPassword)
