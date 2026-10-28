@@ -56,7 +56,7 @@ export default function Sidebar({ onClose }) {
           <img src={iconImg} alt="Planova" className="w-7 h-7 object-contain brightness-0 invert opacity-90" />
           <span className="font-black text-white text-[17px] tracking-tight">Planova</span>
         </div>
-        <p className="text-[10.5px] font-medium mt-3 px-0.5" style={{ color: "rgba(255,255,255,0.28)", letterSpacing: "0.04em" }}>
+        <p className="text-[10.5px] font-medium mt-3 px-0.5" style={{ color: "rgba(255,255,255,0.55)", letterSpacing: "0.04em" }}>
           ATTENDEE HUB
         </p>
       </div>
@@ -65,7 +65,7 @@ export default function Sidebar({ onClose }) {
         {NAV_GROUPS.map(({ group, items }) => (
           <div key={group || "_top"}>
             {group && (
-              <p className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.25)" }}>
+              <p className="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,0.55)" }}>
                 {group}
               </p>
             )}
@@ -86,7 +86,7 @@ export default function Sidebar({ onClose }) {
                     style={({ isActive }) =>
                       isActive
                         ? { background: "rgba(52,120,246,0.18)", color: "#fff" }
-                        : { color: "rgba(255,255,255,0.48)" }
+                        : { color: "rgba(255,255,255,0.85)" }
                     }
                   >
                     {({ isActive }) => (
@@ -120,7 +120,7 @@ export default function Sidebar({ onClose }) {
       <div className="px-3 py-3 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
         <button
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-left"
-          style={{ color: "rgba(255,255,255,0.55)" }}
+          style={{ color: "rgba(255,255,255,0.75)" }}
           onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.06)"}
           onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
           onClick={() => { navigate(`${BASE}/profile`); onClose?.(); }}
@@ -135,7 +135,7 @@ export default function Sidebar({ onClose }) {
           )}
           <div className="flex-1 min-w-0">
             <p className="text-[12px] font-semibold text-white truncate leading-none">{user?.name || ""}</p>
-            <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <p className="text-[10.5px] mt-0.5 truncate" style={{ color: "rgba(255,255,255,0.65)" }}>
               {user?.email || ""}
             </p>
           </div>
@@ -143,7 +143,7 @@ export default function Sidebar({ onClose }) {
 
         <button
           className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[12.5px] transition-colors mt-0.5"
-          style={{ color: "rgba(255,255,255,0.3)" }}
+          style={{ color: "rgba(255,255,255,0.55)" }}
           onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.color = "rgba(255,255,255,0.6)"; }}
           onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = "rgba(255,255,255,0.3)"; }}
           onClick={() => { logout(); navigate("/login"); }}

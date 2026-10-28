@@ -15,6 +15,14 @@ const categoryColor = {
 };
 
 function Hero() {
+  const [stats, setStats] = useState({ expos: 0, exhibitors: 0, attendees: 0 });
+
+  useEffect(() => {
+    fetch("/api/expos").then(r => r.json()).then(d => setStats(s => ({ ...s, expos: Array.isArray(d) ? d.length : 0 }))).catch(() => {});
+    fetch("/api/applications/approved").then(r => r.json()).then(d => setStats(s => ({ ...s, exhibitors: Array.isArray(d) ? d.length : 0 }))).catch(() => {});
+    fetch("/api/auth/stats").then(r => r.json()).then(d => setStats(s => ({ ...s, attendees: d.attendees || 0 }))).catch(() => {});
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
       <img src={heroImg} alt="Event venue"
@@ -46,7 +54,7 @@ function Hero() {
             </Link>
           </div>
           <div className="flex gap-8 pt-5 border-t border-white/10">
-            {[["120+", "Expos hosted"], ["3,400+", "Exhibitors"], ["85,000+", "Attendees"]].map(([n, l]) => (
+            {[[stats.expos, "Expos hosted"], [stats.exhibitors, "Exhibitors"], [stats.attendees, "Attendees"]].map(([n, l]) => (
               <div key={l}>
                 <div className="text-[1.3rem] font-black text-white leading-none">{n}</div>
                 <div className="text-[10.5px] text-white/30 mt-0.5 tracking-wide">{l}</div>

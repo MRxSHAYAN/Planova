@@ -8,12 +8,12 @@ const router = Router();
 
 const OTP_EXPIRY = 10 * 60 * 1000;
 
-// Password: min 7 chars, at least one letter, at least one special character
+// Password: min 7 chars, at least one number, at least one special character
 function validatePassword(pw) {
   if (!pw || pw.length < 7)
     return "Password must be at least 7 characters";
-  if (!/[a-zA-Z]/.test(pw))
-    return "Password must contain at least one letter";
+  if (!/\d/.test(pw))
+    return "Password must contain at least one number";
   if (!/[!@#$%^&*()\-_=+\[\]{};':"\\|,.<>\/?~`]/.test(pw))
     return "Password must contain at least one special character (!@#$%^&* etc.)";
   return null;

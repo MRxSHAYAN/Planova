@@ -1,18 +1,22 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { User, BarChart2 } from "lucide-react";
 import LoginImg from "../../assets/Login_Booth.jpg";
 import AuthNavbar from "../../components/AuthNavbar";
 import { useAuth } from "../../../context/AuthContext";
 
+const ROLES = [
+  { id: "attendee",  label: "Attendee",  Icon: User,      desc: "Browse expos, register for sessions." },
+  { id: "exhibitor", label: "Exhibitor", Icon: BarChart2, desc: "Apply to expos, manage your booth." },
+];
+
 function EyeIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-      <circle cx="12" cy="12" r="3"/>
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
     </svg>
   );
 }
-
 function EyeOffIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -29,6 +33,7 @@ export default function Login() {
 
   const [form,     setForm]     = useState({ email: "", password: "" });
   const [showPass, setShowPass] = useState(false);
+  const [role,     setRole]     = useState("attendee");
   const [error,    setError]    = useState("");
   const [loading,  setLoading]  = useState(false);
 
@@ -46,7 +51,7 @@ export default function Login() {
       const res  = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, role }),
       });
       const data = await res.json();
 
@@ -58,7 +63,6 @@ export default function Login() {
         return setError(data.message || "Login failed");
       }
 
-      // Store user synchronously first, then navigate
       login(data);
 
       if (data.role === "attendee")       navigate("/users/dashboard/attendee", { replace: true });
@@ -86,16 +90,8 @@ export default function Login() {
               Pakistan's expos, one platform.
             </h2>
             <p className="text-white/50 text-[13px] mt-2 max-w-[280px] leading-relaxed">
-              Organizers, exhibitors, and attendees  all managed in one place.
+              Organizers, exhibitors, and attendees - all managed in one place.
             </p>
-            <div className="flex gap-7 mt-7 pt-5 border-t border-white/10">
-              {[["120+","Expos"],["3,400+","Exhibitors"],["85K+","Attendees"]].map(([n,l]) => (
-                <div key={l}>
-                  <div className="text-white font-black text-[1.1rem]">{n}</div>
-                  <div className="text-white/35 text-[10px] uppercase tracking-wide mt-0.5">{l}</div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -104,9 +100,31 @@ export default function Login() {
         <AuthNavbar />
 
         <div className="flex-1 flex items-center justify-center px-8">
-          <div className="w-full max-w-[360px]">
+          <div className="w-full max-w-[380px]">
             <h1 className="text-[1.65rem] font-black text-dark leading-tight">Welcome back</h1>
-            <p className="text-body text-[14px] mt-1 mb-7">Log in to your Planova account.</p>
+            <p className="text-body text-[14px] mt-1 mb-5">Log in to your Planova account.</p>
+
+            {/* Role picker - same style as Register */}
+            <div className="mb-5">
+              <p className="text-[11.5px] font-bold text-dark uppercase tracking-wider mb-2">I am logging in as</p>
+              <div className="grid grid-cols-2 gap-2">
+                {ROLES.map(({ id, label, Icon, desc }) => (
+                  <button key={id} type="button"
+                    onClick={() => { setRole(id); setError(""); }}
+                    className={`flex flex-col items-center gap-2 py-3 rounded-xl border-2 transition-all ${
+                      role === id ? "border-accent bg-accent/5" : "border-border-card bg-page hover:border-border"
+                    }`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${role === id ? "bg-accent" : "bg-ice"}`}>
+                      <Icon size={15} className={role === id ? "text-white" : "text-accent"} />
+                    </div>
+                    <span className={`text-[11.5px] font-bold ${role === id ? "text-accent" : "text-dark"}`}>{label}</span>
+                  </button>
+                ))}
+              </div>
+              {ROLES.find(r => r.id === role)?.desc && (
+                <p className="mt-1.5 text-[11.5px] text-muted">{ROLES.find(r => r.id === role).desc}</p>
+              )}
+            </div>
 
             {error && (
               <div className="mb-4 px-4 py-2.5 rounded-lg bg-red-50 border border-red-200 text-red-600 text-[13px]">
@@ -131,7 +149,7 @@ export default function Login() {
                 </div>
                 <div className="relative">
                   <input type={showPass ? "text" : "password"} name="password" value={form.password} onChange={handleChange}
-                    placeholder=""
+                    placeholder="Enter your password"
                     className="w-full px-4 py-2.5 pr-10 rounded-lg bg-page border border-border-card text-dark text-[14px] placeholder-muted outline-none focus:border-accent focus:ring-2 focus:ring-accent/10 transition-all" />
                   <button type="button" tabIndex={-1} onClick={() => setShowPass(v => !v)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-body transition-colors">
@@ -158,6 +176,11 @@ export default function Login() {
               No account?{" "}
               <Link to="/register" className="text-accent hover:text-accent-hover font-semibold transition-colors">
                 Sign up free
+              </Link>
+            </p>
+            <p className="mt-2 text-center">
+              <Link to="/" className="text-[12px] text-muted hover:text-body transition-colors">
+                Back to website
               </Link>
             </p>
           </div>

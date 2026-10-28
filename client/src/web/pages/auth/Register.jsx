@@ -82,8 +82,8 @@ function OTPInput({ value, onChange }) {
 // Password requirement checker  same rules as server
 function pwCheck(pw) {
   return {
-    length:  pw.length >= 7,
-    letter:  /[a-zA-Z]/.test(pw),
+    length: pw.length >= 7,
+    number: /\d/.test(pw),
     special: /[!@#$%^&*()\-_=+\[\]{};':"\\|,.<>\/?~`]/.test(pw),
   };
 }
@@ -112,8 +112,8 @@ export default function Register() {
   async function handleFormSubmit(e) {
     e.preventDefault();
     if (!form.name || !form.email || !form.password) return setError("Please fill in all fields.");
-    if (!checks.length || !checks.letter || !checks.special)
-      return setError("Password must be 7+ characters with at least one letter and one special character");
+    if (!checks.length || !checks.number || !checks.special)
+      return setError("Password must be 7+ characters with at least one number and one special character");
 
     setLoading(true);
     try {
@@ -261,7 +261,7 @@ export default function Register() {
                     <div className="mt-2 space-y-1">
                       {[
                         [checks.length,  "At least 7 characters"],
-                        [checks.letter,  "At least one letter"],
+                        [checks.number,  "At least one number"],
                         [checks.special, "At least one special character (!@#$%^&* etc.)"],
                       ].map(([ok, label]) => (
                         <p key={label} className="text-[11.5px] flex items-center gap-1.5"

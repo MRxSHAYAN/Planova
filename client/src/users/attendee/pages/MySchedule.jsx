@@ -77,19 +77,37 @@ export default function MySchedule() {
   const [dateIdx,  setDateIdx]  = useState(0);
 
   useEffect(() => {
-    fetch("/api/sessions")
+    const token = localStorage.getItem("planova_token");
+    const headers = { Authorization: `Bearer ${token}` };
+
+    // First get the attendee's registered expo IDs
+    fetch("/api/registrations/mine", { headers })
       .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          setSessions(data);
-          // Init saved state
-          const init = {};
-          data.forEach(s => { init[s._id] = false; });
-          setSaved(init);
-        }
+      .then(regs => {
+        if (!Array.isArray(regs)) return [];
+        return regs.map(r => r.event?._id || r.event);
       })
-      .catch(() => {})
-      .finally(() => setLoading(false));
+      .then(registeredExpoIds => {
+        // Then get all sessions
+        fetch("/api/sessions")
+          .then(r => r.json())
+          .then(allSessions => {
+            // Filter to only sessions for expos the attendee registered for
+            const filtered = Array.isArray(allSessions)
+              ? allSessions.filter(s => {
+                  const sessionExpoId = s.event?._id || s.event;
+                  return registeredExpoIds.length === 0 || registeredExpoIds.includes(sessionExpoId);
+                })
+              : [];
+            setSessions(filtered);
+            const init = {};
+            filtered.forEach(s => { init[s._id] = false; });
+            setSaved(init);
+          })
+          .catch(() => {})
+          .finally(() => setLoading(false));
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   // Build unique sorted date list
@@ -118,8 +136,10 @@ export default function MySchedule() {
   if (sessions.length === 0) return (
     <div className="rounded-xl px-5 py-16 text-center" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
       <CalendarDays size={24} style={{ color: "#CBD5E1", margin: "0 auto 12px" }} />
-      <p className="text-[14px] font-semibold" style={{ color: "#09152E" }}>No sessions scheduled yet</p>
-      <p className="text-[12.5px] mt-1" style={{ color: "#94A3B8" }}>Sessions will appear here once the admin adds them.</p>
+      <p className="text-[14px] font-semibold" style={{ color: "#09152E" }}>No sessions in your schedule</p>
+      <p className="text-[12.5px] mt-1" style={{ color: "#94A3B8" }}>
+        Register for an expo first, then its sessions will appear here.
+      </p>
     </div>
   );
 
