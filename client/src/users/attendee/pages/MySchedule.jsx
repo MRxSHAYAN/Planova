@@ -80,31 +80,41 @@ export default function MySchedule() {
     const token = localStorage.getItem("planova_token");
     const headers = { Authorization: `Bearer ${token}` };
 
-    // First get the attendee's registered expo IDs
-    fetch("/api/registrations/mine", { headers })
+    // Fetch all sessions first, then filter by registered expos if possible
+    fetch("/api/sessions")
       .then(r => r.json())
-      .then(regs => {
-        if (!Array.isArray(regs)) return [];
-        return regs.map(r => r.event?._id || r.event);
-      })
-      .then(registeredExpoIds => {
-        // Then get all sessions
-        fetch("/api/sessions")
-          .then(r => r.json())
-          .then(allSessions => {
-            // Filter to only sessions for expos the attendee registered for
-            const filtered = Array.isArray(allSessions)
-              ? allSessions.filter(s => {
-                  const sessionExpoId = s.event?._id || s.event;
-                  return registeredExpoIds.length === 0 || registeredExpoIds.includes(sessionExpoId);
-                })
-              : [];
-            setSessions(filtered);
-            const init = {};
-            filtered.forEach(s => { init[s._id] = false; });
-            setSaved(init);
+      .then(allSessions => {
+        if (!Array.isArray(allSessions) || allSessions.length === 0) {
+          setSessions([]);
+          setLoading(false);
+          return;
+        }
+
+        // Try to get registered expos — if this fails or user has no registrations, show all sessions
+        fetch("/api/registrations/mine", { headers })
+          .then(r => r.ok ? r.json() : [])
+          .then(regs => {
+            if (!Array.isArray(regs) || regs.length === 0) {
+              // No registrations found — show nothing with a clear message
+              setSessions([]);
+              setSaved({});
+            } else {
+              // Convert to strings so ObjectId comparison works reliably
+              const registeredExpoIds = regs.map(r => String(r.event?._id || r.event));
+              const filtered = allSessions.filter(s => {
+                const sessionExpoId = String(s.event?._id || s.event);
+                return registeredExpoIds.includes(sessionExpoId);
+              });
+              setSessions(filtered);
+              const init = {};
+              filtered.forEach(s => { init[s._id] = false; });
+              setSaved(init);
+            }
           })
-          .catch(() => {})
+          .catch(() => {
+            // Registrations fetch failed — still show nothing with clear message
+            setSessions([]);
+          })
           .finally(() => setLoading(false));
       })
       .catch(() => setLoading(false));
