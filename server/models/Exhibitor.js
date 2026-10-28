@@ -14,6 +14,7 @@ const exhibitorSchema = new mongoose.Schema({
   website:      { type: String },
   description:  { type: String, required: true },
   booth:        { type: String },
+  assignedBooth:{ type: String },
   status:       { type: String, enum: ["pending","approved","rejected"], default: "pending" },
   rejectReason: { type: String },
   appliedAt:    { type: Date, default: Date.now },

@@ -43,13 +43,26 @@ router.post("/", protect, requireRole("admin"), async (req, res) => {
   res.status(201).json(booth);
 });
 
-// Assign exhibitor
+// Assign exhibitor — also stamps the application's assignedBooth field
 router.put("/:id/assign", protect, requireRole("admin"), async (req, res) => {
   const booth = await Booth.findById(req.params.id);
   if (!booth) return res.status(404).json({ message: "Booth not found" });
+
+  const { exhibitorId, exhibitorName } = req.body;
+  if (!exhibitorName) return res.status(400).json({ message: "exhibitorName is required" });
+
   booth.status    = "occupied";
-  booth.exhibitor = req.body.exhibitor;
+  booth.exhibitor = exhibitorName;
   await booth.save();
+
+  // Also stamp the application so the exhibitor can see their assigned booth
+  if (exhibitorId) {
+    try {
+      const Exhibitor = (await import("../models/Exhibitor.js")).default;
+      await Exhibitor.findByIdAndUpdate(exhibitorId, { assignedBooth: booth.boothId });
+    } catch { /* non-critical */ }
+  }
+
   res.json(booth);
 });
 
