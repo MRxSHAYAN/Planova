@@ -120,29 +120,83 @@ No leading spaces in .env values -- Nodemailer will fail silently.
 ================================================================================
 6. SEED DATA
 ================================================================================
-Run: cd server && npm run seed
+IMPORTANT: You must run the seed script to populate your database before the app
+will work. Without it, there are no users, expos, or data to log in with.
+
+Run this command:
+
+  cd server && npm run seed
+
+The script wipes all existing data and recreates everything from scratch.
+Safe to re-run any time.
 
 What it creates:
-  1 admin, 8 exhibitor users, 6 attendee users
-  7 expos (6 published, 1 archived) across Karachi, Lahore, Islamabad,
-    Multan, Faisalabad
-  Booths for each expo (prefix-numbered: T-01, M-01, etc.)
-  8 approved exhibitor applications with assigned booths
-  2 pending applications
-  14 sessions with Pakistani speakers and venues
-  12 attendee registrations spread across expos
 
-Safe to re-run -- wipes all existing data first.
+  Users (9 total)
+    1 admin
+    4 exhibitors — Shayan, Hadi, Moeed, Meekail
+    4 attendees  — Hamza, Uzair, Fakir, Haseeb
+
+  Expos (7 total)
+    6 published — TechBridge Pakistan 2026 (Karachi), MediPak Health 2026
+                  (Lahore), GreenPower Energy Summit 2026 (Islamabad),
+                  AgriPak Expo 2026 (Multan), PakFashion Week 2026
+                  (Faisalabad), FoodExpo Pakistan 2026 (Karachi)
+    1 archived  — StartupPak Summit 2025 (Lahore)
+
+  Booths (32 total)
+    T-01 to T-06 for TechBridge expo
+    M-01 to M-06 for MediPak expo
+    E-01 to E-06 for GreenPower expo
+    A-01 to A-06 for AgriPak expo
+    F-01 to F-04 for PakFashion expo
+    FD-01 to FD-04 for FoodExpo
+
+  Applications (6 total)
+    4 approved with assigned booths
+    2 pending
+
+  Sessions (14 total)
+    5 for TechBridge, 3 for MediPak, 2 for GreenPower,
+    2 for AgriPak, 2 for FoodExpo
+
+  Registrations (8 total)
+    Each attendee registered for 2 expos
+
+  Products (9 total)
+    3 for TechBridge Solutions (ERP, Analytics, Security)
+    2 for MediPlus Pakistan (Lab Suite, Mobile App)
+    2 for Green Energy PK (Solar Panel, Battery)
+    2 for Agro Solutions PK (Irrigation, Drone Kit)
+
+  Newsletter subscribers (10 total)
+    Generic Pakistani email subscribers with varied dates
 
 ================================================================================
 7. DEMO CREDENTIALS
 ================================================================================
-  Admin:     admin@planova.com    / Admin@123
-  Exhibitor: raza@techbridge.pk   / Exhibitor@1
-  Attendee:  hamza@gmail.com      / Attendee@1
+All passwords are hashed by the User model pre("save") hook. The seed script
+passes plain passwords — do NOT pre-hash them or login will fail.
 
-Other seeded exhibitors use Exhibitor@1, other attendees use Attendee@1.
-See server/seed.js for all seeded emails.
+  Admin
+    admin@planova.com  /  Admin@123
+
+  Exhibitors (password: Planova@1)
+    shayan@techbridge.pk       (TechBridge Solutions, Karachi)
+    hadi@mediplus.pk             (MediPlus Pakistan, Lahore)
+    moeed@greenenergy.pk         (Green Energy PK, Islamabad)
+    meekail@agrosolutions.pk    (Agro Solutions PK, Multan)
+
+  Attendees (password: Planova@1)
+    hamza@gmail.com    (Karachi)
+    uzair@gmail.com    (Lahore)
+    fakir@gmail.com    (Islamabad)
+    haseeb@gmail.com   (Peshawar)
+
+Login at /login and pick the correct role card (Attendee or Exhibitor) before
+entering credentials. The role card determines which account the server looks up.
+
+Admin login is at /admin/login (separate page, no role card needed).
 
 ================================================================================
 8. DATABASE MODELS
@@ -447,6 +501,51 @@ Only one known incomplete feature remains:
     (shown as "Booth request" badge). There is no dedicated admin UI action
     to approve or decline it -- the admin assigns a new booth manually from
     the Booths page.
+
+================================================================================
+20. WHAT IS LEFT / NOT DONE
+================================================================================
+These features are known gaps. Not broken -- just not built yet.
+
+  Booth change request admin action
+    When an exhibitor requests a booth change, the admin sees a badge in
+    Applications but cannot approve/decline it from the UI. Workaround: admin
+    reassigns the booth manually from the Booths page. A proper flow would
+    need an "Accept" / "Decline" button with the new booth selector.
+
+  Saved exhibitors
+    Attendees can save sessions to DB (done). Saving exhibitors is not
+    implemented -- no SavedExhibitor model or API exists. The SavedItems
+    page only shows sessions right now.
+
+  Attendee Overview right column
+    The attendee Overview page has a 5-col grid (lg:grid-cols-5) but only
+    the left 3-col section renders. The right 2-col panel is empty. A
+    useful addition would be: upcoming sessions for today, or a mini
+    exhibitor spotlight.
+
+  No public expo detail page (/expos/:id)
+    The public Explore Expos page shows a modal for each expo but there is
+    no dedicated shareable URL for a single expo. Adding /expos/:id with
+    full details, session list, and exhibitor list would improve shareability.
+
+  No attendee notifications
+    Attendees receive no in-app or email notification when an expo they
+    registered for is updated, cancelled, or a new session is added.
+
+  No admin email broadcasting
+    Admins cannot send a bulk email to all attendees of an expo (e.g. to
+    share updates or reminders before the event date).
+
+  No image upload
+    Avatar and product images are URL strings. There is no file upload.
+    A production deployment would need cloud storage (S3, Cloudinary, etc.)
+    and a dedicated upload endpoint.
+
+  No pagination
+    All list endpoints return all documents. For production with large datasets,
+    pagination (?page=&limit=) should be added to users, expos, applications,
+    registrations, and products endpoints.
 
 ================================================================================
 END OF DOCUMENTATION

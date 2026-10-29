@@ -67,13 +67,41 @@ cd client && npm install && npm run dev
 
 ## Seed data
 
+You must run the seed script to populate your database before the app works:
+
 ```bash
 cd server && npm run seed
 ```
 
-Seeds 7 expos, 8 exhibitors, 6 attendees, booths, sessions, and applications. Safe to re-run — wipes existing data first.
+Seeds 7 expos, 4 exhibitors (with 9 products), 4 attendees, 32 booths, 14 sessions, 8 registrations, and 10 newsletter subscribers. Wipes existing data first.
 
-## Environment variables
+## Demo credentials
+
+All exhibitors and attendees use `Planova@1` as password.
+
+**Admin** (login at `/admin/login`)
+
+| Email | Password |
+|---|---|
+| admin@planova.com | Admin@123 |
+
+**Exhibitors** (login at `/login`, pick Exhibitor card)
+
+| Name | Email | Company |
+|---|---|---|
+| Shayan | shayan@techbridge.pk | TechBridge Solutions |
+| Hadi | hadi@mediplus.pk | MediPlus Pakistan |
+| Moeed | moeed@greenenergy.pk | Green Energy PK |
+| Meekail | meekail@agrosolutions.pk | Agro Solutions PK |
+
+**Attendees** (login at `/login`, pick Attendee card)
+
+| Name | Email |
+|---|---|
+| Hamza | hamza@gmail.com |
+| Uzair | uzair@gmail.com |
+| Fakir | fakir@gmail.com |
+| Haseeb | haseeb@gmail.com |
 
 Create `server/.env`:
 
@@ -89,14 +117,6 @@ EMAIL_FROM=Planova <you@gmail.com>
 ```
 
 For Gmail, enable 2-factor auth and use an App Password as `SMTP_PASS`.
-
-## Demo credentials
-
-| Role      | Email                  | Password      |
-|-----------|------------------------|---------------|
-| Admin     | admin@planova.com      | Admin@123     |
-| Exhibitor | raza@techbridge.pk     | Exhibitor@1   |
-| Attendee  | hamza@gmail.com        | Attendee@1    |
 
 ## Password rules
 
