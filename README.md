@@ -14,27 +14,63 @@ A MERN stack platform for managing expos, trade shows, and conferences in Pakist
 
 ## Features
 
-**Public site** — home with live stats, expo listings, exhibitor directory, session schedule, contact, newsletter
+**Public site**
+- Home with live stats from DB (expos, exhibitors, attendees)
+- Expo listings with category and city filters
+- Exhibitor directory with product modals
+- Public session schedule
+- Newsletter signup, contact form
 
-**Auth** — register/login as attendee or exhibitor (same email can hold both roles), OTP email verification, forgot password, change email/password with OTP
+**Auth**
+- Register as attendee or exhibitor with OTP email verification
+- Same email can hold both roles as separate accounts
+- Login with role selector (picks the correct account)
+- Forgot password with role selector and OTP reset
+- Change email and password with OTP confirmation
 
-**Attendee dashboard** — explore and register for expos, view registered expos, session schedule filtered to registered expos, exhibitor directory, profile
+**Attendee dashboard** (all live from DB)
+- Overview — registered expos, upcoming sessions, recommended expos
+- Explore Events — browse and register for expos
+- My Events — registered expos with cancel option
+- My Schedule — sessions filtered to registered expos (server-side)
+- Exhibitors — directory with product profiles
+- Profile settings with email/password change
 
-**Exhibitor dashboard** — apply to expos with booth selection, track applications, manage booth and products, profile
+**Exhibitor dashboard** (all live from DB)
+- Overview — application status and booth info
+- Explore Expos — browse and apply with booth selection
+- My Applications — track status, request booth change
+- My Booths — assigned booth details
+- Products — add, edit, delete products visible to attendees
+- Profile and settings
 
-**Admin panel** — manage expos, approve/reject applications, assign booths, manage sessions, view registrations and users, reports and analytics
+**Admin panel** (all live from DB)
+- Overview — user stats, expo list, applications, registrations, sessions, booth occupancy, newsletter subscribers
+- Expo Management — create, edit, publish, archive expos
+- Applications — approve or reject with reason
+- Booths — create single or bulk booths, assign exhibitors, clear assignments
+- Schedule — create and manage sessions per expo
+- Attendees — all registrations, filter by expo
+- Users — list all users, toggle active/inactive
+- Reports — application status, booth occupancy, registrations by expo, sessions by type, 6-month trend chart
 
 ## Getting started
 
 ```bash
-# server
+# server (port 5000)
 cd server && npm install && npm run dev
 
-# client (separate terminal)
+# client (port 5173) — in a separate terminal
 cd client && npm install && npm run dev
 ```
 
-Server runs on `http://localhost:5000`, client on `http://localhost:5173`.
+## Seed data
+
+```bash
+cd server && npm run seed
+```
+
+Seeds 7 expos, 8 exhibitors, 6 attendees, booths, sessions, and applications. Safe to re-run — wipes existing data first.
 
 ## Environment variables
 
@@ -51,46 +87,46 @@ SMTP_PASS=your_app_password
 EMAIL_FROM=Planova <you@gmail.com>
 ```
 
-## Seed data
-
-```bash
-cd server && npm run seed
-```
-
-Seeds 7 expos, 8 exhibitors, 6 attendees, booths, sessions, and applications.
+For Gmail, enable 2-factor auth and use an App Password as `SMTP_PASS`.
 
 ## Demo credentials
 
-| Role      | Email                       | Password      |
-|-----------|-----------------------------|---------------|
-| Admin     | admin@planova.com           | Admin@123     |
-| Exhibitor | raza@techbridge.pk          | Exhibitor@1   |
-| Attendee  | hamza@gmail.com             | Attendee@1    |
+| Role      | Email                  | Password      |
+|-----------|------------------------|---------------|
+| Admin     | admin@planova.com      | Admin@123     |
+| Exhibitor | raza@techbridge.pk     | Exhibitor@1   |
+| Attendee  | hamza@gmail.com        | Attendee@1    |
+
+## Password rules
+
+7+ characters · at least one number · at least one special character
 
 ## Project structure
 
 ```
 client/src/
-  admin/        admin panel
+  admin/          admin panel (pages, components, layout)
   users/
-    attendee/   attendee dashboard
-    exhibitor/  exhibitor dashboard
-  web/          public website
-  context/      auth state
+    attendee/     attendee dashboard
+    exhibitor/    exhibitor dashboard
+  web/            public website
+  context/        AuthContext — JWT token state
 
 server/
-  models/       mongoose schemas
-  routes/       api routes
-  middleware/   auth middleware
-  utils/        jwt, otp, email
-  seed.js       seed script
+  models/         Mongoose schemas
+  routes/         API route handlers
+  middleware/     auth middleware (protect, requireRole)
+  utils/          generateToken, sendEmail (OTP)
+  seed.js         seed script
 ```
 
-## Password rules
+## Known limitations
 
-7+ characters, at least one number, at least one special character.
+- Bookmarking sessions/exhibitors is UI-only (no DB persistence) — SavedItems page shows a placeholder
+- No email notification on application approve/reject (OTP emails work, status-change emails not implemented)
+- Booth change requests from exhibitors show in the application detail but have no dedicated admin action flow
 
-## API routes
+## API reference
 
 | Method | Endpoint | Access | Description |
 |--------|----------|--------|-------------|
@@ -98,27 +134,47 @@ server/
 | POST | /api/auth/verify-otp | public | verify OTP |
 | POST | /api/auth/login | public | login (role-aware) |
 | POST | /api/auth/forgot-password | public | send reset OTP |
-| POST | /api/auth/reset-password | public | reset password |
-| GET | /api/auth/profile | auth | get own profile |
-| PUT | /api/auth/profile | auth | update profile |
-| GET | /api/expos | public | active expos |
+| POST | /api/auth/reset-password | public | reset password with OTP |
+| GET/PUT | /api/auth/profile | auth | get / update own profile |
+| POST | /api/auth/request-email-change | auth | OTP to new email |
+| POST | /api/auth/confirm-email-change | auth | confirm new email |
+| POST | /api/auth/request-password-change | auth | OTP for password change |
+| POST | /api/auth/confirm-password-change | auth | confirm new password |
+| GET | /api/expos | public | published expos |
 | GET | /api/expos/all | admin | all expos |
 | POST | /api/expos | admin | create expo |
+| PUT | /api/expos/:id | admin | update expo |
+| PUT | /api/expos/:id/close | admin | archive expo |
 | GET | /api/sessions | public | all sessions |
 | GET | /api/sessions/mine | attendee | sessions for registered expos |
+| POST | /api/sessions | admin | create session |
+| PUT/DELETE | /api/sessions/:id | admin | update / delete session |
 | POST | /api/registrations | attendee | register for expo |
 | GET | /api/registrations/mine | attendee | own registrations |
+| DELETE | /api/registrations/:id | attendee | cancel registration |
 | GET | /api/registrations | admin | all registrations |
 | POST | /api/applications | exhibitor | apply to expo |
 | GET | /api/applications/mine | exhibitor | own applications |
+| PUT | /api/applications/:id/booth-change | exhibitor | request booth change |
 | GET | /api/applications | admin | all applications |
-| PUT | /api/applications/:id/approve | admin | approve application |
-| PUT | /api/applications/:id/reject | admin | reject application |
+| PUT | /api/applications/:id/approve | admin | approve |
+| PUT | /api/applications/:id/reject | admin | reject |
 | GET | /api/booths/expo/:id | public | available booths for expo |
+| GET | /api/booths/mine | exhibitor | own assigned booth |
 | GET | /api/booths | admin | all booths |
-| PUT | /api/booths/:id/assign | admin | assign exhibitor to booth |
+| POST | /api/booths | admin | create booth |
+| PUT | /api/booths/:id/assign | admin | assign exhibitor |
+| PUT | /api/booths/:id/clear | admin | clear assignment |
+| DELETE | /api/booths/:id | admin | delete booth |
 | GET | /api/products | public | all products |
 | GET | /api/products/mine | exhibitor | own products |
+| POST | /api/products | exhibitor | add product |
+| PUT/DELETE | /api/products/:id | exhibitor | update / delete product |
+| POST | /api/newsletter/subscribe | public | subscribe |
+| GET | /api/newsletter/subscribers | admin | all subscribers |
+| GET | /api/auth/stats | admin | user count stats |
+| GET | /api/auth/users | admin | all users |
+| PUT | /api/auth/users/:id/status | admin | toggle active/inactive |
 
 ---
 

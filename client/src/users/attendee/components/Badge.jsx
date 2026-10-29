@@ -1,9 +1,5 @@
 import { CATEGORY_COLORS } from "../data/mockData";
 
-/**
- * Reusable badge / pill component.
- * Uses category color map or falls back to a neutral style.
- */
 export default function Badge({ label, variant = "category", className = "" }) {
   if (variant === "category") {
     const colors = CATEGORY_COLORS[label];
