@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Exhibitor from "../models/Exhibitor.js";
 import { protect, requireRole } from "../middleware/authMiddleware.js";
+import { sendApplicationStatusEmail } from "../utils/sendEmail.js";
 
 const router = Router();
 
@@ -59,6 +60,12 @@ router.put("/:id/approve", protect, requireRole("admin"), async (req, res) => {
   app.status     = "approved";
   app.reviewedAt = new Date();
   await app.save();
+
+  try {
+    const expo = await (await import("../models/Event.js")).default.findById(app.event);
+    await sendApplicationStatusEmail(app.email, app.company, expo?.title || "the expo", "approved");
+  } catch { /* email is non-critical */ }
+
   res.json(app);
 });
 
@@ -71,6 +78,12 @@ router.put("/:id/reject", protect, requireRole("admin"), async (req, res) => {
   app.rejectReason = req.body.reason || "";
   app.reviewedAt   = new Date();
   await app.save();
+
+  try {
+    const expo = await (await import("../models/Event.js")).default.findById(app.event);
+    await sendApplicationStatusEmail(app.email, app.company, expo?.title || "the expo", "rejected", app.rejectReason);
+  } catch { /* email is non-critical */ }
+
   res.json(app);
 });
 

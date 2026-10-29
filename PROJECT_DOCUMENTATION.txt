@@ -256,6 +256,11 @@ Newsletter -- /api/newsletter/
   POST   /subscribe                 subscribe email (public)
   GET    /subscribers               list all (admin)
 
+SavedSessions -- /api/saved-sessions/
+  GET    /                          get saved sessions (attendee)
+  POST   /                          save a session (attendee)
+  DELETE /:sessionId                unsave a session (attendee)
+
 ================================================================================
 10. AUTH & OTP SYSTEM
 ================================================================================
@@ -310,11 +315,14 @@ Email types:
   "email-change"     -- confirm new email address
   "password-change"  -- confirm password change
   "forgot-password"  -- reset forgotten password
+  "app-approved"     -- application approved by admin
+  "app-rejected"     -- application rejected by admin (includes reason)
 
 Each email is styled HTML with the 6-digit code prominently displayed.
 
-Note: no email is sent when an admin approves or rejects an application.
-That is a known limitation (see section 19).
+Application status emails are sent via sendApplicationStatusEmail() in sendEmail.js
+when an admin approves or rejects from the Applications page. If SMTP is not
+configured the action still completes -- email failure is non-critical.
 
 ================================================================================
 13. MULTI-ROLE ACCOUNTS
@@ -431,28 +439,14 @@ avoid MongoDB ObjectId reference equality issues in JavaScript.
 ================================================================================
 19. KNOWN LIMITATIONS
 ================================================================================
-These are known incomplete or missing features:
-
-  Bookmarks / saved items
-    Bookmarking sessions and exhibitors is local state only (no DB model).
-    The SavedItems page shows a placeholder directing users to My Events
-    and My Schedule.
-
-  Application status emails
-    When an admin approves or rejects an exhibitor application, no email
-    is sent to the exhibitor. They can check status in My Applications.
-    OTP emails (verify, password reset, etc.) do work.
+Only one known incomplete feature remains:
 
   Booth change request admin flow
     Exhibitors can request a booth change from My Applications.
     The request appears in the application detail modal in the admin panel
-    (shown as "Booth request" badge). However, there is no dedicated admin
-    UI action to approve or decline it -- the admin would manually assign
-    a new booth from the Booths page.
-
-  Saved items persistence
-    No savedSessions or savedExhibitors collection. The bookmark icon in
-    MySchedule saves to component state only (lost on page refresh).
+    (shown as "Booth request" badge). There is no dedicated admin UI action
+    to approve or decline it -- the admin assigns a new booth manually from
+    the Booths page.
 
 ================================================================================
 END OF DOCUMENTATION

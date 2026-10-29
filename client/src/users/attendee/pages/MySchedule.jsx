@@ -27,7 +27,7 @@ function SessionModal({ session, onClose }) {
             <span className="text-[10.5px] font-semibold px-2 py-0.5 rounded-full" style={{ background: c.bg, color: c.text }}>{session.type}</span>
             <h3 className="text-[15px] font-black leading-snug mt-2" style={{ color: "#09152E" }}>{session.title}</h3>
           </div>
-          <button className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5 transition-colors"
+          <button className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 mt-0.5"
             style={{ background: "#F0F3FA", color: "#64748B" }} onClick={onClose}>
             <X size={14} />
           </button>
@@ -39,7 +39,8 @@ function SessionModal({ session, onClose }) {
           <div className="rounded-lg p-3 space-y-2.5" style={{ background: "#F5F8FF" }}>
             <div className="flex items-center gap-2.5 text-[12.5px]" style={{ color: "#3E506D" }}>
               <User size={13} style={{ color: "#3478F6", flexShrink: 0 }} />
-              <span><strong style={{ color: "#09152E" }}>{session.speaker}</strong>
+              <span>
+                <strong style={{ color: "#09152E" }}>{session.speaker}</strong>
                 {session.speakerRole && `  \u2014  ${session.speakerRole}`}
               </span>
             </div>
@@ -59,7 +60,7 @@ function SessionModal({ session, onClose }) {
           </div>
         </div>
         <div className="px-5 py-4" style={{ borderTop: "1px solid #F0F3FA" }}>
-          <button className="w-full py-2.5 rounded-lg text-[13px] font-bold text-white transition-colors"
+          <button className="w-full py-2.5 rounded-lg text-[13px] font-bold text-white"
             style={{ background: "#09152E" }} onClick={onClose}>
             Close
           </button>
@@ -77,42 +78,55 @@ export default function MySchedule() {
   const [modal,    setModal]    = useState(null);
   const [dateIdx,  setDateIdx]  = useState(0);
 
-  useEffect(() => {
-    const token = localStorage.getItem("planova_token");
+  const token = localStorage.getItem("planova_token");
+  const auth  = { Authorization: `Bearer ${token}` };
 
-    fetch("/api/sessions/mine", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then(async r => {
-        if (!r.ok) {
-          const d = await r.json().catch(() => ({}));
-          throw new Error(d.message || `${r.status}`);
-        }
-        return r.json();
-      })
-      .then(data => {
-        const list = Array.isArray(data) ? data : [];
+  useEffect(() => {
+    Promise.all([
+      fetch("/api/sessions/mine",  { headers: auth }).then(r => r.json()),
+      fetch("/api/saved-sessions", { headers: auth }).then(r => r.json()),
+    ])
+      .then(([sessData, savedData]) => {
+        const list = Array.isArray(sessData) ? sessData : [];
         setSessions(list);
-        const init = {};
-        list.forEach(s => { init[s._id] = false; });
-        setSaved(init);
+        const map = {};
+        if (Array.isArray(savedData)) {
+          savedData.forEach(s => {
+            const id = String(s.session?._id || s.session);
+            if (id) map[id] = true;
+          });
+        }
+        setSaved(map);
       })
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
   }, []);
 
-  // Build unique sorted date list
-  const dates = [...new Set(
-    sessions.map(s => new Date(s.date).toDateString())
-  )].sort((a, b) => new Date(a) - new Date(b));
+  async function toggleSave(id) {
+    const isSaved = !!saved[id];
+    setSaved(p => ({ ...p, [id]: !isSaved }));
+    try {
+      if (isSaved) {
+        await fetch(`/api/saved-sessions/${id}`, { method: "DELETE", headers: auth });
+      } else {
+        await fetch("/api/saved-sessions", {
+          method: "POST",
+          headers: { ...auth, "Content-Type": "application/json" },
+          body: JSON.stringify({ sessionId: id }),
+        });
+      }
+    } catch {
+      setSaved(p => ({ ...p, [id]: isSaved }));
+    }
+  }
+
+  const dates = [...new Set(sessions.map(s => new Date(s.date).toDateString()))]
+    .sort((a, b) => new Date(a) - new Date(b));
 
   const safeIdx     = Math.min(dateIdx, Math.max(0, dates.length - 1));
   const currentDate = dates[safeIdx];
-
   const sessionsForDate = sessions.filter(s => new Date(s.date).toDateString() === currentDate);
   const savedSessions   = sessions.filter(s => saved[s._id]);
-
-  function toggleSave(id) { setSaved(p => ({ ...p, [id]: !p[id] })); }
 
   function dayLabel(d) {
     return new Date(d).toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
@@ -136,16 +150,14 @@ export default function MySchedule() {
     <div className="rounded-xl px-5 py-16 text-center" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
       <CalendarDays size={24} style={{ color: "#CBD5E1", margin: "0 auto 12px" }} />
       <p className="text-[14px] font-semibold" style={{ color: "#09152E" }}>No sessions in your schedule</p>
-      <p className="text-[12.5px] mt-1" style={{ color: "#94A3B8" }}>
-        Register for an expo to see its sessions here.
-      </p>
+      <p className="text-[12.5px] mt-1" style={{ color: "#94A3B8" }}>Register for an expo to see its sessions here.</p>
     </div>
   );
 
   return (
     <div className="space-y-5">
 
-      {/* Date picker */}
+      {/* Date tabs */}
       <div className="rounded-xl p-4" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
         <p className="text-[13px] font-black mb-3" style={{ color: "#09152E" }}>
           {currentDate ? dayLabel(currentDate) : ""}
@@ -170,6 +182,7 @@ export default function MySchedule() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-4">
+
         {/* Agenda */}
         <div className="lg:col-span-2 rounded-xl overflow-hidden" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
           <div className="px-5 py-3.5" style={{ borderBottom: "1px solid #F0F3FA" }}>
@@ -180,10 +193,10 @@ export default function MySchedule() {
 
           {sessionsForDate.length > 0 ? sessionsForDate.map((session, i) => {
             const barColor = BAR_COLORS[session.type] || "#3478F6";
-            const isSaved  = saved[session._id];
+            const isSaved  = !!saved[session._id];
             return (
               <div key={session._id}
-                className="flex gap-0 cursor-pointer transition-colors"
+                className="flex cursor-pointer transition-colors"
                 style={{ borderBottom: i < sessionsForDate.length - 1 ? "1px solid #F5F7FB" : "none" }}
                 onMouseEnter={e => e.currentTarget.style.background = "#FAFBFF"}
                 onMouseLeave={e => e.currentTarget.style.background = "transparent"}
@@ -222,10 +235,10 @@ export default function MySchedule() {
           )}
         </div>
 
-        {/* Saved sessions */}
+        {/* Saved sessions panel */}
         <div className="rounded-xl" style={{ background: "#fff", border: "1px solid #E8EEF8" }}>
           <div className="px-5 py-3.5" style={{ borderBottom: "1px solid #F0F3FA" }}>
-            <p className="text-[13px] font-black" style={{ color: "#09152E" }}>Saved Sessions</p>
+            <p className="text-[13px] font-black" style={{ color: "#09152E" }}>Saved</p>
             <p className="text-[11.5px] mt-0.5" style={{ color: "#94A3B8" }}>{savedSessions.length} bookmarked</p>
           </div>
           {savedSessions.length > 0 ? savedSessions.map((s, i) => (
@@ -236,7 +249,7 @@ export default function MySchedule() {
               onClick={() => setModal(s)}>
               <p className="text-[12.5px] font-semibold leading-snug line-clamp-2 mb-1" style={{ color: "#09152E" }}>{s.title}</p>
               <p className="text-[11px]" style={{ color: "#94A3B8" }}>
-                {new Date(s.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}  {s.time}
+                {new Date(s.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })} · {s.time}
               </p>
             </div>
           )) : (

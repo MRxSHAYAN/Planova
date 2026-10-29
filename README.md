@@ -32,7 +32,8 @@ A MERN stack platform for managing expos, trade shows, and conferences in Pakist
 - Overview — registered expos, upcoming sessions, recommended expos
 - Explore Events — browse and register for expos
 - My Events — registered expos with cancel option
-- My Schedule — sessions filtered to registered expos (server-side)
+- My Schedule — sessions filtered to registered expos, bookmark sessions (persisted to DB)
+- Saved Items — bookmarked sessions fetched from DB, remove with one click
 - Exhibitors — directory with product profiles
 - Profile settings with email/password change
 
@@ -47,7 +48,7 @@ A MERN stack platform for managing expos, trade shows, and conferences in Pakist
 **Admin panel** (all live from DB)
 - Overview — user stats, expo list, applications, registrations, sessions, booth occupancy, newsletter subscribers
 - Expo Management — create, edit, publish, archive expos
-- Applications — approve or reject with reason
+- Applications — approve or reject with reason; email notification sent to exhibitor on status change
 - Booths — create single or bulk booths, assign exhibitors, clear assignments
 - Schedule — create and manage sessions per expo
 - Attendees — all registrations, filter by expo
@@ -122,9 +123,7 @@ server/
 
 ## Known limitations
 
-- Bookmarking sessions/exhibitors is UI-only (no DB persistence) — SavedItems page shows a placeholder
-- No email notification on application approve/reject (OTP emails work, status-change emails not implemented)
-- Booth change requests from exhibitors show in the application detail but have no dedicated admin action flow
+- Booth change requests from exhibitors show in the application detail but have no dedicated admin action flow — admin can manually reassign from the Booths page
 
 ## API reference
 
@@ -175,6 +174,9 @@ server/
 | GET | /api/auth/stats | admin | user count stats |
 | GET | /api/auth/users | admin | all users |
 | PUT | /api/auth/users/:id/status | admin | toggle active/inactive |
+| GET | /api/saved-sessions | attendee | get saved sessions |
+| POST | /api/saved-sessions | attendee | save a session |
+| DELETE | /api/saved-sessions/:sessionId | attendee | unsave a session |
 
 ---
 

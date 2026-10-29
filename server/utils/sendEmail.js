@@ -81,6 +81,55 @@ export async function sendOTPEmail(to, otp, purpose = "verify") {
   });
 }
 
+export async function sendApplicationStatusEmail(to, companyName, expoTitle, status, rejectReason = "") {
+  const approved = status === "approved";
+  const subject  = approved
+    ? `Planova - Application approved: ${expoTitle}`
+    : `Planova - Application update: ${expoTitle}`;
+
+  const body = approved
+    ? `
+      <p style="color:#64748B;font-size:14px;margin:0 0 12px">
+        Good news, <strong style="color:#09152E">${companyName}</strong>.
+      </p>
+      <div style="background:#DDF7E7;border-radius:10px;padding:16px 20px;margin-bottom:16px">
+        <p style="color:#12875A;font-size:15px;font-weight:700;margin:0">
+          Your application for <strong>${expoTitle}</strong> has been approved.
+        </p>
+      </div>
+      <p style="color:#64748B;font-size:14px;margin:0">
+        Log in to your exhibitor dashboard to check your assigned booth.
+      </p>
+    `
+    : `
+      <p style="color:#64748B;font-size:14px;margin:0 0 12px">
+        Hi <strong style="color:#09152E">${companyName}</strong>,
+      </p>
+      <div style="background:#FEE2E2;border-radius:10px;padding:16px 20px;margin-bottom:16px">
+        <p style="color:#B91C1C;font-size:15px;font-weight:700;margin:0 0 6px">
+          Your application for <strong>${expoTitle}</strong> was not accepted.
+        </p>
+        ${rejectReason ? `<p style="color:#991B1B;font-size:13px;margin:0">Reason: ${rejectReason}</p>` : ""}
+      </div>
+      <p style="color:#64748B;font-size:14px;margin:0">
+        You can apply to other expos from your exhibitor dashboard.
+      </p>
+    `;
+
+  const { html, attachments } = buildEmail(
+    approved ? "Application Approved" : "Application Update",
+    body
+  );
+
+  await makeTransporter().sendMail({
+    from: `"Planova" <${process.env.SMTP_USER}>`,
+    to,
+    subject,
+    html,
+    attachments,
+  });
+}
+
 export async function sendWelcomeEmail(to) {
   const body = `
     <p style="color:#64748B;font-size:14px;margin:0 0 12px">

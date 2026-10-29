@@ -24,6 +24,7 @@ import boothRoutes from "./routes/boothRoutes.js";
 import sessionRoutes from "./routes/sessionRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import savedSessionRoutes from "./routes/savedSessionRoutes.js";
 app.use("/api/auth", authRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/expos", expoRoutes);
@@ -32,6 +33,7 @@ app.use("/api/booths", boothRoutes);
 app.use("/api/sessions", sessionRoutes);
 app.use("/api/registrations", registrationRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/saved-sessions", savedSessionRoutes);
 
 app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API" }));
 
