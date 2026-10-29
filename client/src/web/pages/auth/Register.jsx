@@ -10,7 +10,7 @@ const ROLES = [
   { id: "exhibitor", label: "Exhibitor", Icon: BarChart2,  desc: "Apply to expos, pick a booth, and manage your profile." },
 ];
 
-// Simple eye icons
+// eye toggle icons
 function EyeIcon() {
   return (
     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -28,7 +28,6 @@ function EyeOffIcon() {
   );
 }
 
-//  OTP input  6 individual boxes 
 function OTPInput({ value, onChange }) {
   const inputs = useRef([]);
 
@@ -79,7 +78,6 @@ function OTPInput({ value, onChange }) {
   );
 }
 
-// Password requirement checker  same rules as server
 function pwCheck(pw) {
   return {
     length: pw.length >= 7,
@@ -93,7 +91,7 @@ export default function Register() {
   const navigate   = useNavigate();
   const { login }  = useAuth();
 
-  // "form" = filling details, "otp" = entering the code
+  // step: "form" | "otp"
   const [step,     setStep]     = useState("form");
   const [form,     setForm]     = useState({ name: "", email: "", password: "", role: "attendee" });
   const [otp,      setOtp]      = useState("");

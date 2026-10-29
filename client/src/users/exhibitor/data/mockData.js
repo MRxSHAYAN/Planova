@@ -1,12 +1,9 @@
-// Exhibitor data  imports shared business data from src/data.js
-// Company-specific data (profile, applications, booths, products) stays here.
-// When backend is ready, replace the imports with API calls.
+// static fallback data — pages that aren't yet fetching from the API use these
 
 import {
   EXPOS as SHARED_EXPOS,
 } from "../../../data.js";
 
-//  Current company (exhibitor profile) 
 export const CURRENT_COMPANY = {
   id: "co_001",
   name: "TechBridge Solutions",
@@ -28,7 +25,6 @@ export const CURRENT_COMPANY = {
   memberSince: "January 2025",
 };
 
-//  Expos (mapped from shared EXPOS) 
 // Adds exhibitor-specific fields like availableBooths, applicationOpen, boothPriceFrom
 export const EXPOS = SHARED_EXPOS.map((e) => ({
   id: `exp_${String(e.id).padStart(3, "0")}`,
@@ -52,7 +48,6 @@ export const EXPOS = SHARED_EXPOS.map((e) => ({
   boothPriceFrom: [45000, 38000, 30000, 28000, 22000, 25000][e.id - 1] || 30000,
 }));
 
-//  Applications (company-specific, kept local) 
 export const APPLICATIONS = [
   {
     id: "app_001",
@@ -104,7 +99,6 @@ export const APPLICATIONS = [
   },
 ];
 
-//  Booths (company-specific, kept local) 
 export const BOOTHS = [
   {
     id: "bth_001",
@@ -127,7 +121,6 @@ export const BOOTHS = [
   },
 ];
 
-//  Products (company-specific, kept local) 
 export const PRODUCTS = [
   {
     id: "prd_001",
@@ -161,9 +154,6 @@ export const PRODUCTS = [
   },
 ];
 
-//  Exhibitor notifications (local) 
-
-//  Style maps (local) 
 export const CATEGORY_COLORS = {
   Technology:       { bg: "#DCE8FF", text: "#09152E" },
   Healthcare:       { bg: "#DDF7E7", text: "#16804A" },
@@ -183,3 +173,4 @@ export const STATUS_META = {
   confirmed: { bg: "#E6F9F1", text: "#12875A", label: "Confirmed" },
   withdrawn: { bg: "#F1F5F9", text: "#64748B", label: "Withdrawn" },
 };
+

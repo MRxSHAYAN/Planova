@@ -1,6 +1,4 @@
-// Attendee data  imports shared business data from src/data.js
-// User-specific data (profile) stays here.
-// When backend is ready, replace the imports with API calls.
+// static fallback data — pages that aren't yet fetching from the API use these
 
 import {
   EXPOS as SHARED_EXPOS,
@@ -8,7 +6,6 @@ import {
   EXHIBITORS as SHARED_EXHIBITORS,
 } from "../../../data.js";
 
-//  Current user (attendee profile) 
 export const CURRENT_USER = {
   id: "u_001",
   name: "Ayesha Siddiqui",
@@ -22,7 +19,6 @@ export const CURRENT_USER = {
   joinedDate: "March 2025",
 };
 
-//  Events (mapped from shared EXPOS) 
 export const EVENTS = SHARED_EXPOS.map((e, i) => ({
   id: `evt_${String(e.id).padStart(3, "0")}`,
   title: e.title,
@@ -46,7 +42,6 @@ export const EVENTS = SHARED_EXPOS.map((e, i) => ({
   upcoming: e.status === "Published",
 }));
 
-//  Sessions (mapped from shared SESSIONS) 
 export const SESSIONS = SHARED_SESSIONS.map((s, i) => ({
   id: `ses_${String(i + 1).padStart(3, "0")}`,
   eventId: `evt_00${s.id}`,
@@ -64,7 +59,6 @@ export const SESSIONS = SHARED_SESSIONS.map((s, i) => ({
   description: s.title,
 }));
 
-//  Exhibitors (mapped from shared EXHIBITORS) 
 export const EXHIBITORS = SHARED_EXHIBITORS.filter(e => e.status === "Approved").map((e, i) => ({
   id: `exh_${String(i + 1).padStart(3, "0")}`,
   company: e.company,
@@ -81,8 +75,6 @@ export const EXHIBITORS = SHARED_EXHIBITORS.filter(e => e.status === "Approved")
   color: ["#3478F6", "#16804A", "#946200", "#6D28D9", "#DC2626", "#0891B2"][i % 6],
 }));
 
-//  Attendee notifications (local) 
-
 export const CATEGORY_COLORS = {
   Technology:   { bg: "#DCE8FF", text: "#09152E" },
   Healthcare:   { bg: "#DDF7E7", text: "#16804A" },
@@ -95,3 +87,4 @@ export const CATEGORY_COLORS = {
   Workshop:     { bg: "#FEF3C7", text: "#92620A" },
   Talk:         { bg: "#DDF7E7", text: "#16804A" },
 };
+
