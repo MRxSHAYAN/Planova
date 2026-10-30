@@ -25,6 +25,9 @@ import sessionRoutes from "./routes/sessionRoutes.js";
 import registrationRoutes from "./routes/registrationRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import savedSessionRoutes from "./routes/savedSessionRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import broadcastRoutes from "./routes/broadcastRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
 app.use("/api/auth", authRoutes);
 app.use("/api/newsletter", newsletterRoutes);
 app.use("/api/expos", expoRoutes);
@@ -34,6 +37,14 @@ app.use("/api/sessions", sessionRoutes);
 app.use("/api/registrations", registrationRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/saved-sessions", savedSessionRoutes);
+app.use("/api/contacts", contactRoutes);
+app.use("/api/broadcast", broadcastRoutes);
+app.use("/api/upload", uploadRoutes);
+
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+const __dirname = dirname(fileURLToPath(import.meta.url));
+app.use("/uploads", (await import("express")).default.static(join(__dirname, "uploads")));
 
 app.get("/", (_req, res) => res.json({ status: "ok", message: "Planova API" }));
 

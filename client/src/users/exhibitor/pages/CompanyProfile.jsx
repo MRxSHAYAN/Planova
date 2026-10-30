@@ -109,23 +109,29 @@ export default function CompanyProfile() {
   async function handleAvatarChange(e) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 2 * 1024 * 1024) return showToast("err", "Image too large (max 2MB)");
+    if (file.size > 5 * 1024 * 1024) return showToast("err", "Max file size is 5 MB");
 
     setUploadingAvatar(true);
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        await updateProfile({ avatar: reader.result });
-        updateUser({ avatar: reader.result });
-        refresh();
-        showToast("ok", "Logo updated");
-      } catch (err) {
-        showToast("err", err.message);
-      } finally {
-        setUploadingAvatar(false);
-      }
-    };
-    reader.readAsDataURL(file);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const token = localStorage.getItem("planova_token");
+      const res   = await fetch("/api/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast("err", data.message || "Upload failed"); return; }
+      await updateProfile({ avatar: data.url });
+      updateUser({ avatar: data.url });
+      refresh();
+      showToast("ok", "Logo updated");
+    } catch {
+      showToast("err", "Upload failed");
+    } finally {
+      setUploadingAvatar(false);
+    }
   }
 
   async function saveCompany() {

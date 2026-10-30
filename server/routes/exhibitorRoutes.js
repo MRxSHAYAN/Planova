@@ -87,7 +87,40 @@ router.put("/:id/reject", protect, requireRole("admin"), async (req, res) => {
   res.json(app);
 });
 
-// Exhibitor: request booth change (updates booth preference on existing approved application)
+// Admin: approve booth change request
+router.put("/:id/booth-change-approve", protect, requireRole("admin"), async (req, res) => {
+  const app = await Exhibitor.findById(req.params.id);
+  if (!app) return res.status(404).json({ message: "Application not found" });
+  if (!app.boothChangeRequest) return res.status(400).json({ message: "No booth change request pending" });
+
+  const Booth = (await import("../models/Booth.js")).default;
+
+  // free the old booth
+  if (app.assignedBooth) {
+    await Booth.findOneAndUpdate({ boothId: app.assignedBooth, event: app.event }, { status: "available", exhibitor: null });
+  }
+
+  // occupy the new booth
+  await Booth.findOneAndUpdate({ boothId: app.boothChangeRequest, event: app.event }, { status: "occupied", exhibitor: app.company });
+
+  app.assignedBooth      = app.boothChangeRequest;
+  app.booth              = app.boothChangeRequest;
+  app.boothChangeRequest = "";
+  await app.save();
+
+  res.json({ message: "Booth change approved", app });
+});
+
+// Admin: decline booth change request
+router.put("/:id/booth-change-decline", protect, requireRole("admin"), async (req, res) => {
+  const app = await Exhibitor.findById(req.params.id);
+  if (!app) return res.status(404).json({ message: "Application not found" });
+
+  app.boothChangeRequest = "";
+  await app.save();
+
+  res.json({ message: "Booth change declined", app });
+});
 router.put("/:id/booth-change", protect, requireRole("exhibitor"), async (req, res) => {
   const app = await Exhibitor.findOne({ _id: req.params.id, user: req.user.userId });
   if (!app) return res.status(404).json({ message: "Application not found" });

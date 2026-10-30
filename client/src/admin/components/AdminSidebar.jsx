@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard, CalendarRange, ClipboardList, Map,
   Users, CalendarClock, ShieldCheck, BarChart2,
-  Settings, LogOut,
+  Mail, Settings, LogOut, MessageSquare, Radio,
 } from "lucide-react";
 import logo from "../../assets/Icon.png";
 import { useAuth } from "../../context/AuthContext";
@@ -36,6 +36,8 @@ const NAV_GROUPS = [
     group: "Insights & System",
     items: [
       { label: "Reports & Analytics",    path: `${BASE}/reports`,            icon: BarChart2 },
+      { label: "Messages",               path: `${BASE}/messages`,           icon: MessageSquare },
+      { label: "Email Broadcast",        path: `${BASE}/broadcast`,          icon: Radio },
       { label: "Settings",               path: `${BASE}/settings`,           icon: Settings },
     ],
   },

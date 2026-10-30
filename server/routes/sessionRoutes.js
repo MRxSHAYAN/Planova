@@ -15,14 +15,20 @@ router.get("/", async (req, res) => {
   res.json(sessions);
 });
 
-// GET /mine — sessions for expos the attendee registered for
+// GET /mine — upcoming sessions for expos the attendee registered for
 router.get("/mine", protect, requireRole("attendee"), async (req, res) => {
   const registrations = await Registration.find({ user: req.user.userId }).select("event");
   const expoIds = registrations.map(r => r.event);
 
   if (expoIds.length === 0) return res.json([]);
 
-  const sessions = await Session.find({ event: { $in: expoIds } })
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+
+  const sessions = await Session.find({
+    event: { $in: expoIds },
+    date: { $gte: startOfToday },
+  })
     .populate("event", "title city dateStart dateEnd")
     .sort({ date: 1, time: 1 });
   res.json(sessions);

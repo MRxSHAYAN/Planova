@@ -54,7 +54,6 @@ export default function Footer() {
         {/* Bottom row */}
         <div className="border-t border-white/[0.06] pt-6 flex flex-col sm:flex-row justify-between gap-2 text-[11.5px] text-white/20">
           <span>(c) 2026 Planova. All rights reserved.</span>
-          <span>Built with MERN Stack</span>
         </div>
       </div>
     </footer>

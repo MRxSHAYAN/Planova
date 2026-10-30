@@ -48,12 +48,14 @@ A MERN stack platform for managing expos, trade shows, and conferences in Pakist
 **Admin panel** (all live from DB)
 - Overview — user stats, expo list, applications, registrations, sessions, booth occupancy, newsletter subscribers
 - Expo Management — create, edit, publish, archive expos
-- Applications — approve or reject with reason; email notification sent to exhibitor on status change
+- Applications — approve or reject with reason; email notification sent to exhibitor on status change; approve or decline booth change requests from exhibitors
 - Booths — create single or bulk booths, assign exhibitors, clear assignments
 - Schedule — create and manage sessions per expo
 - Attendees — all registrations, filter by expo
 - Users — list all users, toggle active/inactive
 - Reports — application status, booth occupancy, registrations by expo, sessions by type, 6-month trend chart
+- Messages — contact form submissions with reply (opens Gmail) and delete
+- Email Broadcast — send a bulk email to all registered attendees of any expo
 
 ## Getting started
 
@@ -67,11 +69,13 @@ cd client && npm install && npm run dev
 
 ## Seed data
 
-You must run the seed script to populate your database before the app works:
+The seed script populates your database with demo data for testing:
 
 ```bash
 cd server && npm run seed
 ```
+
+This creates demo users, expos, booths, sessions, and products so you can explore the platform immediately. However, we recommend you sign up with your own email and create your own expos to fully test the flow — register at `/register`, pick a role, and go through the OTP verification yourself.
 
 Seeds 7 expos, 4 exhibitors (with 9 products), 4 attendees, 32 booths, 14 sessions, 8 registrations, and 10 newsletter subscribers. Wipes existing data first.
 
@@ -141,9 +145,9 @@ server/
   seed.js         seed script
 ```
 
-## Known limitations
+**Image upload** — avatars and product images support direct file upload (up to 5 MB, stored in `server/uploads/`). URL paste still works as a fallback.
 
-- Booth change requests from exhibitors show in the application detail but have no dedicated admin action flow — admin can manually reassign from the Booths page
+
 
 ## API reference
 
@@ -197,6 +201,16 @@ server/
 | GET | /api/saved-sessions | attendee | get saved sessions |
 | POST | /api/saved-sessions | attendee | save a session |
 | DELETE | /api/saved-sessions/:sessionId | attendee | unsave a session |
+| POST | /api/contacts | public | submit contact message |
+| GET | /api/contacts | admin | all contact messages |
+| PUT | /api/contacts/:id/read | admin | mark as read |
+| PUT | /api/contacts/:id/replied | admin | mark as replied |
+| DELETE | /api/contacts/:id | admin | delete message |
+| GET | /api/broadcast/expos | admin | expos with attendee counts |
+| POST | /api/broadcast/send | admin | send bulk email to expo attendees |
+| POST | /api/upload | auth | upload image file, returns URL |
+| PUT | /api/applications/:id/booth-change-approve | admin | approve booth change |
+| PUT | /api/applications/:id/booth-change-decline | admin | decline booth change |
 
 ---
 

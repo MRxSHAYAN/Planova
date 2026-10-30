@@ -130,6 +130,17 @@ export async function sendApplicationStatusEmail(to, companyName, expoTitle, sta
   });
 }
 
+export function buildBroadcastEmail(expoTitle, recipientName, subject, message) {
+  const body = `
+    <p style="color:#64748B;font-size:14px;margin:0 0 12px">Hi <strong style="color:#09152E">${recipientName || "there"}</strong>,</p>
+    <div style="background:#fff;border:1.5px solid #E8EEF8;border-radius:10px;padding:20px;margin-bottom:16px">
+      <p style="color:#3E506D;font-size:14px;line-height:1.7;margin:0;white-space:pre-wrap">${message}</p>
+    </div>
+    <p style="color:#94A3B8;font-size:12px;margin:0">This message was sent to all registered attendees of <strong>${expoTitle}</strong>.</p>
+  `;
+  return buildEmail(subject, body);
+}
+
 export async function sendWelcomeEmail(to) {
   const body = `
     <p style="color:#64748B;font-size:14px;margin:0 0 12px">

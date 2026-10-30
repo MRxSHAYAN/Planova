@@ -120,8 +120,10 @@ No leading spaces in .env values -- Nodemailer will fail silently.
 ================================================================================
 6. SEED DATA
 ================================================================================
-IMPORTANT: You must run the seed script to populate your database before the app
-will work. Without it, there are no users, expos, or data to log in with.
+We added seed.js to get the web ready for testing with demo data. You can
+run it to populate the database immediately, but we prefer that you sign up
+and log in with your own accounts and create your own expos to test the full
+flow (register at /register, verify OTP, explore the dashboards).
 
 Run this command:
 

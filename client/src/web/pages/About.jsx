@@ -1,11 +1,12 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
 
 const TEAM = [
-  { name: "Arham Siddiqui", role: "Founder & CEO",         bio: "Ran two national tech expos manually. Built Planova so nobody else has to.", initials: "AS" },
-  { name: "Zara Malik",     role: "Head of Product",       bio: "Previously led product at a Lahore B2B SaaS startup. Focused on reducing friction for exhibitors.", initials: "ZM" },
-  { name: "Bilal Raza",     role: "Lead Engineer",         bio: "Full-stack developer, 8 years building scalable platforms across MENA.", initials: "BR" },
-  { name: "Hina Farooq",   role: "Head of Partnerships",  bio: "Manages relationships with expo centres and industry associations across Pakistan.", initials: "HF" },
+  { name: "Shayan",  role: "Founder & Developer",      bio: "Built Planova to fix how expos are managed in Pakistan.", initials: "S" },
+  { name: "Hadi",    role: "Operations",               bio: "Manages expo logistics and exhibitor relationships.", initials: "H" },
+  { name: "Moeed",   role: "Backend Engineer",          bio: "Handles the API, database, and server infrastructure.", initials: "M" },
+  { name: "Meekail", role: "Frontend Engineer",         bio: "Builds the dashboards and public website interfaces.", initials: "M" },
 ];
 
 const avatarColors = [
@@ -16,6 +17,14 @@ const avatarColors = [
 ];
 
 export default function About() {
+  const [stats, setStats] = useState({ expos: 0, exhibitors: 0, attendees: 0 });
+
+  useEffect(() => {
+    fetch("/api/expos").then(r => r.json()).then(d => setStats(s => ({ ...s, expos: Array.isArray(d) ? d.length : 0 }))).catch(() => {});
+    fetch("/api/applications/approved").then(r => r.json()).then(d => setStats(s => ({ ...s, exhibitors: Array.isArray(d) ? d.length : 0 }))).catch(() => {});
+    fetch("/api/auth/stats").then(r => r.json()).then(d => setStats(s => ({ ...s, attendees: d.attendees || 0 }))).catch(() => {});
+  }, []);
+
   return (
     <Layout>
       {/*  Header  */}
@@ -34,7 +43,7 @@ export default function About() {
       {/*  Stats strip  */}
       <div className="bg-navy-mid border-y border-white/[0.05] px-5 sm:px-8 py-8">
         <div className="max-w-7xl mx-auto flex flex-wrap gap-10">
-          {[["2024", "Founded"], ["120+", "Expos hosted"], ["3,400+", "Exhibitors"], ["85,000+", "Attendees"]].map(([v, l]) => (
+          {[["2025", "Founded"], [stats.expos, "Expos hosted"], [stats.exhibitors, "Exhibitors"], [stats.attendees, "Attendees"]].map(([v, l]) => (
             <div key={l}>
               <div className="text-[1.9rem] font-black text-white leading-none">{v}</div>
               <div className="text-[11px] text-white/30 mt-1 tracking-wide">{l}</div>

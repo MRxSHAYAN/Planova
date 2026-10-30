@@ -7,7 +7,9 @@ import Booths          from "./pages/Booths";
 import Attendees       from "./pages/Attendees";
 import Schedule        from "./pages/Schedule";
 import Users           from "./pages/Users";
-import Reports         from "./pages/Reports";
+import Reports        from "./pages/Reports";
+import Messages        from "./pages/Messages";
+import Broadcast       from "./pages/Broadcast";
 import Settings        from "./pages/Settings";
 
 export default function AdminDashboard() {
@@ -22,6 +24,8 @@ export default function AdminDashboard() {
         <Route path="schedule"         element={<Schedule />} />
         <Route path="users"            element={<Users />} />
         <Route path="reports"          element={<Reports />} />
+        <Route path="messages"         element={<Messages />} />
+        <Route path="broadcast"        element={<Broadcast />} />
         <Route path="settings"         element={<Settings />} />
         <Route path="*"                element={<Navigate to="/admin" replace />} />
       </Routes>

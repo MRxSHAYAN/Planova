@@ -8,6 +8,7 @@ const ROUTES = {
   exhibitors: "/exhibitors",
   schedule: "/schedule",
   about: "/about",
+  contact: "/contact",
   login: "/login",
   register: "/register",
 };
@@ -17,6 +18,7 @@ const NAV_LINKS = [
   ["Exhibitors",    ROUTES.exhibitors],
   ["Schedule",      ROUTES.schedule],
   ["About",         ROUTES.about],
+  ["Contact",       ROUTES.contact],
 ];
 
 export default function Navbar() {

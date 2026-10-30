@@ -11,6 +11,29 @@ const OFFICES = [
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!form.name || !form.email || !form.subject || !form.message) return;
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/contacts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok) { setError(data.message || "Something went wrong"); return; }
+      setSent(true);
+    } catch {
+      setError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Layout>
@@ -50,7 +73,7 @@ export default function Contact() {
             ) : (
               <>
                 <h2 className="text-[1.35rem] font-black text-dark mb-7">Send us a message</h2>
-                <form onSubmit={e => { e.preventDefault(); setSent(true); }} className="flex flex-col gap-5">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                   <div className="grid sm:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-[12.5px] font-semibold text-dark mb-1.5">Full name</label>
@@ -85,10 +108,11 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <button type="submit"
-                      className="px-8 py-3 rounded-xl bg-accent text-white font-bold text-[13.5px] hover:bg-accent-hover transition-colors">
-                      Send message
+                    <button type="submit" disabled={loading}
+                      className="px-8 py-3 rounded-xl bg-accent text-white font-bold text-[13.5px] hover:bg-accent-hover transition-colors disabled:opacity-60">
+                      {loading ? "Sending..." : "Send message"}
                     </button>
+                    {error && <p className="text-[12.5px] mt-2" style={{ color: "#DC2626" }}>{error}</p>}
                   </div>
                 </form>
               </>

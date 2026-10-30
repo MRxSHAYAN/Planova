@@ -11,7 +11,7 @@ function formatDate(d) {
   return new Date(d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-function AppDetail({ app, onApprove, onReject, onClose }) {
+function AppDetail({ app, onApprove, onReject, onBoothChangeApprove, onBoothChangeDecline, onClose }) {
   const [rejectReason, setRejectReason] = useState("");
   const [showReject, setShowReject] = useState(false);
   if (!app) return null;
@@ -41,8 +41,7 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
 
           {[
             ["Expo",             app.event?.title || ""],
-            ["Booth Preference", app.booth || ""],
-            ["Booth Change Request", app.boothChangeRequest || ""],
+            ["Assigned Booth",   app.assignedBooth || app.booth || ""],
             ["Contact",          app.contact],
             ["Email",            app.email],
             ["Phone",            app.phone],
@@ -53,6 +52,26 @@ function AppDetail({ app, onApprove, onReject, onClose }) {
               <span className="text-slate-700">{val}</span>
             </div>
           ))}
+
+          {/* Booth change request section */}
+          {app.boothChangeRequest && (
+            <div className="rounded-xl p-4 border border-amber-200 bg-amber-50">
+              <p className="text-[11.5px] font-bold text-amber-700 uppercase mb-1">Booth Change Request</p>
+              <p className="text-[13px] text-amber-900 mb-3">
+                Requesting reassignment to booth <strong>{app.boothChangeRequest}</strong>
+              </p>
+              <div className="flex gap-2">
+                <button onClick={() => onBoothChangeDecline(app._id)}
+                  className="flex-1 py-2 rounded-lg border border-amber-300 text-amber-700 text-[12.5px] font-semibold hover:bg-amber-100 transition-colors">
+                  Decline
+                </button>
+                <button onClick={() => onBoothChangeApprove(app._id)}
+                  className="flex-1 py-2 rounded-lg bg-amber-500 text-white text-[12.5px] font-bold hover:bg-amber-600 transition-colors flex items-center justify-center gap-1.5">
+                  <Check size={13} /> Approve Change
+                </button>
+              </div>
+            </div>
+          )}
 
           {app.rejectReason && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4">
@@ -146,6 +165,22 @@ export default function Applications() {
     });
     if (!res.ok) return showToast("Failed to reject", "err");
     showToast("Application rejected", "err");
+    setSelected(null);
+    fetchApps();
+  }
+
+  async function handleBoothChangeApprove(id) {
+    const res = await fetch(`/api/applications/${id}/booth-change-approve`, { method: "PUT", headers: authHeader() });
+    if (!res.ok) return showToast("Failed to approve booth change", "err");
+    showToast("Booth change approved");
+    setSelected(null);
+    fetchApps();
+  }
+
+  async function handleBoothChangeDecline(id) {
+    const res = await fetch(`/api/applications/${id}/booth-change-decline`, { method: "PUT", headers: authHeader() });
+    if (!res.ok) return showToast("Failed to decline", "err");
+    showToast("Booth change declined");
     setSelected(null);
     fetchApps();
   }
@@ -245,7 +280,10 @@ export default function Applications() {
       )}
 
       {selected && (
-        <AppDetail app={selected} onApprove={handleApprove} onReject={handleReject} onClose={() => setSelected(null)} />
+        <AppDetail app={selected} onApprove={handleApprove} onReject={handleReject}
+          onBoothChangeApprove={handleBoothChangeApprove}
+          onBoothChangeDecline={handleBoothChangeDecline}
+          onClose={() => setSelected(null)} />
       )}
     </div>
   );

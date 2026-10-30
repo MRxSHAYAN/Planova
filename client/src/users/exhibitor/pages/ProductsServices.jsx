@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Plus, Pencil, Trash2, X, Check, Package, Loader2 } from "lucide-react";
 import EmptyState from "../components/EmptyState";
+import ImageUpload from "../../../components/ImageUpload";
 
 const PRODUCT_CATS = ["Enterprise Software", "Business Intelligence", "Cybersecurity", "Cloud", "Fintech", "SaaS", "Other"];
 
@@ -140,12 +141,12 @@ function ProductForm({ initial, onSave, onCancel, saving }) {
           {errors.description && <p className="text-[11px] mt-1" style={{ color: "#DC2626" }}>{errors.description}</p>}
         </div>
         <div>
-          <label className="block text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: "#94A3B8" }}>Image URL (optional)</label>
-          <input value={form.image} onChange={e => setForm(p => ({ ...p, image: e.target.value }))}
-            className="w-full text-[13px] px-3 py-2 rounded-lg outline-none transition-colors"
-            style={{ background: "#F5F8FF", border: "1.5px solid #DCEAFF", color: "#09152E" }}
-            onFocus={e => e.target.style.borderColor = "#3478F6"}
-            onBlur={e => e.target.style.borderColor = "#DCEAFF"} />
+          <ImageUpload
+            label="Image (optional)"
+            value={form.image}
+            onChange={url => setForm(p => ({ ...p, image: url }))}
+            size="sm"
+          />
         </div>
         <div>
           <label className="block text-[11px] font-bold uppercase tracking-wider mb-1" style={{ color: "#94A3B8" }}>Tags (comma separated)</label>
