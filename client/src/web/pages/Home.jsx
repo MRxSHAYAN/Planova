@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "../components/Layout";
-import heroImg from "./../assets/Hero.jpg";
+// import heroImg from "./../assets/Hero.jpg";
+import heromp4 from "./../assets/Planova.mp4";
 
 const FILTERS = ["All", "Technology", "Healthcare", "Energy", "Agriculture", "Fashion", "Food"];
 
@@ -25,15 +26,21 @@ function Hero() {
 
   return (
     <section className="relative min-h-screen flex items-end overflow-hidden">
-      <img src={heroImg} alt="Event venue"
-        className="absolute inset-0 w-full h-full object-cover object-center" />
+      <video
+        src={heromp4}
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      />
       <div className="absolute inset-0"
         style={{ background: "linear-gradient(to bottom, rgba(9,21,46,0.6) 0%, rgba(9,21,46,0.1) 40%, rgba(9,21,46,0.15) 60%, rgba(9,21,46,0.95) 100%)" }} />
       <div className="absolute inset-0"
         style={{ background: "linear-gradient(100deg, rgba(9,21,46,0.75) 0%, rgba(9,21,46,0.2) 45%, transparent 65%)" }} />
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-8 pb-14 pt-[100px]">
-        <div className="max-w-[520px]">
+        <div className="max-w-520px">
           <p className="text-accent text-[11px] font-bold tracking-[0.22em] uppercase mb-4">
             Expo Management Platform
           </p>
