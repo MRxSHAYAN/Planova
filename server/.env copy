@@ -1,0 +1,15 @@
+PORT=5000
+NODE_ENV=production
+CLIENT_URL=http://localhost:5173
+
+# Local MongoDB
+MONGO_URI=
+
+# JWT
+JWT_SECRET=8f07c564a0a128f611b307908b42ae5b46afffb81ac07fbf917b4e7c19ed153c
+
+# SMTP setup for OTP
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=noreplynexussolutions3747@gmail.com
+SMTP_PASS=dujbhvrihwmoglne
