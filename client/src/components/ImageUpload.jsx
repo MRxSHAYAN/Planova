@@ -6,7 +6,7 @@ export default function ImageUpload({ value, onChange, label = "Image", size = "
   const [error, setError] = useState("");
   const ref = useRef();
 
-  const preview = value?.startsWith("/uploads/") || value?.startsWith("http") ? value : null;
+  const preview = value?.startsWith("/uploads/") || value?.startsWith("http") || value?.startsWith("data:") ? value : null;
 
   async function handleFile(file) {
     if (!file) return;
